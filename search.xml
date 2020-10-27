@@ -39,7 +39,8 @@
 <p><strong>罪魁祸首其实是Chrome，它屏蔽了第三方Cookie,需要点击收藏按钮前的小眼睛取消屏蔽，这么简单的问题让我折腾到凌晨两点真是太亏了。</strong></p>
 <br>
 
-<h5 id="参考：记录chrome禁止cookie导致无法显示iframe的问题"><a href="#参考：记录chrome禁止cookie导致无法显示iframe的问题" class="headerlink" title="参考：记录chrome禁止cookie导致无法显示iframe的问题"></a>参考：<a href="https://www.gaficat.com/posts/1d5c6ccb.html">记录chrome禁止cookie导致无法显示iframe的问题</a></h5><blockquote>
+<p><strong>参考：<a href="https://www.gaficat.com/posts/1d5c6ccb.html">记录chrome禁止cookie导致无法显示iframe的问题</a></strong></p>
+<blockquote>
 <p>总结，遇到问题先排查可能原因，分析操作后不得解再搜索，搜索需要精炼关键词，避开热点词，精度越高越容易得到准确结果。<br><br>当然，有些时候完全不知道该搜索什么也可以先进行模糊搜索，定位到问题再精确搜索。</p>
 </blockquote>
 ]]></content>

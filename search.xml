@@ -64,4 +64,42 @@
         <tag>个性化</tag>
       </tags>
   </entry>
+  <entry>
+    <title>使用next主题踩到的那些坑</title>
+    <url>/2020/10/28/err-NexT/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章内容仅供参考，踩坑不负责，下载next主题的时间：2020-10-23（在此之前GitHub上的最近更新时间是9-2）</p>
+<a id="more"></a>
+
+<h1 id="1-下载链接错误"><a href="#1-下载链接错误" class="headerlink" title="1.下载链接错误"></a>1.下载链接错误</h1><p>通过别人的博客知道hexo支持一个非常好看的next主题，我当然不会错过。Google之后发现NexT官方文档居然是全中文的，这下可把我乐坏了，美滋滋！然而事情没这么简单，<strong>以下为官方文档原话</strong></p>
+<blockquote>
+<p>Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点目录的 <code>themes</code> 目录下， 然后修改下配置文件即可。具体到 NexT 来说，安装步骤如下。</p>
+<p>$ cd your-hexo-site<br>$ git clone <a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next</a> themes/next</p>
+</blockquote>
+<p>看到这个路径在github上，那我还是先习惯性的进去看一眼。一看不得了，最近一次更新还是在去年初，readme上第一句就是一个迁移提示，大意是说这个仓库不更新了，想用新版本需要去新的仓库（链接：<a href="https://github.com/theme-next/hexo-theme-next">NexT v6 and v7 </a>）。所以说，<strong>如果需要下载最新版本的NexT主题的命令应该是</strong></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/theme-next/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里我就留了个心眼，要时刻注意不被这个官方文档坑</p>
+<h1 id="2-设置语言为中文"><a href="#2-设置语言为中文" class="headerlink" title="2.设置语言为中文"></a>2.设置语言为中文</h1><p><strong>在NexT的官方文档中是这样说的：</strong></p>
+<blockquote>
+<p>编辑 <strong>站点配置文件</strong>， 将 <code>language</code> 设置成你所需要的语言。建议明确设置你所需要的语言，例如选用简体中文，配置如下：</p>
+<p>language: zh-Hans</p>
+</blockquote>
+<img src="/2020/10/28/err-NexT/image-20201028132326518.png" class title="官方原文">
+
+<p>然而实际上新版本中zh-Hans已经改为了zh-CN</p>
+<img src="/2020/10/28/err-NexT/image-20201028132159541.png" class title="最新版本">
+
+<p><strong>所以使用简体中文应该设置：</strong></p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">language:</span> <span class="built_in">zh</span>-CN</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>问题</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
 </search>

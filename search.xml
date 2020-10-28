@@ -125,6 +125,8 @@
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">---		<span class="comment">&lt;!--与最下面那三杠一起确定头部--&gt;</span></span><br><span class="line">title: 记录怎么用hexo写文章		<span class="comment">&lt;!--文章的标题 必填--&gt;</span></span><br><span class="line">date: 2020-10-28 21:52:59	<span class="comment">&lt;!--创建日期 必填--&gt;</span></span><br><span class="line">categories: hexo	<span class="comment">&lt;!--给文章进行分类-&gt;</span></span><br><span class="line"><span class="comment">tags: </span></span><br><span class="line"><span class="comment">- 工具 	&lt;!--标签，与分类类似，由于有多个标签所以这样写-&gt;</span></span><br><span class="line"><span class="comment">- 技巧	&lt;!--需要注意空格不能省--&gt;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
 <p>到这里，就已经可以正常编写博客日志了。</p>
+<a id="more"></a>
+
 <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>俗话说：工欲善其事，必先利其器 </p>

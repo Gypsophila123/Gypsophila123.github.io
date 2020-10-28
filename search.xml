@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>使用next主题踩到的那些坑</title>
+    <title>使用next主题踩到的坑</title>
     <url>/2020/10/28/err-NexT/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章内容仅供参考，踩坑不负责，下载next主题的时间：2020-10-23（在此之前GitHub上的最近更新时间是9-2）</p>
 <a id="more"></a>
 
-<h1 id="1-下载链接错误"><a href="#1-下载链接错误" class="headerlink" title="1.下载链接错误"></a>1.下载链接错误</h1><p>通过别人的博客知道hexo支持一个非常好看的next主题，我当然不会错过。Google之后发现NexT官方文档居然是全中文的，这下可把我乐坏了，美滋滋！然而事情没这么简单，<strong>以下为官方文档原话</strong></p>
+<h1 id="下载链接错误"><a href="#下载链接错误" class="headerlink" title="下载链接错误"></a>下载链接错误</h1><p>通过别人的博客知道hexo支持一个非常好看的next主题，我当然不会错过。Google之后发现NexT官方文档居然是全中文的，这下可把我乐坏了，美滋滋！然而事情没这么简单，<strong>以下为官方文档原话</strong></p>
 <blockquote>
 <p>Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点目录的 <code>themes</code> 目录下， 然后修改下配置文件即可。具体到 NexT 来说，安装步骤如下。</p>
 <p>$ cd your-hexo-site<br>$ git clone <a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next</a> themes/next</p>
 </blockquote>
-<p>看到这个路径在github上，那我还是先习惯性的进去看一眼。一看不得了，最近一次更新还是在去年初，readme上第一句就是一个迁移提示，大意是说这个仓库不更新了，想用新版本需要去新的仓库（链接：<a href="https://github.com/theme-next/hexo-theme-next">NexT v6 and v7 </a>）。所以说，<strong>如果需要下载最新版本的NexT主题的命令应该是</strong></p>
+<p>看到这个路径在github上，出于习惯我点进去看了一眼。不得了，最近一次更新还是在去年初，readme上一个迁移提示，大意是说这个仓库不更新了，想用新版本需要去新的仓库（链接：<a href="https://github.com/theme-next/hexo-theme-next">NexT v6 and v7 </a>）。所以说，<strong>如果需要下载最新版本的NexT主题的命令应该是</strong></p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/theme-next/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></span><br></pre></td></tr></table></figure>
 
 <p>到这里我就留了个心眼，要时刻注意不被这个官方文档坑</p>
-<h1 id="2-设置语言为中文"><a href="#2-设置语言为中文" class="headerlink" title="2.设置语言为中文"></a>2.设置语言为中文</h1><p><strong>在NexT的官方文档中是这样说的：</strong></p>
+<h1 id="设置语言为中文"><a href="#设置语言为中文" class="headerlink" title="设置语言为中文"></a>设置语言为中文</h1><p><strong>在NexT的官方文档中是这样说的：</strong></p>
 <blockquote>
 <p>编辑 <strong>站点配置文件</strong>， 将 <code>language</code> 设置成你所需要的语言。建议明确设置你所需要的语言，例如选用简体中文，配置如下：</p>
 <p>language: zh-Hans</p>
@@ -28,7 +28,13 @@
 <p><strong>所以使用简体中文应该设置：</strong></p>
 <figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">language:</span> <span class="built_in">zh</span>-CN</span><br></pre></td></tr></table></figure>
 
-]]></content>
+<h1 id="侧边社交栏链接"><a href="#侧边社交栏链接" class="headerlink" title="侧边社交栏链接"></a>侧边社交栏链接</h1><p><strong>官方文档如下：</strong></p>
+<img src="/2020/10/28/err-NexT/image-20201028165632286.png" class>
+
+<p>实际在使用中应该这样</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="attribute">social</span>:</span><br><span class="line">  <span class="attribute">GitHub</span>: <span class="attribute">https</span>:<span class="comment">//github.com/Gypsophila123 || fab fa-github</span></span><br><span class="line">  <span class="attribute">G-Mail</span>: yuanjie15115580021<span class="variable">@gmail</span>.com || fa fa-envelope</span><br><span class="line">  #<span class="attribute">Weibo</span>: <span class="attribute">https</span>:<span class="comment">//weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  #<span class="attribute">Google</span>: <span class="attribute">https</span>:<span class="comment">//plus.google.com/yourname || fab fa-google</span></span><br><span class="line">  #<span class="attribute">Twitter</span>: <span class="attribute">https</span>:<span class="comment">//twitter.com/yourname || fab fa-twitter</span></span><br><span class="line">  <span class="number">#FB</span> <span class="attribute">Page</span>: <span class="attribute">https</span>:<span class="comment">//www.facebook.com/yourname || fab fa-facebook</span></span><br><span class="line">  #<span class="attribute">StackOverflow</span>: <span class="attribute">https</span>:<span class="comment">//stackoverflow.com/yourname || fab fa-stack-overflow</span></span><br><span class="line">  #<span class="attribute">YouTube</span>: <span class="attribute">https</span>:<span class="comment">//youtube.com/yourname || fab fa-youtube</span></span><br><span class="line">  #<span class="attribute">Instagram</span>: <span class="attribute">https</span>:<span class="comment">//instagram.com/yourname || fab fa-instagram</span></span><br><span class="line">  #<span class="attribute">Skype</span>: <span class="attribute">skype</span>:yourname?call|chat || fab fa-skype</span><br><span class="line">  </span><br><span class="line"><span class="attribute">social_icons</span>:</span><br><span class="line">  <span class="attribute">enable</span>: true # 是否显示图标</span><br><span class="line">  # Icon Mappings</span><br><span class="line">  <span class="attribute">GitHub</span>: github</span><br><span class="line">  <span class="attribute">icons_only</span>: false # 仅显示图标</span><br><span class="line">  <span class="attribute">transition</span>: false</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/28/err-NexT/image-20201028165537958.png" class>]]></content>
       <categories>
         <category>hexo</category>
       </categories>
@@ -39,14 +45,14 @@
       </tags>
   </entry>
   <entry>
-    <title>遇到的问题——云音乐插件无法显示</title>
-    <url>/2020/10/27/err_cloudmusic/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>将云音乐外链插件复制到网页但不显示（答案在最下面）</p>
-<img src="/2020/10/27/err_cloudmusic/cloudmusic.png" class>
-
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>在我通过hexo部署好<a href="https://gypsophila123.github.io/">我的github page网站</a>之后，兴高采烈的去网络上找美化<strong>next主题</strong>的方法，看到什么都想加进来，结果在这个小东西上出问题了</p>
+    <title>问题——网易云音乐插件无法显示</title>
+    <url>/2020/10/26/err_cloudmusic/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>将云音乐外链插件复制到网页但不显示</p>
 <a id="more"></a>
 
+<img src="/2020/10/26/err_cloudmusic/cloudmusic.png" class>
+
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>在我通过hexo部署好<a href="https://gypsophila123.github.io/">我的github page网站</a>之后，兴高采烈的去网络上找美化<strong>next主题</strong>的方法，看到什么都想加进来，结果在这个小东西上出问题了</p>
 <h1 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h1><ol>
 <li>我的第一反应就是没有刷新成功，于是我重启了本地hexo server——失败</li>
 <li>到了这一步，我已经隐隐感觉到了事情不太妙，由于网易云在国内，所以我没有考虑网络原因。</li>
@@ -79,18 +85,6 @@
       </tags>
   </entry>
   <entry>
-    <title>新的开始</title>
-    <url>/2020/10/24/%E5%85%A8%E9%83%A8%E8%BD%AC%E4%B8%BAmarkdown%E6%96%87%E6%A1%A3/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于我已经有了自己的博客，以后的所有笔记将使用markdown编写。以前的笔记也会陆陆续续整理为markdown发送到我的博客<br><br>——2020/10/27</p>
-]]></content>
-      <categories>
-        <category>通知</category>
-      </categories>
-      <tags>
-        <tag>第一篇</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo个性化设置</title>
     <url>/2020/10/27/hexoTheme/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
@@ -100,6 +94,18 @@
       <tags>
         <tag>hexo</tag>
         <tag>个性化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>新的开始</title>
+    <url>/2020/10/24/%E5%85%A8%E9%83%A8%E8%BD%AC%E4%B8%BAmarkdown%E6%96%87%E6%A1%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于我已经有了自己的博客，以后的所有笔记将使用markdown编写。以前的笔记也会陆陆续续整理为markdown发送到我的博客<br><br>——2020/10/27</p>
+]]></content>
+      <categories>
+        <category>通知</category>
+      </categories>
+      <tags>
+        <tag>第一篇</tag>
       </tags>
   </entry>
 </search>

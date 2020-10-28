@@ -9,6 +9,13 @@
   </url>
   
   <url>
+    <loc>https://gypsophila123.github.io/2020/10/26/err_cloudmusic/</loc>
+    
+    <lastmod>2020-10-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://gypsophila123.github.io/2020/10/24/%E5%85%A8%E9%83%A8%E8%BD%AC%E4%B8%BAmarkdown%E6%96%87%E6%A1%A3/</loc>
     
     <lastmod>2020-10-28</lastmod>
@@ -16,30 +23,9 @@
   </url>
   
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/27/err_cloudmusic/</loc>
-    
-    <lastmod>2020-10-27</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://gypsophila123.github.io/2020/10/27/hexoTheme/</loc>
     
     <lastmod>2020-10-27</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://gypsophila123.github.io/tags/index.html</loc>
-    
-    <lastmod>2020-10-26</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://gypsophila123.github.io/categories/index.html</loc>
-    
-    <lastmod>2020-10-26</lastmod>
     
   </url>
   
@@ -74,14 +60,14 @@
   </url>
   
   <url>
-    <loc>https://gypsophila123.github.io/tags/%E7%AC%AC%E4%B8%80%E7%AF%87/</loc>
+    <loc>https://gypsophila123.github.io/tags/%E4%B8%AA%E6%80%A7%E5%8C%96/</loc>
     <lastmod>2020-10-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://gypsophila123.github.io/tags/%E4%B8%AA%E6%80%A7%E5%8C%96/</loc>
+    <loc>https://gypsophila123.github.io/tags/%E7%AC%AC%E4%B8%80%E7%AF%87/</loc>
     <lastmod>2020-10-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

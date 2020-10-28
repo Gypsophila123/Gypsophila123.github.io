@@ -34,7 +34,9 @@
 <p>实际在使用中应该这样</p>
 <figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="attribute">social</span>:</span><br><span class="line">  <span class="attribute">GitHub</span>: <span class="attribute">https</span>:<span class="comment">//github.com/Gypsophila123 || fab fa-github</span></span><br><span class="line">  <span class="attribute">G-Mail</span>: yuanjie15115580021<span class="variable">@gmail</span>.com || fa fa-envelope</span><br><span class="line">  #<span class="attribute">Weibo</span>: <span class="attribute">https</span>:<span class="comment">//weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  #<span class="attribute">Google</span>: <span class="attribute">https</span>:<span class="comment">//plus.google.com/yourname || fab fa-google</span></span><br><span class="line">  #<span class="attribute">Twitter</span>: <span class="attribute">https</span>:<span class="comment">//twitter.com/yourname || fab fa-twitter</span></span><br><span class="line">  <span class="number">#FB</span> <span class="attribute">Page</span>: <span class="attribute">https</span>:<span class="comment">//www.facebook.com/yourname || fab fa-facebook</span></span><br><span class="line">  #<span class="attribute">StackOverflow</span>: <span class="attribute">https</span>:<span class="comment">//stackoverflow.com/yourname || fab fa-stack-overflow</span></span><br><span class="line">  #<span class="attribute">YouTube</span>: <span class="attribute">https</span>:<span class="comment">//youtube.com/yourname || fab fa-youtube</span></span><br><span class="line">  #<span class="attribute">Instagram</span>: <span class="attribute">https</span>:<span class="comment">//instagram.com/yourname || fab fa-instagram</span></span><br><span class="line">  #<span class="attribute">Skype</span>: <span class="attribute">skype</span>:yourname?call|chat || fab fa-skype</span><br><span class="line">  </span><br><span class="line"><span class="attribute">social_icons</span>:</span><br><span class="line">  <span class="attribute">enable</span>: true # 是否显示图标</span><br><span class="line">  # Icon Mappings</span><br><span class="line">  <span class="attribute">GitHub</span>: github</span><br><span class="line">  <span class="attribute">icons_only</span>: false # 仅显示图标</span><br><span class="line">  <span class="attribute">transition</span>: false</span><br></pre></td></tr></table></figure>
 
-<img src="/2020/10/28/err-NexT/image-20201028165537958.png" class>]]></content>
+<img src="/2020/10/28/err-NexT/image-20201028165537958.png" class>
+
+]]></content>
       <categories>
         <category>hexo</category>
       </categories>
@@ -106,6 +108,191 @@
       </categories>
       <tags>
         <tag>第一篇</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录怎么用hexo写文章</title>
+    <url>/2020/10/28/hexoedit/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>以我的博客my_blog为例，my_blog\sourc路径下有两个文件夹</p>
+<img src="/2020/10/28/hexoedit/image-20201028225441591.png" class>
+
+<p>其中_posts被用来存放日志（文章），每一个.md文件都会被解析成一篇文章，即使是直接在里面新建.md文件，也会被解析，<strong>但是</strong>只有头部的格式写对了才是一篇完整的文章，新建文章使用命令：</p>
+<div class="note primary">
+            <p>hexo new 文件名</p>
+          </div>
+
+<p>hexo会自动从文件模板里复制一份放在_post文件夹下（因为没有填写类型所以默认post），然后打开文件进行相应编辑即可，以下是本文头部的格式</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">---		<span class="comment">&lt;!--与最下面那三杠一起确定头部--&gt;</span></span><br><span class="line">title: 记录怎么用hexo写文章		<span class="comment">&lt;!--文章的标题 必填--&gt;</span></span><br><span class="line">date: 2020-10-28 21:52:59	<span class="comment">&lt;!--创建日期 必填--&gt;</span></span><br><span class="line">categories: hexo	<span class="comment">&lt;!--给文章进行分类-&gt;</span></span><br><span class="line"><span class="comment">tags: </span></span><br><span class="line"><span class="comment">- 工具 	&lt;!--标签，与分类类似，由于有多个标签所以这样写-&gt;</span></span><br><span class="line"><span class="comment">- 技巧	&lt;!--需要注意空格不能省--&gt;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>到这里，就已经可以正常编写博客日志了。</p>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>俗话说：工欲善其事，必先利其器 </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p><strong>推荐使用markdown来写日志，这里我推荐的markdown编辑器是Typora</strong>。原本我用的有道云笔记，但非常不顺手，上知乎上搜了一下，结果发现了两个比较好用的markdown编辑器。</p>
+<ul>
+<li><p><strong>vscode</strong></p>
+<p>这个也能编辑markdown是我没想到的，说起来这个软件也在我电脑里呆了几年了，据说原生就支持markdown语法，只需要加上几个插件就可以使用。</p>
+<img src="/2020/10/28/hexoedit/image-20201028221100998.png" class>
+</li>
+<li><p><strong>Typora</strong></p>
+<p>其简洁的界面深深的吸引了我，<del>才不是因为懒</del>，我要的是最适合的。相比较其他编辑器，Typora将方便这点发挥到了让我直呼爽的地步，请看：</p>
+<p>随便在网站上找个表格：</p>
+<img src="/2020/10/28/hexoedit/image-20201028222007431.png" class>
+
+<p>Ctrl C 、Ctrl V。就得到了：</p>
+<img src="/2020/10/28/hexoedit/image-20201028221950876.png" class>
+
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>字符</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[ABC]</td>
+<td>匹配 […] 中的所有字符</td>
+</tr>
+<tr>
+<td>[^ABC]</td>
+<td>匹配除了 […] 中字符的所有字符</td>
+</tr>
+<tr>
+<td>[A-Z]</td>
+<td>[A-Z] 表示一个区间，匹配所有大写字母，[a-z] 表示所有小写字母。</td>
+</tr>
+<tr>
+<td><strong>.</strong></td>
+<td>匹配除换行符（<strong>\n、\r</strong>）之外的任何单个字符，相等于 <strong>[^\n\r]</strong></td>
+</tr>
+<tr>
+<td>[\s\S]</td>
+<td>匹配所有。其中：<strong>\s</strong> 是匹配所有空白符，包括换行，<strong>\S</strong> 非空白符，包括换行。</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>匹配字母、数字、下划线。等价于 [A-Za-z0-9_]。</td>
+</tr>
+</tbody></table>
+<p>不仅如此，对于我这种懒癌患者来说，markdown怎么插入图片就成了难事，图床什么的太费劲，保存到本地再加进来对我来说也过于麻烦，就不能直接复制粘贴吗？</p>
+<p>文件&gt;偏好设置&gt;图像&gt;像我这样设置</p>
+<img src="/2020/10/28/hexoedit/image-20201028222812411.png" class>
+
+
+
+<p>这样一来，粘贴进来的图片会自动保存在与md文件同名的文件夹下，完美契合了NexT的资源文件设定，从此我只管编辑文章，不用管图片到哪去这种问题了。</p>
+<p><strong>下载</strong></p>
+<blockquote>
+<p>这两个都是免费软件，直接到官网下载就行</p>
+<p><strong>typora下载地址：</strong></p>
+<p><strong><a href="https://www.typora.io/">https://www.typora.io/</a></strong></p>
+<p>Vscode下载地址：</p>
+<p><a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+</blockquote>
+<h1 id="有效利用NexT主题"><a href="#有效利用NexT主题" class="headerlink" title="有效利用NexT主题"></a>有效利用NexT主题</h1><p>实际上next主题提供了很多的样式，我们只需要简单的使用就可以让内容更加好看，让读者获得更好的体验</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>修改my_blog\themes\next/_config.xmy文件，下面例举出我的配置。</p>
+<div class="note warning">
+            <p>注意：我的NexT是在2020-10-24左右下载的，最近更新时间在9-2</p>
+          </div>
+
+<ul>
+<li><p>代码块样式，什么样你应该看到了</p>
+<div class="note sucess">
+            <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add copy button on codeblock</span></span><br><span class="line"><span class="attr">copy_button:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>    <span class="comment"># 代码块是否有复制按钮</span></span><br><span class="line">  <span class="comment"># Show text copy result.</span></span><br><span class="line">  <span class="attr">show_result:</span> <span class="literal">true</span>  <span class="comment"># 是否显示复制结果 </span></span><br><span class="line">  <span class="comment"># Available values: default | flat | mac</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">mac</span> <span class="comment"># 代码块样式</span></span><br></pre></td></tr></table></figure>
+          </div>
+</li>
+<li><p>回到顶部样式</p>
+<div class="note sucess">
+            <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="comment"># 开启右下角的回到顶部箭头</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 将回到顶部按钮改到侧边栏下方</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 回到顶部不止显示箭头，也显示阅读进度百分比</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          </div>
+</li>
+<li><p>阅读进度条 </p>
+<div class="note sucess">
+            <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 开关</span></span><br><span class="line">  <span class="comment"># Available values: top | bottom</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span> <span class="comment"># 位置</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#697274&quot;</span> <span class="comment"># 颜色（这个是白猫的瞳色）</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">3px</span> <span class="comment"># 高度</span></span><br></pre></td></tr></table></figure>
+          </div>
+
+<img src="/2020/10/28/hexoedit/Administrator_2020_10_29_00_15_17.gif" class title="注意顶部进度条和侧栏底部回到顶部按钮">
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>书签支持</p>
+<div class="note sucess">
+            <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bookmark:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 书签的颜色</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#0001&quot;</span></span><br><span class="line">  <span class="comment"># 如果为自动，在关闭页面或单击书签图标时自动保存阅读进度。</span></span><br><span class="line">  <span class="comment"># 如果为手动，则只能通过单击书签图标进行保存。</span></span><br><span class="line">  <span class="attr">save:</span> <span class="string">auto</span></span><br></pre></td></tr></table></figure>
+          </div>
+
+<p>设置了书签之后即使离开网页也会记住离开的位置</p>
+</li>
+</ul>
+<h2 id="XexT内置标签"><a href="#XexT内置标签" class="headerlink" title="XexT内置标签"></a>XexT内置标签</h2><p>「标签」(Tag Plugin) 是 Hexo 提供的一种快速生成特定内容的方式。 例如，在标准 Markdown 语法中，我们无法指定图片的大小。这种情景，我们即可使用标签来解决。 Hexo 内置来许多标签来帮助写作者可以更快的书写， <a href="https://hexo.io/docs/tag-plugins.html">完整的标签列表</a> 可以参考 Hexo 官网。 另外，Hexo 也开放来接口给主题，使主题有可能提供给写作者更简便的写作方法。 以下标签便是 NexT 主题当前提供的标签。</p>
+<blockquote>
+<p>参考：<a href="http://theme-next.iissnan.com/tag-plugins.html">Next官网</a></p>
+</blockquote>
+<h4 id="文本居中的引用"><a href="#文本居中的引用" class="headerlink" title="文本居中的引用"></a>文本居中的引用</h4><p>效果：</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>劝君莫惜金缕衣，劝君惜取少年时。</p>
+<p>——金缕衣</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>代码:</p>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name">cq</span> %&#125;</span><span class="xml"> </span></span><br><span class="line"><span class="xml">劝君莫惜金缕衣，劝君惜取少年时。</span></span><br><span class="line"><span class="xml">——金缕衣 </span></span><br><span class="line"><span class="template-tag">&#123;% <span class="name">endcq</span> %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Bootstrap"><a href="#Bootstrap" class="headerlink" title="Bootstrap"></a>Bootstrap</h4>   <div class="note default">
+            <p>default</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note default </span>%&#125;default&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+   <div class="note primary">
+            <p>primary</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>primary %&#125;primary&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+   <div class="note sucess">
+            <p>sucess</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>sucess %&#125;sucess&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+   <div class="note info">
+            <p>info</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span><span class="builtin-name">info</span> %&#125;info&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+   <div class="note warning">
+            <p>warning</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span><span class="builtin-name">warning</span> %&#125;warning&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+   <div class="note danger">
+            <p>danger</p>
+          </div>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>danger %&#125; danger&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>实际上最重要的是内容，外观再好没有好的内容撑起来也无济于事，外观只能起到抛砖引玉的作用。</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+        <tag>技巧</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
 </search>

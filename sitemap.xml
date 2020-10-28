@@ -2,14 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/28/err-NexT/</loc>
-    
-    <lastmod>2020-10-28</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://gypsophila123.github.io/2020/10/26/err_cloudmusic/</loc>
+    <loc>https://gypsophila123.github.io/2020/10/28/hexoedit/</loc>
     
     <lastmod>2020-10-28</lastmod>
     
@@ -23,9 +16,23 @@
   </url>
   
   <url>
+    <loc>https://gypsophila123.github.io/2020/10/28/err-NexT/</loc>
+    
+    <lastmod>2020-10-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://gypsophila123.github.io/2020/10/27/hexoTheme/</loc>
     
-    <lastmod>2020-10-27</lastmod>
+    <lastmod>2020-10-28</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://gypsophila123.github.io/2020/10/26/err_cloudmusic/</loc>
+    
+    <lastmod>2020-10-28</lastmod>
     
   </url>
   
@@ -68,6 +75,20 @@
   
   <url>
     <loc>https://gypsophila123.github.io/tags/%E7%AC%AC%E4%B8%80%E7%AF%87/</loc>
+    <lastmod>2020-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://gypsophila123.github.io/tags/%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2020-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://gypsophila123.github.io/tags/%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2020-10-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

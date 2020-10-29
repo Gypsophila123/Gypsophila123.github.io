@@ -3,7 +3,7 @@
   <entry>
     <title>使用next主题踩到的坑</title>
     <url>/2020/10/28/err-NexT/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章内容仅供参考，踩坑不负责，下载next主题的时间：2020-10-23（在此之前GitHub上的最近更新时间是9-2）</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章内容仅供参考，如有踩坑概不负责，下载next主题的时间：2020-10-23（在此之前GitHub上的最近更新时间是9-2）</p>
 <a id="more"></a>
 
 <h1 id="下载链接错误"><a href="#下载链接错误" class="headerlink" title="下载链接错误"></a>下载链接错误</h1><p>通过别人的博客知道hexo支持一个非常好看的next主题，我当然不会错过。Google之后发现NexT官方文档居然是全中文的，这下可把我乐坏了，美滋滋！然而事情没这么简单，<strong>以下为官方文档原话</strong></p>
@@ -36,6 +36,13 @@
 
 <img src="/2020/10/28/err-NexT/image-20201028165537958.png" class>
 
+<h1 id="模板渲染错误"><a href="#模板渲染错误" class="headerlink" title="模板渲染错误"></a>模板渲染错误</h1><p>最初遇到这个问题的时候，我人是懵逼的，server上冒出一大堆红色的代码，让我以为自己造成了什么不可弥补的错误。根据提示，我一路找到了<strong>my_blog\node_modules\nunjucks\src</strong>路径的environment.js文件，然后看到了这句话，搞不懂搞不懂。</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> this is actually a bug in the compiled template (because waterfall</span></span><br><span class="line">    <span class="comment">// tasks are both not passing errors up the chain of callbacks AND are not</span></span><br><span class="line">    <span class="comment">// causing a return from the top-most render function). But fixing that</span></span><br><span class="line">    <span class="comment">// will require a more substantial change to the compiler.</span></span><br><span class="line">    以下为Google翻译</span><br><span class="line"><span class="comment">//TODO：这实际上是已编译模板中的错误（因为瀑布</span></span><br><span class="line"><span class="comment">//任务都没有在回调链中传递错误，并且没有</span></span><br><span class="line"><span class="comment">//导致从最顶层的渲染函数返回。 但是修复</span></span><br><span class="line"><span class="comment">//将需要对编译器进行更实质性的更改。</span></span><br></pre></td></tr></table></figure>
+
+<p>实际上根据我的经验，这可能只是某个地方标点符号打错了，某个参数非法了，亦或者不可识别的字符。为了防止这种情况。我建议每改一点都去刷新网页，看一下server界面的情况，不要想当然的一路改下去最后再查看，不然很难定位问题。</p>
+<blockquote>
+<p>tip：目前我的网页主界面已经找不到分类和标签的按钮了，因为我觉得极简非常的简洁美观大方。<del>我实在找不到哪里有错误了（捂脸）。</del></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>hexo</category>
@@ -125,8 +132,6 @@
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">---		<span class="comment">&lt;!--与最下面那三杠一起确定头部--&gt;</span></span><br><span class="line">title: 记录怎么用hexo写文章		<span class="comment">&lt;!--文章的标题 必填--&gt;</span></span><br><span class="line">date: 2020-10-28 21:52:59	<span class="comment">&lt;!--创建日期 必填--&gt;</span></span><br><span class="line">categories: hexo	<span class="comment">&lt;!--给文章进行分类-&gt;</span></span><br><span class="line"><span class="comment">tags: </span></span><br><span class="line"><span class="comment">- 工具 	&lt;!--标签，与分类类似，由于有多个标签所以这样写-&gt;</span></span><br><span class="line"><span class="comment">- 技巧	&lt;!--需要注意空格不能省--&gt;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
 <p>到这里，就已经可以正常编写博客日志了。</p>
-<a id="more"></a>
-
 <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>俗话说：工欲善其事，必先利其器 </p>
@@ -286,7 +291,7 @@
 
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>danger %&#125; danger&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>实际上最重要的是内容，外观再好没有好的内容撑起来也无济于事，外观只能起到抛砖引玉的作用。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>实际上一篇文章最重要的是内容，外观再好没有好的内容撑起来也无济于事，所以注意不要舍本逐末了</p>
 ]]></content>
       <categories>
         <category>hexo</category>

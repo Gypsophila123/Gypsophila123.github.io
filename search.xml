@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>使用next主题踩到的坑</title>
-    <url>/2020/10/28/err-NexT/</url>
+    <url>/2020/10/26/err-NexT/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>文章内容仅供参考，如有踩坑概不负责，下载next主题的时间：2020-10-23（在此之前GitHub上的最近更新时间是9-2）</p>
 <a id="more"></a>
 
@@ -20,26 +20,30 @@
 <p>编辑 <strong>站点配置文件</strong>， 将 <code>language</code> 设置成你所需要的语言。建议明确设置你所需要的语言，例如选用简体中文，配置如下：</p>
 <p>language: zh-Hans</p>
 </blockquote>
-<img src="/2020/10/28/err-NexT/image-20201028132326518.png" class>
+<img src="/2020/10/26/err-NexT/image-20201028132326518.png" class>
 
 <p>然而实际上新版本中zh-Hans已经改为了zh-CN</p>
-<img src="/2020/10/28/err-NexT/image-20201028132159541.png" class>
+<img src="/2020/10/26/err-NexT/image-20201028132159541.png" class>
 
 <p><strong>所以使用简体中文应该设置：</strong></p>
 <figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">language:</span> <span class="built_in">zh</span>-CN</span><br></pre></td></tr></table></figure>
 
 <h1 id="侧边社交栏链接"><a href="#侧边社交栏链接" class="headerlink" title="侧边社交栏链接"></a>侧边社交栏链接</h1><p><strong>官方文档如下：</strong></p>
-<img src="/2020/10/28/err-NexT/image-20201028165632286.png" class>
+<img src="/2020/10/26/err-NexT/image-20201028165632286.png" class>
 
 <p>实际在使用中应该这样</p>
 <figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="attribute">social</span>:</span><br><span class="line">  <span class="attribute">GitHub</span>: <span class="attribute">https</span>:<span class="comment">//github.com/Gypsophila123 || fab fa-github</span></span><br><span class="line">  <span class="attribute">G-Mail</span>: yuanjie15115580021<span class="variable">@gmail</span>.com || fa fa-envelope</span><br><span class="line">  #<span class="attribute">Weibo</span>: <span class="attribute">https</span>:<span class="comment">//weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  #<span class="attribute">Google</span>: <span class="attribute">https</span>:<span class="comment">//plus.google.com/yourname || fab fa-google</span></span><br><span class="line">  #<span class="attribute">Twitter</span>: <span class="attribute">https</span>:<span class="comment">//twitter.com/yourname || fab fa-twitter</span></span><br><span class="line">  <span class="number">#FB</span> <span class="attribute">Page</span>: <span class="attribute">https</span>:<span class="comment">//www.facebook.com/yourname || fab fa-facebook</span></span><br><span class="line">  #<span class="attribute">StackOverflow</span>: <span class="attribute">https</span>:<span class="comment">//stackoverflow.com/yourname || fab fa-stack-overflow</span></span><br><span class="line">  #<span class="attribute">YouTube</span>: <span class="attribute">https</span>:<span class="comment">//youtube.com/yourname || fab fa-youtube</span></span><br><span class="line">  #<span class="attribute">Instagram</span>: <span class="attribute">https</span>:<span class="comment">//instagram.com/yourname || fab fa-instagram</span></span><br><span class="line">  #<span class="attribute">Skype</span>: <span class="attribute">skype</span>:yourname?call|chat || fab fa-skype</span><br><span class="line">  </span><br><span class="line"><span class="attribute">social_icons</span>:</span><br><span class="line">  <span class="attribute">enable</span>: true # 是否显示图标</span><br><span class="line">  # Icon Mappings</span><br><span class="line">  <span class="attribute">GitHub</span>: github</span><br><span class="line">  <span class="attribute">icons_only</span>: false # 仅显示图标</span><br><span class="line">  <span class="attribute">transition</span>: false</span><br></pre></td></tr></table></figure>
 
-<img src="/2020/10/28/err-NexT/image-20201028165537958.png" class>
+<img src="/2020/10/26/err-NexT/image-20201028165537958.png" class>
 
-<h1 id="模板渲染错误"><a href="#模板渲染错误" class="headerlink" title="模板渲染错误"></a>模板渲染错误</h1><p>最初遇到这个问题的时候，我人是懵逼的，server上冒出一大堆红色的代码，让我以为自己造成了什么不可弥补的错误。根据提示，我一路找到了<strong>my_blog\node_modules\nunjucks\src</strong>路径的environment.js文件，然后看到了这句话，搞不懂搞不懂。</p>
+<h1 id="模板渲染错误"><a href="#模板渲染错误" class="headerlink" title="模板渲染错误"></a>模板渲染错误</h1><p>最初遇到这个问题的时候，我人是懵逼的，server上冒出一大堆红色的代码让我以为自己造成了什么不可弥补的错误。</p>
+<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">FATAL &#123;</span><br><span class="line">  err: Template render error: (unknown path)</span><br><span class="line">    unexpected end of file</span><br><span class="line">      at Object._prettifyError (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\n</span>unjucks<span class="symbol">\s</span>rc<span class="symbol">\l</span>ib.js:36:1</span><br><span class="line">1)</span><br><span class="line">      at Template.render (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\n</span>unjucks<span class="symbol">\s</span>rc<span class="symbol">\e</span>nvironment.js:53</span><br><span class="line">6:21)</span><br><span class="line">      at Environment.renderString (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\n</span>unjucks<span class="symbol">\s</span>rc<span class="symbol">\e</span>nvironm</span><br><span class="line">ent.js:378:17)</span><br><span class="line">      at F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\h</span>exo<span class="symbol">\l</span>ib<span class="symbol">\e</span>xtend<span class="symbol">\t</span>ag.js:236:16</span><br><span class="line">      at tryCatcher (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\u</span>til.js:16:23)</span><br><span class="line">      at Function.Promise.fromNode.Promise.fromCallback (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules</span><br><span class="line"><span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\p</span>romise.js:209:30)</span><br><span class="line">      at Tag.render (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\h</span>exo<span class="symbol">\l</span>ib<span class="symbol">\e</span>xtend<span class="symbol">\t</span>ag.js:235:20)</span><br><span class="line">      at Object.onRenderEnd (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\h</span>exo<span class="symbol">\l</span>ib<span class="symbol">\h</span>exo<span class="symbol">\p</span>ost.js:297:2</span><br><span class="line">2)</span><br><span class="line">      at F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\h</span>exo<span class="symbol">\l</span>ib<span class="symbol">\h</span>exo<span class="symbol">\r</span>ender.js:79:21</span><br><span class="line">      at tryCatcher (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\u</span>til.js:16:23)</span><br><span class="line">      at Promise._settlePromiseFromHandler (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s\</span><br><span class="line">release<span class="symbol">\p</span>romise.js:547:31)</span><br><span class="line">      at Promise._settlePromise (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\p</span>ro</span><br><span class="line">mise.js:604:18)</span><br><span class="line">      at Promise._settlePromise0 (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\p</span>r</span><br><span class="line">omise.js:649:10)</span><br><span class="line">      at Promise._settlePromises (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\p</span>r</span><br><span class="line">omise.js:729:18)</span><br><span class="line">      at _drainQueueStep (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\a</span>sync.js:9</span><br><span class="line">3:12)</span><br><span class="line">      at _drainQueue (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\a</span>sync.js:86:9)</span><br><span class="line"></span><br><span class="line">      at Async._drainQueues (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>elease<span class="symbol">\a</span>sync.j</span><br><span class="line">s:102:5)</span><br><span class="line">      at Immediate.Async.drainQueues (F:<span class="symbol">\m</span>y_blog<span class="symbol">\n</span>ode_modules<span class="symbol">\b</span>luebird<span class="symbol">\j</span>s<span class="symbol">\r</span>eleas</span><br><span class="line">e<span class="symbol">\a</span>sync.js:15:14)</span><br><span class="line">      at processImmediate (internal/timers.js:456:21) &#123;</span><br><span class="line">    cause: Template render error: (unknown path)</span><br><span class="line">      unexpected end of file</span><br><span class="line">      ...</span><br></pre></td></tr></table></figure>
+
+<p>根据提示，我一路找到了<strong>my_blog\node_modules\nunjucks\src</strong>路径的environment.js文件，然后看到了这句话，搞不懂搞不懂。</p>
 <figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> this is actually a bug in the compiled template (because waterfall</span></span><br><span class="line">    <span class="comment">// tasks are both not passing errors up the chain of callbacks AND are not</span></span><br><span class="line">    <span class="comment">// causing a return from the top-most render function). But fixing that</span></span><br><span class="line">    <span class="comment">// will require a more substantial change to the compiler.</span></span><br><span class="line">    以下为Google翻译</span><br><span class="line"><span class="comment">//TODO：这实际上是已编译模板中的错误（因为瀑布</span></span><br><span class="line"><span class="comment">//任务都没有在回调链中传递错误，并且没有</span></span><br><span class="line"><span class="comment">//导致从最顶层的渲染函数返回。 但是修复</span></span><br><span class="line"><span class="comment">//将需要对编译器进行更实质性的更改。</span></span><br></pre></td></tr></table></figure>
 
-<p>实际上根据我的经验，这可能只是某个地方标点符号打错了，某个参数非法了，亦或者不可识别的字符。为了防止这种情况。我建议每改一点都去刷新网页，看一下server界面的情况，不要想当然的一路改下去最后再查看，不然很难定位问题。</p>
+<p>实际上根据我的经验，这可能只是某个地方标点符号打错了、某个参数非法了、亦或者标签使用错误。为了防止这种情况。我建议修改配置文件每改一点都去刷新网页，看一下server界面的情况，方便定位问题。修改文章也不要随意去修改头部，最好一次只编辑一篇文章。</p>
+<p>mote</p>
 <blockquote>
 <p>tip：目前我的网页主界面已经找不到分类和标签的按钮了，因为我觉得极简非常的简洁美观大方。<del>我实在找不到哪里有错误了（捂脸）。</del></p>
 </blockquote>
@@ -54,24 +58,12 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo个性化设置</title>
-    <url>/2020/10/27/hexoTheme/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>个性化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>问题——网易云音乐插件无法显示</title>
-    <url>/2020/10/26/err_cloudmusic/</url>
+    <title>网易云音乐插件无法显示</title>
+    <url>/2020/10/25/err_cloudmusic/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>将云音乐外链插件复制到网页但不显示</p>
 <a id="more"></a>
 
-<img src="/2020/10/26/err_cloudmusic/cloudmusic.png" class>
+<img src="/2020/10/25/err_cloudmusic/cloudmusic.png" class>
 
 <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>在我通过hexo部署好<a href="https://gypsophila123.github.io/">我的github page网站</a>之后，兴高采烈的去网络上找美化<strong>next主题</strong>的方法，看到什么都想加进来，结果在这个小东西上出问题了</p>
 <h1 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h1><ol>
@@ -107,9 +99,9 @@
   </entry>
   <entry>
     <title>记录怎么用hexo写文章</title>
-    <url>/2020/10/28/hexoedit/</url>
+    <url>/2020/10/25/hexoedit/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>以我的博客my_blog为例，my_blog\sourc路径下有两个文件夹</p>
-<img src="/2020/10/28/hexoedit/image-20201028225441591.png" class>
+<img src="/2020/10/25/hexoedit/image-20201028225441591.png" class>
 
 <p>其中_posts被用来存放日志（文章），每一个.md文件都会被解析成一篇文章，即使是直接在里面新建.md文件，也会被解析，<strong>但是</strong>只有头部的格式写对了才是一篇完整的文章，新建文章使用命令：</p>
 <div class="note primary">
@@ -131,15 +123,15 @@
 <ul>
 <li><p><strong>vscode</strong></p>
 <p>这个也能编辑markdown是我没想到的，说起来这个软件也在我电脑里呆了几年了，据说原生就支持markdown语法，只需要加上几个插件就可以使用。</p>
-<img src="/2020/10/28/hexoedit/image-20201028221100998.png" class>
+<img src="/2020/10/25/hexoedit/image-20201028221100998.png" class>
 </li>
 <li><p><strong>Typora</strong></p>
 <p>其简洁的界面深深的吸引了我，<del>才不是因为懒</del>，我要的是最适合的。相比较其他编辑器，Typora将方便这点发挥到了让我直呼爽的地步，请看：</p>
 <p>随便在网站上找个表格：</p>
-<img src="/2020/10/28/hexoedit/image-20201028222007431.png" class>
+<img src="/2020/10/25/hexoedit/image-20201028222007431.png" class>
 
 <p>Ctrl C 、Ctrl V。就得到了：</p>
-<img src="/2020/10/28/hexoedit/image-20201028221950876.png" class>
+<img src="/2020/10/25/hexoedit/image-20201028221950876.png" class>
 
 </li>
 </ul>
@@ -177,7 +169,7 @@
 </tbody></table>
 <p>不仅如此，对于我这种懒癌患者来说，markdown怎么插入图片就成了难事，图床什么的太费劲，保存到本地再加进来对我来说也过于麻烦，就不能直接复制粘贴吗？</p>
 <p>文件&gt;偏好设置&gt;图像&gt;像我这样设置</p>
-<img src="/2020/10/28/hexoedit/image-20201028222812411.png" class>
+<img src="/2020/10/25/hexoedit/image-20201028222812411.png" class>
 
 
 
@@ -212,7 +204,7 @@
             <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 开关</span></span><br><span class="line">  <span class="comment"># Available values: top | bottom</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span> <span class="comment"># 位置</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#697274&quot;</span> <span class="comment"># 颜色（这个是白猫的瞳色）</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">3px</span> <span class="comment"># 高度</span></span><br></pre></td></tr></table></figure>
           </div>
 
-<img src="/2020/10/28/hexoedit/Administrator_2020_10_29_00_15_17.gif" class title="注意顶部进度条和侧栏底部回到顶部按钮">
+<img src="/2020/10/25/hexoedit/Administrator_2020_10_29_00_15_17.gif" class title="注意顶部进度条和侧栏底部回到顶部按钮">
 
 
 
@@ -291,15 +283,130 @@
       </tags>
   </entry>
   <entry>
-    <title>新的开始</title>
-    <url>/2020/10/24/%E5%85%A8%E9%83%A8%E8%BD%AC%E4%B8%BAmarkdown%E6%96%87%E6%A1%A3/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于我已经有了自己的博客，以后的所有笔记将使用markdown编写。以前的笔记也会陆陆续续整理为markdown发送到我的博客<br><br>——2020/10/27</p>
+    <title>开始使用maven</title>
+    <url>/2020/10/27/maven-help/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h1 id="为什么使用？"><a href="#为什么使用？" class="headerlink" title="为什么使用？"></a>为什么使用？</h1><div class="note warning">
+            <p>使用maven需要jdk版本1.7以上</p>
+          </div>
+
+<ul>
+<li>maven能帮助我们更好的管理依赖的jar包，把所有jar包放在本地maven仓库里，我们只需要名字就可以直接导入依赖，避免了复制重复的jar包</li>
+<li>maven网络仓库可以下载所有知名的第三方工具，不再需要手动去下载</li>
+<li>maven可以将项目拆分成多模块，多模块进行构建</li>
+<li>maven有很多插件，便于功能扩展，比如生产站点，自动发布版本等</li>
+</ul>
+<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>maven下载地址：<a href="https://maven.apache.org/download.cgi">https://maven.apache.org/download.cgi</a></p>
 ]]></content>
       <categories>
-        <category>通知</category>
+        <category>maven</category>
       </categories>
       <tags>
-        <tag>第一篇</tag>
+        <tag>maven</tag>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>开始使用hexo</title>
+    <url>/2020/10/23/starthexo/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p><a href="https://hexo.io/zh-cn/docs/">Hexo</a> 是一个快速、简洁且高效的博客框架。在几秒内，即可利用靓丽的主题生成静态网页。</p>
+</blockquote>
+<p>即部署出来的网站是静态的，可以在如github page，gitee page上使用，无需自己使用服务器。</p>
+<h1 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h1><p>仅仅需要两个程序员必备工具：</p>
+<div class="note sucess">
+            <p><a href="http://nodejs.org/">Node.js</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)<br><a href="http://git-scm.com/">Git</a></p>
+          </div>
+
+<h1 id="下载hexo"><a href="#下载hexo" class="headerlink" title="下载hexo"></a>下载hexo</h1><p>配置好上述软件之后，使用npm命令</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>下载结束使用：<strong>hexo -v</strong>  （显示hexo的版本）命令检查是否安装成功</p>
+</blockquote>
+<h1 id="建立你的博客"><a href="#建立你的博客" class="headerlink" title="建立你的博客"></a>建立你的博客</h1><p>使用hexo建立网站非常快捷，在你想要的地方新建一个文件夹（例如我在F盘下新建了”my_blog”文件夹），在命令窗口进入文件夹并输入如下命令：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">hexo <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+<p>如果你新建的文件夹目录如下，说明成功，至此，<strong>你的网站模板已经建立好了</strong></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml			<span class="regexp">//</span> 配置文件（设置）</span><br><span class="line">├── package.json		<span class="regexp">//</span> 应用程序信息 （不用管）</span><br><span class="line">├── scaffolds			<span class="regexp">//</span> 模板文件夹 （文章模板，可以根据需求自定义）</span><br><span class="line">├── source				<span class="regexp">//</span> 资源文件夹</span><br><span class="line">|   ├── _drafts			<span class="regexp">//</span> 存放草稿</span><br><span class="line">|   └── _posts			<span class="regexp">//</span> 存放发布的文章</span><br><span class="line">└── themes				<span class="regexp">//</span> 主题，样式 （下载的主题存放在这）</span><br></pre></td></tr></table></figure>
+<p>可以使用” <strong>hexo server</strong> “（简写hexo s）命令开启本地服务器，再使用浏览器打开<a href="http://localhost:4000/%EF%BC%8C%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E5%88%9A%E6%89%8D%E5%BB%BA%E7%AB%8B%E7%9A%84%E7%BD%91%E7%AB%99%E6%A8%A1%E6%9D%BF">http://localhost:4000/，就可以看到刚才建立的网站模板</a></p>
+<h1 id="上传到网络"><a href="#上传到网络" class="headerlink" title="上传到网络"></a>上传到网络</h1><p>只能在本地浏览当然不是一个博客该做的，所以我们需要将网站发布到网络。</p>
+<h2 id="建立一个git仓库"><a href="#建立一个git仓库" class="headerlink" title="建立一个git仓库"></a>建立一个git仓库</h2><p>下面将会讲解如何通过<a href="https://github.com/">GitHub</a>建立这个仓库，当然你也可以通过别的网站来建立，具体步骤大同小异。</p>
+<ol>
+<li><p>注册github账号（有账号直接忽略）</p>
+</li>
+<li><p><a href="https://github.com/new">新建仓库</a>，仓库名为 你的github名.github.io,如我的：<a href="https://github.com/Gypsophila123/Gypsophila123.github.io">Gypsophila123.github.io</a>，直接创建就可</p>
+</li>
+<li><p>配置ssh秘钥，不会可以网上搜索 github ssh 配置 </p>
+</li>
+<li><p>修改配置文件_config.yml文件最下面，以我的为例</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="comment"># 复制刚才新建仓库的ssh链接</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:Gypsophila123/Gypsophila123.github.io.git</span></span><br><span class="line">  <span class="comment"># 上传到哪个分支</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="comment"># 日志信息，随便写写都可以</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">good</span> <span class="string">luck!</span></span><br><span class="line">  <span class="comment"># 下面是因为我在gitee上也建立了仓库，所以会同时上传到两个仓库</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">git</span>		</span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@gitee.com:wait_a_thing/wait_a_thing.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">good</span> <span class="string">luck!</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令行输入hexo g -d 就会自动生成静态文件并上传，等一会就可以在和仓库名相同的链接上看到博客了（如果是gitee可能需要在仓库界面&gt;服务&gt;更新才能看到，建议勾选https）</p>
+</li>
+</ol>
+<h1 id="修改-amp-美化"><a href="#修改-amp-美化" class="headerlink" title="修改&amp;美化"></a>修改&amp;美化</h1><p>具体怎么修改就看看官方文档吧，实际上大多数的设置在_config.yml文件内已经有说明了</p>
+<p> <a href="https://hexo.io/zh-cn/docs/configuration">hexo配置</a></p>
+<p><a href="http://theme-next.iissnan.com/getting-started.html">Next文档</a>可以配合<a href="/2020/10/26/err-NexT/">使用next主题踩到的坑</a>食用</p>
+<h1 id="推荐一个文本编辑器"><a href="#推荐一个文本编辑器" class="headerlink" title="推荐一个文本编辑器"></a>推荐一个文本编辑器</h1><p>和记事本一样的打开速度（这速度吹爆），我见过的文本文件都能编辑，同时支持语法高亮。</p>
+<img src="/2020/10/23/starthexo/image-20201029205803448.png" class title="notepad3界面">
+
+<p>本来我使用的是notepad++，但是我去官网下载页看了一下发现<img src="/2020/10/23/starthexo/image-20201029203435189.png" class title="notepad++的下载页"></p>
+<p>此软件已经从我电脑里移除了。</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过AHK快速写文章</title>
+    <url>/2020/10/30/quick-input/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上次讲了如何用hexo写文章，但是在写文章的过程中我发现每次使用标签都非常麻烦，就比如：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span><span class="builtin-name">warning</span> %&#125;使用maven需要jdk版本1.7以上&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这么一段话又不长，难道还要去找到一份样板然后再复制粘贴？自己手动打又觉得巨亏，我就想着要是能实现像IDEA那样的代码补全功能就好了。想了想发现其实还真有，那就是用AutoHotKey，这个脚本语言就是为了方便日常使用，下面我放张效果图</p>
+<img src="/2020/10/30/quick-input/Administrator_2020_10_30_00_52_48.gif" class>
+
+<p>怎么样，是不是真的很快？这样的效果都是比较简单的，果然这种事就适合让脚本去做。</p>
+<h1 id="使用ahk"><a href="#使用ahk" class="headerlink" title="使用ahk"></a>使用ahk</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><div class="note sucess">
+            <p><a href="https://www.autoahk.com/">官网</a>直接下载</p>
+          </div>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>下载安装之后就可以随意选个位置新建文件，文件后缀改为 <strong>.ahk</strong> 就可以开始编写脚本了</p>
+<img src="/2020/10/30/quick-input/image-20201030010841341.png" class>
+
+<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><p>实际上AHK官网有推荐专门的ahk编辑器，但是像我这样的业余选手就直接用NotePad3，也支持语法高亮</p>
+<img src="/2020/10/30/quick-input/image-20201030011310942.png" class>
+
+<h1 id="我的代码"><a href="#我的代码" class="headerlink" title="我的代码"></a>我的代码</h1><p>说了这么多，终于要上代码了</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">::note.default::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note default </span>`%&#125;默认&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.primary::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>primary `%&#125;主要&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.sucess::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>sucess `%&#125;成功&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.info::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">info</span> `%&#125;消息&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.warning::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">warning</span> `%&#125;警告&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.danger::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>danger `%&#125;危险&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">:*:note.cq::</span><br><span class="line">(</span><br><span class="line">&#123;% cq %&#125;引用文本&#123;% endcq %&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="解释一下代码"><a href="#解释一下代码" class="headerlink" title="解释一下代码"></a>解释一下代码</h2><p>对于没用过ahk语言的人来说这个代码可读性应该不是很高，但是应该能看出一定的规律。那些重复的部分我就不解释了，只重点讲两段</p>
+<p>先明确一下概念，一段代码第一行 <code>:: + 一串字符</code> + <code>::</code> 表示输入这串字符再加上<strong>终止符（tab、空格、回车、其他符号）</strong>就执行下面的功能，直到return结束。</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">; ahk语言使用<span class="string">&#x27;;&#x27;</span>来表注释，且ahk语言对大小写不敏感</span><br><span class="line">::note.default::	</span><br><span class="line">; sendraw表示输出纯文本，无视其中的特殊字符,</span><br><span class="line">; 但是<span class="string">&#x27;%&#x27;</span>不在此列，因为被两个<span class="string">&#x27;%&#x27;</span>包裹会被认为是变量，这在编译前就会发生，所以使用转义字符反引号<span class="string">&#x27;`&#x27;</span>转义</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note default </span>`%&#125;默认&#123;`% endnote `%&#125;	</span><br><span class="line">; A_index是自带变量，初始为1，<span class="keyword">while</span>循环一次就加一，这里相当于循环13次</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">; 这一行我没有缩进也没加括号，但的确是循环体内的代码，用花括号包裹表示按下<span class="string">&#x27;left&#x27;</span>键而不是输出&#123;left&#125;</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">; 这一行可读性非常强，按下<span class="string">&#x27;shift&#x27;</span>,两次<span class="string">&#x27;left&#x27;</span>,抬起<span class="string">&#x27;shift&#x27;</span>，相当于选中光标左两个字符</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">; 结束</span><br><span class="line">return</span><br></pre></td></tr></table></figure>
+<p>也可以只有一行，不执行逻辑而是直接输出： <code>::wdnmd::我带你们打</code> ，输入<code>wdnmd</code> 直接输出：<code>我带你们打</code></p>
+<p>亦或者像下面这样用小括号括起来，用以输出长文本或者有特殊符号的文本</p>
+<figure class="highlight clojure"><table><tr><td class="code"><pre><span class="line"><span class="comment">; 有别于上面，使用“:*:”起始表示不需要终止符，直接执行输出</span></span><br><span class="line"><span class="symbol">:*:note.cq::</span></span><br><span class="line"><span class="comment">; 注意这里括号必须换行。</span></span><br><span class="line">(</span><br><span class="line">&#123;% cq %&#125;引用文本&#123;% endcq %&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>其实上面这一段还可以这样写</p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line"><span class="meta">:*:note.cq::&#123;&#123;&#125;%</span> cq %&#123;&#125;&#125;引用文本&#123;&#123;&#125;% endcq %&#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是可读性实在太差了，所以不建议这样写</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>AHK应用的范围还有很多，但是像我这样的咸鱼不想去了解太多了，满足我的需求就行。</p>
+<p>在这里顺便记一下我常用的部分ahk代码，在网上能找到很多啊。</p>
+<figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line"><span class="comment">;WIN-&gt;#   Ctrl-&gt;^   Alt-&gt;!   Shift-&gt;+</span></span><br><span class="line"><span class="title">!u::</span> <span class="comment">;窗口置顶</span></span><br><span class="line">    WinGet ow, id, A</span><br><span class="line">    WinTopToggle(ow)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">WinTopToggle(w) &#123;</span><br><span class="line"><span class="built_in">    WinGetTitle,</span> oTitle, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line"><span class="built_in">    Winset,</span> AlwaysOnTop, Toggle, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line"><span class="built_in">    WinGet,</span> ExStyle, ExStyle, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    if (ExStyle &amp; <span class="number">0</span>x8)  </span><br><span class="line">    <span class="comment">; 0x8 为 WS_EX_TOPMOST.在WinGet的帮助中</span></span><br><span class="line">        oTop = 置顶</span><br><span class="line">    else</span><br><span class="line">        oTop = 取消置顶</span><br><span class="line"><span class="built_in">    tooltip %</span>oTitle% <span class="variable">%oTop%</span></span><br><span class="line"><span class="built_in">    SetTimer,</span> RemoveToolTip, <span class="number">5000</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"> </span><br><span class="line"><span class="title">    RemoveToolTip:</span></span><br><span class="line"><span class="built_in">    SetTimer,</span> RemoveToolTip, Off</span><br><span class="line">    ToolTip</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">;鼠标放在任务栏，滚动滚轮实现音量的加减</span></span><br><span class="line"><span class="title">~lbutton &amp; enter::</span> </span><br><span class="line"><span class="keyword">exitapp</span>  </span><br><span class="line"><span class="title">~WheelUp::</span>  </span><br><span class="line">if (existclass(<span class="string">&quot;ahk_class Shell_TrayWnd&quot;</span>)=<span class="number">1</span>)  </span><br><span class="line"><span class="built_in">Send,</span>&#123;Volume_Up&#125;  </span><br><span class="line"><span class="keyword">Return</span>  </span><br><span class="line"><span class="title">~WheelDown::</span>  </span><br><span class="line">if (existclass(<span class="string">&quot;ahk_class Shell_TrayWnd&quot;</span>)=<span class="number">1</span>)  </span><br><span class="line"><span class="built_in">Send,</span>&#123;Volume_Down&#125;  </span><br><span class="line"><span class="keyword">Return</span>  </span><br><span class="line"><span class="title">~MButton::</span>  </span><br><span class="line">if (existclass(<span class="string">&quot;ahk_class Shell_TrayWnd&quot;</span>)=<span class="number">1</span>)  </span><br><span class="line"><span class="built_in">Send,</span>&#123;Volume_Mute&#125;  </span><br><span class="line"><span class="keyword">Return</span>  </span><br><span class="line"><span class="comment">;获取RGB色并存于剪贴板</span></span><br><span class="line"><span class="title">#+r::</span> </span><br><span class="line"><span class="built_in">MouseGetPos,</span> mouseX, mouseY</span><br><span class="line"><span class="built_in">PixelGetColor,</span> color, <span class="variable">%mouseX%</span>, <span class="variable">%mouseY%</span>, RGB</span><br><span class="line">StringRight color,color,<span class="number">6</span></span><br><span class="line"><span class="built_in">clipboard</span> = #<span class="variable">%color%</span></span><br><span class="line">msgbox 当前坐标RGB颜色值的十六进制值为#<span class="variable">%color%</span>.</span><br><span class="line"><span class="keyword">return</span></span><br><span class="line"><span class="comment">;窗口透明度增加</span></span><br><span class="line"><span class="title">#=::</span> </span><br><span class="line"><span class="built_in">    WinGet,</span> ow, id, A</span><br><span class="line">    WinTransplus(ow)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">WinTransplus(w)&#123;</span><br><span class="line"><span class="built_in">    WinGet,</span> transparent, Transparent, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    if transparent &lt; <span class="number">255</span></span><br><span class="line">        transparent := transparent+<span class="number">10</span></span><br><span class="line">    else</span><br><span class="line">        transparent =</span><br><span class="line">    if transparent</span><br><span class="line"><span class="built_in">        WinSet,</span> Transparent, <span class="variable">%transparent%</span>, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    else</span><br><span class="line"><span class="built_in">        WinSet,</span> Transparent, off, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">;窗口透明度降低</span></span><br><span class="line"><span class="title">#-::</span> </span><br><span class="line"><span class="built_in">    WinGet,</span> ow, id, A</span><br><span class="line">    WinTransMinus(ow)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">WinTransMinus(w)&#123;</span><br><span class="line"><span class="built_in">    WinGet,</span> transparent, Transparent, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    if transparent &gt; <span class="number">20</span></span><br><span class="line">        transparent := transparent-<span class="number">10</span></span><br><span class="line">    else</span><br><span class="line">        transparent := <span class="number">200</span></span><br><span class="line"><span class="built_in">    WinSet,</span> Transparent, <span class="variable">%transparent%</span>, <span class="keyword">ahk_id</span> <span class="variable">%w%</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>AHK</tag>
+        <tag>热键</tag>
+        <tag>写文章</tag>
       </tags>
   </entry>
 </search>

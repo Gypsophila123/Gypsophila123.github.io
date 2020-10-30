@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/27/maven-help/</loc>
-    
-    <lastmod>2020-10-30</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://gypsophila123.github.io/2020/10/25/hexoedit/</loc>
     
     <lastmod>2020-10-30</lastmod>
@@ -88,20 +81,6 @@
   </url>
   
   <url>
-    <loc>https://gypsophila123.github.io/tags/maven/</loc>
-    <lastmod>2020-10-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://gypsophila123.github.io/tags/java/</loc>
-    <lastmod>2020-10-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://gypsophila123.github.io/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2020-10-30</lastmod>
     <changefreq>daily</changefreq>
@@ -133,13 +112,6 @@
   
   <url>
     <loc>https://gypsophila123.github.io/categories/hexo/</loc>
-    <lastmod>2020-10-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://gypsophila123.github.io/categories/maven/</loc>
     <lastmod>2020-10-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

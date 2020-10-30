@@ -173,7 +173,7 @@
 
 
 
-<p>这样一来，粘贴进来的图片会自动保存在与md文件同名的文件夹下，完美契合了NexT的资源文件设定，从此我只管编辑文章，不用管图片到哪去这种问题了。</p>
+<p>这样一来，粘贴进来的图片会自动保存在与md文件同名的文件夹下，完美契合了hexo的资源文件设定，从此我只管编辑文章，不用管图片存放在哪这种问题了。</p>
 <p><strong>下载</strong></p>
 <blockquote>
 <p>这两个都是免费软件，直接到官网下载就行</p>
@@ -212,7 +212,7 @@
 </ul>
 <ul>
 <li><p>书签支持</p>
-<div class="note sucess">
+<div class="note success">
             <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bookmark:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 书签的颜色</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#0001&quot;</span></span><br><span class="line">  <span class="comment"># 如果为自动，在关闭页面或单击书签图标时自动保存阅读进度。</span></span><br><span class="line">  <span class="comment"># 如果为手动，则只能通过单击书签图标进行保存。</span></span><br><span class="line">  <span class="attr">save:</span> <span class="string">auto</span></span><br></pre></td></tr></table></figure>
           </div>
 
@@ -247,11 +247,11 @@
 
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>primary %&#125;primary&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
 
-   <div class="note sucess">
-            <p>sucess</p>
+   <div class="note success">
+            <p>success</p>
           </div>
 
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>sucess %&#125;sucess&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span>success %&#125;success&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
 
    <div class="note info">
             <p>info</p>
@@ -291,11 +291,24 @@
 
 <ul>
 <li>maven能帮助我们更好的管理依赖的jar包，把所有jar包放在本地maven仓库里，我们只需要名字就可以直接导入依赖，避免了复制重复的jar包</li>
-<li>maven网络仓库可以下载所有知名的第三方工具，不再需要手动去下载</li>
+<li>maven网络仓库机集成了所有知名的第三方工具，不再需要手动去下载</li>
 <li>maven可以将项目拆分成多模块，多模块进行构建</li>
 <li>maven有很多插件，便于功能扩展，比如生产站点，自动发布版本等</li>
 </ul>
 <h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>maven下载地址：<a href="https://maven.apache.org/download.cgi">https://maven.apache.org/download.cgi</a></p>
+<p>下载完成之后直接解压就相当于安装好了，再去配置一下path就可以全局使用了，路径为maven下的bin目录。</p>
+<div class="note warning">
+            <p>补充一点，所有的软件或工程最好都不要放在中文路径下，因为你不知道哪些不支持中文。</p>
+          </div>
+
+<h1 id="maven配置"><a href="#maven配置" class="headerlink" title="maven配置"></a>maven配置</h1><p>进入maven目录，conf&gt;setting.xml。设置本地maven仓库</p>
+<div class="note success">
+            <p><strong><localRepository>D:\my_maven_local_repository</localRepository></strong></p>
+          </div>
+
+<blockquote>
+<p>D:\my_maven_local_repository是你自己建立的文件夹</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>maven</category>
@@ -363,7 +376,7 @@
   <entry>
     <title>通过AHK快速写文章</title>
     <url>/2020/10/30/quick-input/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上次讲了如何用hexo写文章，但是在写文章的过程中我发现每次使用标签都非常麻烦，就比如：</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上次讲了<a href="/2020/10/25/hexoedit/">如何用hexo写文章</a>，但是在写文章的过程中我发现每次使用标签都非常麻烦，就比如：</p>
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in"> note </span><span class="builtin-name">warning</span> %&#125;使用maven需要jdk版本1.7以上&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这么一段话又不长，难道还要去找到一份样板然后再复制粘贴？自己手动打又觉得巨亏，我就想着要是能实现像IDEA那样的代码补全功能就好了。想了想发现其实还真有，那就是用AutoHotKey，这个脚本语言就是为了方便日常使用，下面我放张效果图</p>
@@ -374,14 +387,14 @@
             <p><a href="https://www.autoahk.com/">官网</a>直接下载</p>
           </div>
 
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>下载安装之后就可以随意选个位置新建文件，文件后缀改为 <strong>.ahk</strong> 就可以开始编写脚本了</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>下载安装之后就可以随意选个位置新建文件，文件后缀改为 <strong>.ahk</strong> 就可以开始编写脚本了，写好的脚本可以右键直接运行，也可以打包成.exe文件运行。</p>
 <img src="/2020/10/30/quick-input/image-20201030010841341.png" class>
 
 <h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><p>实际上AHK官网有推荐专门的ahk编辑器，但是像我这样的业余选手就直接用NotePad3，也支持语法高亮</p>
 <img src="/2020/10/30/quick-input/image-20201030011310942.png" class>
 
 <h1 id="我的代码"><a href="#我的代码" class="headerlink" title="我的代码"></a>我的代码</h1><p>说了这么多，终于要上代码了</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">::note.default::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note default </span>`%&#125;默认&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.primary::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>primary `%&#125;主要&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.sucess::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>sucess `%&#125;成功&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.info::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">info</span> `%&#125;消息&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.warning::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">warning</span> `%&#125;警告&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.danger::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>danger `%&#125;危险&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">:*:note.cq::</span><br><span class="line">(</span><br><span class="line">&#123;% cq %&#125;引用文本&#123;% endcq %&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">::note.default::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note default </span>`%&#125;默认&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.primary::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>primary `%&#125;主要&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14 </span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.success::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>success `%&#125;成功&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.info::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">info</span> `%&#125;消息&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.warning::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span><span class="builtin-name">warning</span> `%&#125;警告&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">::note.danger::</span><br><span class="line">SendRaw, &#123;`%<span class="built_in"> note </span>danger `%&#125;危险&#123;`% endnote `%&#125;</span><br><span class="line"><span class="keyword">while</span> A_index &lt; 14</span><br><span class="line">Send &#123;left&#125;</span><br><span class="line">Send, &#123;shiftdown&#125;&#123;left&#125;&#123;left&#125;&#123;shiftup&#125;</span><br><span class="line">return</span><br><span class="line">:*:note.cq::</span><br><span class="line">(</span><br><span class="line">&#123;% cq %&#125;引用文本&#123;% endcq %&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <h2 id="解释一下代码"><a href="#解释一下代码" class="headerlink" title="解释一下代码"></a>解释一下代码</h2><p>对于没用过ahk语言的人来说这个代码可读性应该不是很高，但是应该能看出一定的规律。那些重复的部分我就不解释了，只重点讲两段</p>
 <p>先明确一下概念，一段代码第一行 <code>:: + 一串字符</code> + <code>::</code> 表示输入这串字符再加上<strong>终止符（tab、空格、回车、其他符号）</strong>就执行下面的功能，直到return结束。</p>

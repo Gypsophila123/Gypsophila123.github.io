@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/25/hexoedit/</loc>
+    <loc>https://gypsophila123.github.io//hexo/hexoedit/</loc>
+    <lastmod>2020-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://gypsophila123.github.io//hexo/starthexo/</loc>
+    <lastmod>2020-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://gypsophila123.github.io//hexo/quick-input/</loc>
+    <lastmod>2020-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://gypsophila123.github.io//hexo/err-NexT/</loc>
     <lastmod>2020-10-30</lastmod>
   </url>
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/30/quick-input/</loc>
+    <loc>https://gypsophila123.github.io//hexo/err_cloudmusic/</loc>
     <lastmod>2020-10-30</lastmod>
   </url>
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/23/starthexo/</loc>
-    <lastmod>2020-10-29</lastmod>
+    <loc>https://gypsophila123.github.io//java/2020-11/traverseFolders/</loc>
+    <lastmod>2020-10-28</lastmod>
   </url>
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/26/err-NexT/</loc>
-    <lastmod>2020-10-29</lastmod>
+    <loc>https://gypsophila123.github.io//java/2020/traverseFolders/</loc>
+    <lastmod>2020-10-28</lastmod>
   </url>
   <url>
-    <loc>https://gypsophila123.github.io/2020/10/25/err_cloudmusic/</loc>
-    <lastmod>2020-10-29</lastmod>
+    <loc>https://gypsophila123.github.io//java/2020/file/</loc>
+    <lastmod>2020-10-26</lastmod>
   </url>
 </urlset> 

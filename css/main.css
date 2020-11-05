@@ -1334,7 +1334,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fffb61;
+  background: #ffb6ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1671,15 +1671,12 @@ pre .javascript .function {
   top: 0;
 }
 a {
-  transition: all 800ms !important;
-  color: #333;
+  transition: all 1s !important;
+  color: #666;
   border-bottom: none;
-  transition: all 1s;
 }
 a:hover {
   color: #000;
-  font-style: bold;
-  border-bottom: 1px solid #044cb8;
 }
 .post-body p a {
   color: #8d93db;
@@ -1687,6 +1684,7 @@ a:hover {
 }
 .post-body p a:hover {
   color: #044cb8;
+  border-bottom: 1px solid #044cb8;
 }
 .footer-inner {
   position: relative;

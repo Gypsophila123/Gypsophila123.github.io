@@ -532,4 +532,46 @@
         <tag>myJunkCode</tag>
       </tags>
   </entry>
+  <entry>
+    <title>1-bit-and-2-bit-characters</title>
+    <url>//leetcode/day-001/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>有两种特殊字符。第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</p>
+<p>现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">输入:</span> </span><br><span class="line"><span class="string">bits</span> <span class="string">=</span> [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"><span class="string">输出:</span> <span class="literal">True</span></span><br><span class="line"><span class="string">解释:</span> </span><br><span class="line"><span class="string">唯一的编码方式是一个两比特字符和一个一比特字符。所以最后一个字符是一比特字符。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">输入:</span> </span><br><span class="line"><span class="string">bits</span> <span class="string">=</span> [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line"><span class="string">输出:</span> <span class="literal">False</span></span><br><span class="line"><span class="string">解释:</span> </span><br><span class="line"><span class="string">唯一的编码方式是两比特字符和两比特字符。所以最后一个字符不是一比特字符。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong></p>
+<ul>
+<li><code>1 &lt;= len(bits) &lt;= 1000</code>.</li>
+<li><code>bits[i]</code> 总是<code>0</code> 或 <code>1</code>.</li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>看了第一眼，我还以为这道题是判断数组长度。当然我不可能这么粗心，仔细审题后发现：<u>第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</u>原来只用了一半，那没事了。</p>
+<p>情况还是很简单，只需看最后三位数嘛！由0结尾，即共有四种情况：<code>010</code>、<code>100</code>、<code>110</code>、<code>000</code>。由规定可知 <code>010</code> 结尾必为2bit字符，而 <code>100</code>、<code>000</code> 结尾必为1比特字符。</p>
+<p>问题出在 <code>110</code> <del>（开门，查水表）</del>。 如果结尾是<code>110</code> 就有两种情况了，要判断这个问题只能向钱（前）看，假如倒数第四位是 <code>0</code> 则结尾为<strong>1bit</strong>字符，是 <code>1</code> 就再向前看，假如倒数第五位是 <code>0</code> 则结尾为<strong>2bit</strong>字符，是 <code>1</code> 就再向前看…</p>
+<p>我称这个环节为找零，在双数为1bit，单数则为2bit。思路清晰了就开始写代码吧！</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">bool</span>ean isOneBitCharacter(<span class="built_in">int</span>[] bits) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bits.length == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (bits.length == <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> bits[<span class="number">0</span>] == <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写到这里，我发觉到了不对劲，前置的判断条件太多了else里面还要嵌套，写算法题不该这样的。其实我本身就不喜欢写if嵌套，这会让我的代码看起来不那么简洁，太多的逻辑判断也容易疏漏，我试图寻找更简单的结构。</p>
+<p>由于结尾必为 <code>0</code> 所以不予考虑，如果有倒数第二位且为 <code>0</code> 则结尾必为 1bit，为 <code>1</code> 则继续向前找零，一直循环下去…</p>
+<p>好了，简化思路继续前行</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span>ean isOneBitCharacter(<span class="built_in">int</span>[] bits) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = (bits.length - <span class="number">1</span>); i &gt; <span class="number">0</span>; ) &#123;</span><br><span class="line">            <span class="comment">// 倒数第双数为0返回true</span></span><br><span class="line">            <span class="keyword">if</span> (bits[--i] == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 不为0且到顶返回false</span></span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 倒数第单数返回false</span></span><br><span class="line">            <span class="keyword">if</span> (bits[--i] == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 不为0且到顶返回true</span></span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 长度为1直接返回true</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完之后自己试了下感觉没问题就提交了，然后直接过了（有点不相信），以前写算法一次过的不多，Nice！可以早点睡了。</p>
+<img src="/leetcode/day-001/image-20201115234909292.png" class>
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>去看了下评论区，貌似都是这种思路，然后他们的代码虽然短了点，但是感觉没什么可读性，对比我的代码又没有质的升级，我就懒得贴了，毕竟是简单题。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>当感觉语句太复杂了也不利于读时，尝试重新构造。</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
 </search>

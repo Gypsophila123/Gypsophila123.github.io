@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<meta name="google-site-verification" content="pBjx13eHcwPhRI87SSewpPihyv6jEIWZfGwVWCMJ5RU" />
+
+<meta name="baidu-site-verification" content="code-m0RWlY65mp" />
+
+<meta name="msvalidate.01" content="3D33E93948C7C8E4E909115C81A9BF8F" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"gypsophila123.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":150,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#0001","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","Available values":"valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这是我的LeetCode算法之旅第 3 篇文章：距离顺序排列矩阵单元格，坚持下去就一定会有收获，加油!!!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法之旅（三），matrix-cells-in-distance-order">
+<meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-003/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="这是我的LeetCode算法之旅第 3 篇文章：距离顺序排列矩阵单元格，坚持下去就一定会有收获，加油!!!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-003/image-20201117225348893.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-003/image-20201118012012348.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-003/47aacf8273ec9c560510012f74be0fe5a617b7517d3b191d7f34ce8837d907ea-Snipaste_2020-03-04_23-51-22.png">
+<meta property="article:published_time" content="2020-11-17T14:34:21.000Z">
+<meta property="article:modified_time" content="2020-11-17T14:34:21.000Z">
+<meta property="article:author" content="yuanjie">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gypsophila123.github.io/leetcode/day-003/image-20201117225348893.png">
+
+<link rel="canonical" href="https://gypsophila123.github.io/leetcode/day-003/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法之旅（三），matrix-cells-in-distance-order | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  
+
+  <div class="container">
+    <div class="headband"></div>
+	
+	<header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+  
+
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title"></h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+        
+      
+        
+      
+	
+	
+	
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Gypsophila123/Gypsophila123.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/leetcode/day-003/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="yuanjie">
+      <meta itemprop="description" content="劝君惜取少年时">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法之旅（三），matrix-cells-in-distance-order
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-17 22:34:21" itemprop="dateCreated datePublished" datetime="2020-11-17T22:34:21+08:00">2020-11-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/leetcode/day-003/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leetcode/day-003/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">这是我的LeetCode算法之旅第 3 篇文章：距离顺序排列矩阵单元格，坚持下去就一定会有收获，加油!!!</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="1030-距离顺序排列矩阵单元格"><a href="#1030-距离顺序排列矩阵单元格" class="headerlink" title="1030. 距离顺序排列矩阵单元格"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/matrix-cells-in-distance-order/">1030. 距离顺序排列矩阵单元格</a></h4><p>难度简单</p>
+<p>给出 <code>R</code> 行 <code>C</code> 列的矩阵，其中的单元格的整数坐标为 <code>(r, c)</code>，满足 <code>0 &lt;= r &lt; R</code> 且 <code>0 &lt;= c &lt; C</code>。</p>
+<p>另外，我们在该矩阵中给出了一个坐标为 <code>(r0, c0)</code> 的单元格。</p>
+<p>返回矩阵中的所有单元格的坐标，并按到 <code>(r0, c0)</code> 的距离从最小到最大的顺序排，其中，两单元格<code>(r1, c1)</code> 和 <code>(r2, c2)</code> 之间的距离是曼哈顿距离，<code>|r1 - r2| + |c1 - c2|</code>。（你可以按任何满足此条件的顺序返回答案。）</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：R = <span class="number">1</span>, C = <span class="number">2</span>, r0 = <span class="number">0</span>, c0 = <span class="number">0</span></span><br><span class="line">输出：[[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>]]</span><br><span class="line">解释：从 (r0, c0) 到其他单元格的距离为：[<span class="number">0</span>,<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：R = <span class="number">2</span>, C = <span class="number">2</span>, r0 = <span class="number">0</span>, c0 = <span class="number">1</span></span><br><span class="line">输出：[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">解释：从 (r0, c0) 到其他单元格的距离为：[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>]] 也会被视作正确答案。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：R = <span class="number">2</span>, C = <span class="number">3</span>, r0 = <span class="number">1</span>, c0 = <span class="number">2</span></span><br><span class="line">输出：[[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">0</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line">解释：从 (r0, c0) 到其他单元格的距离为：[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">其他满足题目要求的答案也会被视为正确，例如 [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>]]。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= R &lt;= 100</code></li>
+<li><code>1 &lt;= C &lt;= 100</code></li>
+<li><code>0 &lt;= r0 &lt; R</code></li>
+<li><code>0 &lt;= c0 &lt; C</code></li>
+</ol>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>不难想象，大概是这个样子：</p>
+<img src="/leetcode/day-003/image-20201117225348893.png" class title="排列顺序">
+
+<p>感觉没什么好说的，将元素以梯队划分，第一梯队元素就是一个 <code>[r0, c0]</code> ，而第二梯队则是第一梯队元素的上下左右元素（前提是有上下左右，且不能包含已有元素），依此类推，一直走完。</p>
+<p> 遇到这样的题第一反应就是递归，那么来试试吧！</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">int</span><span class="literal">[]</span><span class="literal">[]</span> all<span class="constructor">CellsDistOrder(<span class="params">int</span> R, <span class="params">int</span> C, <span class="params">int</span> <span class="params">r0</span>, <span class="params">int</span> <span class="params">c0</span>)</span> &#123;</span><br><span class="line">    Set&lt;<span class="built_in">int</span><span class="literal">[]</span>&gt; set = <span class="keyword">new</span> <span class="constructor">LinkedHashSet()</span>;</span><br><span class="line">    add<span class="constructor">ToSet(R, C, <span class="params">set</span>, <span class="params">new</span> <span class="params">int</span>[]&#123;<span class="params">r0</span>, <span class="params">c0</span>&#125;)</span>;</span><br><span class="line">    return set.<span class="keyword">to</span><span class="constructor">Array(<span class="params">new</span> <span class="params">int</span>[][]&#123;&#125;)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> void add<span class="constructor">ToSet(<span class="params">int</span> R, <span class="params">int</span> C, Set <span class="params">set</span>, <span class="params">int</span>[] <span class="params">rootNode</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (set.add(rootNode))&#123;</span><br><span class="line">        <span class="comment">// 上下左右</span></span><br><span class="line">        <span class="keyword">if</span> (rootNode<span class="literal">[<span class="number">0</span>]</span> - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">            add<span class="constructor">ToSet(R, C, <span class="params">set</span>, <span class="params">new</span> <span class="params">int</span>[]&#123;<span class="params">rootNode</span>[0] - 1, <span class="params">rootNode</span>[1]&#125;)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rootNode<span class="literal">[<span class="number">0</span>]</span> + <span class="number">1</span> &lt; R)&#123;</span><br><span class="line">            add<span class="constructor">ToSet(R, C, <span class="params">set</span>, <span class="params">new</span> <span class="params">int</span>[]&#123;<span class="params">rootNode</span>[0] + 1, <span class="params">rootNode</span>[1]&#125;)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rootNode<span class="literal">[<span class="number">1</span>]</span> - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">            add<span class="constructor">ToSet(R, C, <span class="params">set</span>, <span class="params">new</span> <span class="params">int</span>[]&#123;<span class="params">rootNode</span>[1] - 1, <span class="params">rootNode</span>[1]&#125;)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rootNode<span class="literal">[<span class="number">1</span>]</span> + <span class="number">1</span> &lt; C)&#123;</span><br><span class="line">            add<span class="constructor">ToSet(R, C, <span class="params">set</span>, <span class="params">new</span> <span class="params">int</span>[]&#123;<span class="params">rootNode</span>[1] + 1, <span class="params">rootNode</span>[1]&#125;)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>想法很美好，but这里面有个大坑，我以为通过 set 中不能有相同元素的效果，可以防止添加已有元素。但是跑了一下直接堆栈溢出（StackOverflowError）。好家伙，debug看了下，set中一直在给我添加rootnode，想必是因为数组中存的是地址而不是具体的值，在set看来，这些具有相同元素的数组都是不同的地址，我的计划直接宣告破产。</p>
+<p>这样不行的话，难道要用到数学知识？</p>
+<p>我突然想到了刚学到的 Arrays.sort() 方法，直接拿到所有节点根据<strong>曼哈顿距离</strong>进行排序。试试</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">int</span><span class="literal">[]</span><span class="literal">[]</span> all<span class="constructor">CellsDistOrder(<span class="params">int</span> R, <span class="params">int</span> C, <span class="params">int</span> <span class="params">r0</span>, <span class="params">int</span> <span class="params">c0</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">int</span><span class="literal">[]</span><span class="literal">[]</span> arr = <span class="keyword">new</span> <span class="built_in">int</span><span class="literal">[R <span class="operator">*</span> C]</span><span class="literal">[]</span>;</span><br><span class="line">    <span class="built_in">int</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; R; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; C; j++) &#123;</span><br><span class="line">            arr<span class="literal">[<span class="identifier">index</span><span class="operator">++</span>]</span> = <span class="keyword">new</span> <span class="built_in">int</span><span class="literal">[]</span>&#123;i, j&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(arr, <span class="module-access"><span class="module"><span class="identifier">Comparator</span>.</span></span>comparing<span class="constructor">Int(<span class="params">o</span> -&gt; (Math.<span class="params">abs</span>(<span class="params">o</span>[0] - <span class="params">r0</span>)</span> + <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>abs(o<span class="literal">[<span class="number">1</span>]</span> - c0))));</span><br><span class="line">    return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码非常简洁，但是成绩比较差，<code>或许我不该 new int[]&#123;i, j&#125;</code> 不过我暂时先不改了。</p>
+<img src="/leetcode/day-003/image-20201118012012348.png" class title="执行结果">
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>让我们来看看大神都是怎么砍瓜切菜的</p>
+<hr>
+
+<h2 id="四种解法：数组排序、桶排序、BFS、几何法"><a href="#四种解法：数组排序、桶排序、BFS、几何法" class="headerlink" title="四种解法：数组排序、桶排序、BFS、几何法"></a>四种解法：数组排序、桶排序、BFS、几何法</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/cielyang/">Ciel Yang</a>发布于 2020-03-0510.2k<strong>精选</strong>Java</p>
+<h3 id="解法一：直接排序数组"><a href="#解法一：直接排序数组" class="headerlink" title="解法一：直接排序数组"></a>解法一：直接排序数组</h3><p>显然，最暴力的解法是按照距离排序，然后依次输出坐标。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>本解法可以使用哈希表优化，即使用坐标作 key，使用距离作 value，然后按照距离排序，这样就不会因为多次对同一下标进行比较而重复计算距离</li>
+<li>无论如何优化，核心仍然是直接排序，时间复杂度不会优于 <code>O(R*C*log(R*C))</code></li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><ul>
+<li>Java</li>
+</ul>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span>[][] allCellsDistOrder(<span class="built_in">int</span> R, <span class="built_in">int</span> C, <span class="built_in">int</span> r0, <span class="built_in">int</span> c0) &#123;</span><br><span class="line">        <span class="built_in">int</span>[][] re = new <span class="built_in">int</span>[R * C][<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; R; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; C; j++) &#123;</span><br><span class="line">                <span class="built_in">int</span> t = i*C+j;</span><br><span class="line">                re[t][<span class="number">0</span>] = i;</span><br><span class="line">                re[t][<span class="number">1</span>] = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.sort(re, (arr1, arr2) -&gt; &#123;</span><br><span class="line">            <span class="built_in">int</span> d1 = dist(arr1[<span class="number">0</span>], arr1[<span class="number">1</span>], r0, c0);</span><br><span class="line">            <span class="built_in">int</span> d2 = dist(arr2[<span class="number">0</span>], arr2[<span class="number">1</span>], r0, c0);</span><br><span class="line">            <span class="keyword">return</span> Integer.compare(d1, d2);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> re;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> dist(<span class="built_in">int</span> r1,<span class="built_in">int</span> c1,<span class="built_in">int</span> r2,<span class="built_in">int</span> c2) &#123;</span><br><span class="line">        <span class="keyword">return</span> Math.abs(r1 - r2) + Math.abs(c1 - c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法二：桶排序"><a href="#解法二：桶排序" class="headerlink" title="解法二：桶排序"></a>解法二：桶排序</h3><ol>
+<li>遍历所有坐标，按照距离的大小分组，每组的距离相等（即放入一个桶中）</li>
+<li>按照距离从小到大的原则，遍历所有桶，并输出结果</li>
+</ol>
+<p>本解法关键在于求得可能的最大距离，即行距离和列距离都最大时：<code>max(r0, R - 1 - r0) + max(c0, C - 1 - c0)</code></p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>此解法时间复杂度为 O(R*C)，理论上已达到最快可能</li>
+<li>实际时间消耗会比预估要差，不同语言便利程度和优化不一，原因如下：<ul>
+<li>桶的制作涉及大量容器的初始化和存取</li>
+<li>桶中要存储大量的坐标信息，不论是直接使用长度为 2 的小数组存储，还是用新的简单数据类，都会耗费很多时间</li>
+</ul>
+</li>
+</ul>
+<h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><ul>
+<li>Java</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] allCellsDistOrder(<span class="keyword">int</span> R, <span class="keyword">int</span> C, <span class="keyword">int</span> r0, <span class="keyword">int</span> c0) &#123;</span><br><span class="line">        <span class="keyword">int</span>[][] re = <span class="keyword">new</span> <span class="keyword">int</span>[R * C][<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">int</span> maxDist = Math.<span class="built_in">max</span>(r0, R - <span class="number">1</span> - r0) + Math.<span class="built_in">max</span>(c0, C - <span class="number">1</span> - c0);</span><br><span class="line">        ArrayList&lt;LinkedList&lt;Pos&gt;&gt; bucket = <span class="keyword">new</span> ArrayList&lt;&gt;(maxDist + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= maxDist; i++) &#123;</span><br><span class="line">            bucket.add(<span class="keyword">new</span> LinkedList&lt;&gt;());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; R; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; C; j++) &#123;</span><br><span class="line">                <span class="keyword">int</span> d = dist(i, j, r0, c0);</span><br><span class="line">                LinkedList&lt;Pos&gt; <span class="built_in">list</span> = bucket.<span class="built_in">get</span>(d);</span><br><span class="line">                <span class="built_in">list</span>.add(<span class="keyword">new</span> Pos(i,j));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= maxDist; i++) &#123;</span><br><span class="line">            LinkedList&lt;Pos&gt; <span class="built_in">list</span> = bucket.<span class="built_in">get</span>(i);</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">list</span>.isEmpty()) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (Pos p : <span class="built_in">list</span>) &#123;</span><br><span class="line">                re[cnt][<span class="number">0</span>] = p.r;</span><br><span class="line">                re[cnt][<span class="number">1</span>] = p.c;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> re;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">dist</span><span class="params">(<span class="keyword">int</span> r1,<span class="keyword">int</span> c1,<span class="keyword">int</span> r2,<span class="keyword">int</span> c2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Math.<span class="built_in">abs</span>(r1 - r2) + Math.<span class="built_in">abs</span>(c1 - c2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Pos</span> &#123;</span></span><br><span class="line">        <span class="keyword">int</span> r;</span><br><span class="line">        <span class="keyword">int</span> c;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Pos</span><span class="params">(<span class="keyword">int</span> r, <span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">            <span class="keyword">this</span>.c = c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法三：BFS"><a href="#解法三：BFS" class="headerlink" title="解法三：BFS"></a>解法三：BFS</h3><ol>
+<li>可以把所有的坐标看作树的结点，距离相等的结点位于树的同一层</li>
+<li>而对于每一层的结点，它们的距离 dist 可以分为行距离和列距离，且 <code>rowDist + colDist = dist</code> 必然成立</li>
+<li>使 rowDist 从 0 到 dist 递增，colDist 相应有不同的值，可以得到不同的坐标：<ul>
+<li>横坐标为：<code>r0 - rowDist</code> 或 <code>r0 + rowDist</code></li>
+<li>纵坐标为：<code>c0 - colDist</code> 或 <code>c0 + colDist</code></li>
+<li>注意特殊情况：rowDist 或 colDist 为 0 时，每组只有一个正确值</li>
+</ul>
+</li>
+<li>对步骤 3 中，所有在矩阵范围内的坐标进行记录</li>
+</ol>
+<p><strong>注意：</strong></p>
+<ul>
+<li>此解法不关心最大距离，只要步骤 4 中记录的结果达到 R * C 的数量就可以终止搜索</li>
+<li>此解法的时间复杂度是 O((R+C)^2)，因为对每一种距离 dist，rowDist 都要进行从 0 开始递增到 dist 的遍历操作，而距离可能的最大值为 R + C</li>
+<li>此解法时间复杂度大于 O(R * C) 的原因是：每种距离可能产生多个不在矩阵内的坐标，但搜索算法必须依次检查予以排除</li>
+<li>理论上此解法并不比桶排序优秀，但是代码中极少创建额外的容器和对象，所以实际的运行效率不会太差</li>
+</ul>
+<h4 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h4><ul>
+<li>Java</li>
+</ul>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span>[][] allCellsDistOrder(<span class="built_in">int</span> R, <span class="built_in">int</span> C, <span class="built_in">int</span> r0, <span class="built_in">int</span> c0) &#123;</span><br><span class="line">        <span class="built_in">int</span>[][] re = new <span class="built_in">int</span>[R * C][<span class="number">2</span>];</span><br><span class="line">        <span class="built_in">int</span> dist = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span>[] factor = &#123;<span class="number">-1</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">while</span> (cnt &lt; R * C) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> rowDist = <span class="number">0</span>; rowDist &lt;= dist; rowDist++) &#123;</span><br><span class="line">                <span class="built_in">int</span> colDist = dist - rowDist;</span><br><span class="line">                <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">                    <span class="built_in">int</span> row = r0 + factor[i] * rowDist;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; <span class="number">2</span>; j++) &#123;</span><br><span class="line">                        <span class="built_in">int</span> col = c0 + factor[j] * colDist;</span><br><span class="line">                        <span class="keyword">if</span> (row &gt;= <span class="number">0</span> &amp;&amp; row &lt; R &amp;&amp; col &gt;= <span class="number">0</span> &amp;&amp; col &lt; C) &#123;</span><br><span class="line">                            re[cnt][<span class="number">0</span>] = row;</span><br><span class="line">                            re[cnt][<span class="number">1</span>] = col;</span><br><span class="line">                            cnt++;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">if</span> (colDist == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (rowDist == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            dist++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> re;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法四：几何法（类-BFS）"><a href="#解法四：几何法（类-BFS）" class="headerlink" title="解法四：几何法（类 BFS）"></a>解法四：几何法（类 BFS）</h3><p>如果把矩阵当作二维直角坐标系中的图形，而且把所有不在矩阵内的点也考虑进来，那么所有到 (r0, c0) 点的“距离”相等的整数坐标有明显的规律：</p>
+<img src="/leetcode/day-003/47aacf8273ec9c560510012f74be0fe5a617b7517d3b191d7f34ce8837d907ea-Snipaste_2020-03-04_23-51-22.png" class title="Snipaste_2020-03-04_23-51-22.png">
+
+<p>可以看到，它们的坐标都在一个正方形的边上（包括顶点），而且正方形的上下顶点 row 值为 r0，左右顶点 col 值为 c0。<br>这样，只要保证每次找到一个正方形的顶点，然后按照规律“画出”这个正方形即可，画图步骤如下:</p>
+<ol>
+<li>保存 4 个向量标明画线的方向</li>
+<li>出发点为 <code>(r0 - 1, c0)</code></li>
+<li>按照 1 中的向量指示方向画线，遇到一个正方形的顶点就更换为下一个向量（向左转 90°）</li>
+</ol>
+<p>在上述的画线步骤中，不断检查线上的整数坐标，如果符合要求就进行记录。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>顶点的判断方法有两组，分别对应和 r0 或 c0 是否相等</li>
+<li>对每个距离 dist 都要画出正方形检查，检查的点数量是 <code>8 * dist</code>，而最大距离可能是 <code>R + C</code>，所以时间复杂度为 O((R+C)^2)</li>
+<li>此解法代码中看似没有按照距离分层遍历，实际每个初始顶点的求解过程中已经包含了按照距离分层的想法，实际极其类似 BFS</li>
+<li>此解法要检查的点理论上多于 BFS，尤其是 (r0, c0) 位于矩阵一角时会明显偏慢（最后要画很多很大的正方形）</li>
+</ul>
+<h4 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h4><ul>
+<li>Java</li>
+</ul>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span>[][] allCellsDistOrder(<span class="built_in">int</span> R, <span class="built_in">int</span> C, <span class="built_in">int</span> r0, <span class="built_in">int</span> c0) &#123;</span><br><span class="line">        <span class="built_in">int</span>[][] re = new <span class="built_in">int</span>[R * C][<span class="number">2</span>];</span><br><span class="line">        re[<span class="number">0</span>][<span class="number">0</span>] = r0;</span><br><span class="line">        re[<span class="number">0</span>][<span class="number">1</span>] = c0;</span><br><span class="line">        <span class="built_in">int</span>[] dr = &#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">        <span class="built_in">int</span>[] dc = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="built_in">int</span> row = r0;</span><br><span class="line">        <span class="built_in">int</span> col = c0;</span><br><span class="line">        var cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (cnt &lt; R * C) &#123;</span><br><span class="line">            row--;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">while</span> ((i % <span class="number">2</span> == <span class="number">0</span> &amp;&amp; row != r0) || (i % <span class="number">2</span> != <span class="number">0</span> &amp;&amp; col != c0)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (row &gt;= <span class="number">0</span> &amp;&amp; row &lt; R &amp;&amp; col &gt;= <span class="number">0</span> &amp;&amp; col &lt; C) &#123;</span><br><span class="line">                        re[cnt][<span class="number">0</span>] = row;</span><br><span class="line">                        re[cnt][<span class="number">1</span>] = col;</span><br><span class="line">                        cnt++;</span><br><span class="line">                    &#125;</span><br><span class="line">                    row += dr[i];</span><br><span class="line">                    col += dc[i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> re;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+<div class="note success">
+            <p>这个看的我是眼花缭乱，我想破脑袋也只想到了一种解法，而大神则是直接搬出四种。</p><p>我测试了一下，其中桶排序只用了10ms，而FPS更是只用了5ms，直接超越100%，而我连这些算法的名字都不懂，只得感叹一句，任重而道远啊！。</p>
+          </div>
+
+
+
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>感谢您的阅读！</p>
+
+    </div>
+
+    
+    
+    
+	
+	<div>
+	  
+		<div>
+    
+        <div class="end-tag">---下面没有了<i class="fa fa-paw"></i>感谢您的阅读---</div>
+    
+</div>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+	  
+	</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/leetcode/day-002/" rel="prev" title="算法之旅（二），queue-reconstruction-by-height">
+      <i class="fa fa-chevron-left"></i> 算法之旅（二），queue-reconstruction-by-height
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+		  
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1030-%E8%B7%9D%E7%A6%BB%E9%A1%BA%E5%BA%8F%E6%8E%92%E5%88%97%E7%9F%A9%E9%98%B5%E5%8D%95%E5%85%83%E6%A0%BC"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">1030. 距离顺序排列矩阵单元格</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E7%A7%8D%E8%A7%A3%E6%B3%95%EF%BC%9A%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81BFS%E3%80%81%E5%87%A0%E4%BD%95%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">四种解法：数组排序、桶排序、BFS、几何法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A%E7%9B%B4%E6%8E%A5%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84"><span class="nav-number">3.1.1.</span> <span class="nav-text">解法一：直接排序数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C%EF%BC%9A%E6%A1%B6%E6%8E%92%E5%BA%8F"><span class="nav-number">3.1.3.</span> <span class="nav-text">解法二：桶排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%89%EF%BC%9ABFS"><span class="nav-number">3.1.4.</span> <span class="nav-text">解法三：BFS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E5%9B%9B%EF%BC%9A%E5%87%A0%E4%BD%95%E6%B3%95%EF%BC%88%E7%B1%BB-BFS%EF%BC%89"><span class="nav-number">3.1.5.</span> <span class="nav-text">解法四：几何法（类 BFS）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+		
+      </div>
+	  <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yuanjie"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name"><a href="https://gypsophila123.github.io">yuanjie</a></p>
+  <div class="site-description" itemprop="description">劝君惜取少年时</div>
+</div>
+
+
+
+
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Gypsophila123" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gypsophila123" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1371055091&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1371055091&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/wechat.png" title="wechat → images&#x2F;wechat.png"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+		
+      </div>
+
+	
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+	</aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+	
+    <i class="fa fa-heart></i>	
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuanjie</span>
+  
+    
+  
+  
+
+</div>
+
+  
+
+
+
+  <p>发动机：hexo&nbsp;&nbsp;外壳：NexT</p>
+
+
+
+
+<script type="text/javascript" src="/js/src/blogruntime.js"></script>
+<div id="days"></div>
+
+<!--网易云插件-->
+<div class ="cloud-music fa fa-music">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 
+	src="//music.163.com/outchain/player?type=0&id=5307165789&auto=0&height=430"></iframe>
+	<div class="cm-mask"></div>
+	<i ">
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="90" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 27904,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'N9bDsiaBsnUM541S5NQXX4Hf-gzGzoHsz',
+      appKey     : 'W4u9iobAojid7MgDiDdb4iPK',
+      placeholder: "说说你的看法...",
+      avatar     : 'fa fa-user',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":2},"log":false});</script></body>
+</html>

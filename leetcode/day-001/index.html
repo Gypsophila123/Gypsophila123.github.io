@@ -31,7 +31,7 @@
 
   <meta name="description" content="这是我的LeetCode算法之旅第 1 篇文章，坚持下去就一定会有收获，加油!!!">
 <meta property="og:type" content="article">
-<meta property="og:title" content="1-bit-and-2-bit-characters">
+<meta property="og:title" content="算法之旅（开篇）1-bit-and-2-bit-characters">
 <meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-001/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="这是我的LeetCode算法之旅第 1 篇文章，坚持下去就一定会有收获，加油!!!">
@@ -58,7 +58,7 @@
   };
 </script>
 
-  <title>1-bit-and-2-bit-characters | </title>
+  <title>算法之旅（开篇）1-bit-and-2-bit-characters | </title>
   
 
 
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          1-bit-and-2-bit-characters
+          算法之旅（开篇）1-bit-and-2-bit-characters
         </h1>
 
         <div class="post-meta">
@@ -311,8 +311,8 @@
 <p>好了，简化思路继续前行</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span>ean isOneBitCharacter(<span class="built_in">int</span>[] bits) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = (bits.length - <span class="number">1</span>); i &gt; <span class="number">0</span>; ) &#123;</span><br><span class="line">            <span class="comment">// 倒数第双数为0返回true</span></span><br><span class="line">            <span class="keyword">if</span> (bits[--i] == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 不为0且到顶返回false</span></span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 倒数第单数返回false</span></span><br><span class="line">            <span class="keyword">if</span> (bits[--i] == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 不为0且到顶返回true</span></span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 长度为1直接返回true</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>写完之后自己试了下感觉没问题就提交了，然后直接过了（有点不相信），以前写算法一次过的不多，Nice！可以早点睡了。</p>
-<img src="/leetcode/day-001/image-20201115234909292.png" class>
+<p>写完之后自己试了下感觉没问题就提交了，然后直接过了（有点不相信），以前写题一次过的情况不多，Nice！可以早点睡了。</p>
+<img src="/leetcode/day-001/image-20201115234909292.png" class title="我的提交">
 
 <h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>去看了下评论区，貌似都是这种思路，然后他们的代码虽然短了点，但是感觉没什么可读性，对比我的代码又没有质的升级，我就懒得贴了，毕竟是简单题。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>当感觉语句太复杂了也不利于读时，尝试重新构造。</p>
@@ -370,7 +370,10 @@
     <a href="/java/2020/traverseFolders/" rel="prev" title="java关于File操作的五个小Demo">
       <i class="fa fa-chevron-left"></i> java关于File操作的五个小Demo
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/leetcode/day-002/" rel="next" title="算法之旅（二），queue-reconstruction-by-height">
+      算法之旅（二），queue-reconstruction-by-height <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -493,7 +496,7 @@
 	
     <i class="fa fa-heart></i>	
   </span>
-  <span class="author" itemprop="copyrightHolder">yuajie</span>
+  <span class="author" itemprop="copyrightHolder">yuanjie</span>
   
     
   

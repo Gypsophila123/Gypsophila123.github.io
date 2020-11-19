@@ -800,4 +800,72 @@
         <tag>leetcode</tag>
       </tags>
   </entry>
+  <entry>
+    <title>算法之旅（4） move-zeroes</title>
+    <url>//leetcode/day-004/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="283-移动零"><a href="#283-移动零" class="headerlink" title="283. 移动零"></a><a href="https://leetcode-cn.com/problems/move-zeroes/">283. 移动零</a></h4><p>难度简单 859收藏</p>
+<p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入: [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">12</span>]</span><br><span class="line">输出: [<span class="number">1</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>:</p>
+<ol>
+<li>必须在原数组上操作，不能拷贝额外的数组。</li>
+<li>尽量减少操作次数。</li>
+</ol>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>今天的题目非常简单，起码看起来是这样。简单的要求，简短的题目，但往往越是简单的题目越是能体现出差距。我已经准备好被那些大神们血虐了。</p>
+<p>原本我还以为非零元素需要排序，重审之后发现仅仅需要移动零即可，难点在于不能拷贝数组且非零元素要保持原顺序。</p>
+<p>第一个思路来的很快，从后往前遍历数组，遇到零就将其一位一位的向后移。这样就可以保证顺序且没有拷贝数组，当然，我感觉这样会比较费时，但我还没想出更好的解决方案，先写写吧！</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">void</span> moveZeroes(<span class="built_in">int</span>[] nums) &#123;</span><br><span class="line">    <span class="built_in">int</span> right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = right; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="comment">// 找到零将其送至末尾，长度减一，指针 i 复位</span></span><br><span class="line">        <span class="keyword">if</span> (nums[i] == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; right)&#123;</span><br><span class="line">                <span class="built_in">int</span> temp = nums[i];</span><br><span class="line">                nums[i] = nums[i + <span class="number">1</span>];</span><br><span class="line">                nums[i + <span class="number">1</span>] = temp;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            i = --right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写的很顺利，没出什么岔子，一次过。但是结果嘛</p>
+<img src="/leetcode/day-004/image-20201119234358449.png" class title="第一次用时">
+
+<p>只能说都在预料之中，现在有两条路，在此基础上尝试优化，或者直接换个思路。</p>
+<p>不过我盲猜大佬们用时都在 5ms 以内，看来直接早点换个思路才是正解。</p>
+<p>刚才直接使用暴力方法，一个一个的去换位置，这样虽然简洁，但是效率却高不起来，<strong>那么有没有什么更加巧妙的方法呢？</strong></p>
+<p>经过一番观察与思考，我想出一个更简单的方法，而且感觉思路更简单，如下：</p>
+<p><code>输入： [0,1,0,3,12]</code></p>
+<ol>
+<li>[1,1,0,3,12]</li>
+<li>[1,3,0,3,12]</li>
+<li>[1,3,12,3,12]</li>
+<li>[1,3,12,0,0]</li>
+</ol>
+<p>简单点说就是找到非 0 数字，直接一个个的放进去，找到末尾就在后面补零。参考上面应该很容易理解，这样免去了很多麻烦，而且遍历一次就保证完成。不多说了，开写</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">public void moveZeroes(int[] nums) &#123;</span><br><span class="line">    int index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (int <span class="built_in">i</span> = <span class="number">0</span>; <span class="built_in">i</span> &lt; nums.<span class="built_in">length</span>; <span class="built_in">i</span>++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[<span class="built_in">i</span>] != <span class="number">0</span>)&#123;</span><br><span class="line">            nums[index++] = nums[<span class="built_in">i</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (int <span class="built_in">i</span> = index; <span class="built_in">i</span> &lt; nums.<span class="built_in">length</span>; <span class="built_in">i</span>++) &#123;</span><br><span class="line">        nums[<span class="built_in">i</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-004/image-20201120000957976.png" class title="第二种方法用时">
+
+<p>虽然早有预料，但是看到这个击败100%用户的时候我的心里还是非常高兴的，我是不是也能在简单场叱咤风云了（笑）。这回我不是猪脑袋了</p>
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
+
+<p>[王尼玛5236发布于 2020-02-0941.3k<strong>精选</strong>PythonJava</p>
+<h2 id="两次遍历"><a href="#两次遍历" class="headerlink" title="两次遍历"></a>两次遍历</h2><p>我们创建两个指针<code>i</code>和<code>j</code>，第一次遍历的时候指针<code>j</code>用来记录当前有多少<code>非0</code>元素。即遍历的时候每遇到一个<code>非0</code>元素就将其往数组左边挪，第一次遍历完后，<code>j</code>指针的下标就指向了最后一个<code>非0</code>元素下标。<br>第二次遍历的时候，起始位置就从<code>j</code>开始到结束，将剩下的这段区域内的元素全部置为<code>0</code>。<br>动画演示：</p>
+<p>5540<br>时间复杂度: O(n)<br>空间复杂度: O(1)<br>代码实现:</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">moveZeroes</span>(<span class="params">int[] nums</span>)</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">if</span>(<span class="params">nums==<span class="literal">null</span></span>)</span> &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//第一次遍历的时候，j指针记录非0的个数，只要是非0的统统都赋给nums[j]</span></span><br><span class="line">		int j = <span class="number">0</span>;</span><br><span class="line">		<span class="function"><span class="title">for</span>(<span class="params">int i=<span class="number">0</span>;i&lt;nums.length;++i</span>)</span> &#123;</span><br><span class="line">			<span class="function"><span class="title">if</span>(<span class="params">nums[i]!=<span class="number">0</span></span>)</span> &#123;</span><br><span class="line">				nums[j++] = nums[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//非0元素统计完了，剩下的都是0了</span></span><br><span class="line">		<span class="comment">//所以第二次遍历把末尾的元素都赋为0即可</span></span><br><span class="line">		<span class="function"><span class="title">for</span>(<span class="params">int i=j;i&lt;nums.length;++i</span>)</span> &#123;</span><br><span class="line">			nums[i] = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<h2 id="一次遍历"><a href="#一次遍历" class="headerlink" title="一次遍历"></a>一次遍历</h2><p>这里参考了快速排序的思想，快速排序首先要确定一个待分割的元素做中间点<code>x</code>，然后把所有小于等于<code>x</code>的元素放到x的左边，大于x的元素放到其右边。<br>这里我们可以用<code>0</code>当做这个中间点，把不等于0(注意题目没说不能有负数)的放到中间点的左边，等于0的放到其右边。<br>这的中间点就是<code>0</code>本身，所以实现起来比快速排序简单很多，我们使用两个指针<code>i</code>和<code>j</code>，只要<code>nums[i]!=0</code>，我们就交换<code>nums[i]</code>和<code>nums[j]</code><br>请对照动态图来理解：<br>8494<br>时间复杂度: O(n)<br>空间复杂度: O(1)<br>代码实现:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> moveZeroes(<span class="built_in">int</span>[] nums) &#123;</span><br><span class="line">		<span class="keyword">if</span>(nums==<span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//两个指针i和j</span></span><br><span class="line">		<span class="built_in">int</span> j = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++) &#123;</span><br><span class="line">			<span class="comment">//当前元素!=0，就把其交换到左边，等于0的交换到右边</span></span><br><span class="line">			<span class="keyword">if</span>(nums[i]!=<span class="number">0</span>) &#123;</span><br><span class="line">				<span class="built_in">int</span> tmp = nums[i];</span><br><span class="line">				nums[i] = nums[j];</span><br><span class="line">				nums[j++] = tmp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<p>(全文完)</p>
+<p><strong>欢迎关注 👉👉👉 <a href="https://leetcode-cn.com/u/wang_ni_ma/">我</a> 👈👈👈</strong></p>
+<p><strong>如果能再点个赞 👍👍 就更感激啦 💓💓</strong></p>
+<hr>
+
+<div class="note success">
+            <p>这个双指针很 cool ，不是吗？</p>
+          </div>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>思考的方式要尽量简单，还有记得判断null，这是一个好习惯</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
 </search>

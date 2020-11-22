@@ -31,7 +31,7 @@
 
   <meta name="description" content="这是我的LeetCode算法之旅第 4 篇文章，坚持下去就一定会有收获，加油!!!">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法之旅（4） move-zeroes">
+<meta property="og:title" content="算法之旅（四） move-zeroes">
 <meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-004/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="这是我的LeetCode算法之旅第 4 篇文章，坚持下去就一定会有收获，加油!!!">
@@ -61,7 +61,7 @@
   };
 </script>
 
-  <title>算法之旅（4） move-zeroes | </title>
+  <title>算法之旅（四） move-zeroes | </title>
   
 
 
@@ -230,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          算法之旅（4） move-zeroes
+          算法之旅（四） move-zeroes
         </h1>
 
         <div class="post-meta">
@@ -328,12 +328,14 @@
 <h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
 
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/wang_ni_ma/">王尼玛</a>发布于 2020-02-0941.3k<strong>精选</strong>PythonJava</p>
-<h2 id="两次遍历"><a href="#两次遍历" class="headerlink" title="两次遍历"></a>两次遍历</h2><p>我们创建两个指针<code>i</code>和<code>j</code>，第一次遍历的时候指针<code>j</code>用来记录当前有多少<code>非0</code>元素。即遍历的时候每遇到一个<code>非0</code>元素就将其往数组左边挪，第一次遍历完后，<code>j</code>指针的下标就指向了最后一个<code>非0</code>元素下标。<br>第二次遍历的时候，起始位置就从<code>j</code>开始到结束，将剩下的这段区域内的元素全部置为<code>0</code>。<br>动画演示：</p>
+<p><strong>两次遍历</strong></p>
+<p>我们创建两个指针<code>i</code>和<code>j</code>，第一次遍历的时候指针<code>j</code>用来记录当前有多少<code>非0</code>元素。即遍历的时候每遇到一个<code>非0</code>元素就将其往数组左边挪，第一次遍历完后，<code>j</code>指针的下标就指向了最后一个<code>非0</code>元素下标。<br>第二次遍历的时候，起始位置就从<code>j</code>开始到结束，将剩下的这段区域内的元素全部置为<code>0</code>。<br>动画演示：</p>
 <img src="/leetcode/day-004/9669b4ffb158eaeeee6f0cd66a70f24411575edab1ab8a037c4c9084b1c743f5-283_1.gif" class title="283_1.gif">
 <p>时间复杂度: O(n)<br>空间复杂度: O(1)<br>代码实现:</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">moveZeroes</span>(<span class="params">int[] nums</span>)</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">if</span>(<span class="params">nums==<span class="literal">null</span></span>)</span> &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//第一次遍历的时候，j指针记录非0的个数，只要是非0的统统都赋给nums[j]</span></span><br><span class="line">		int j = <span class="number">0</span>;</span><br><span class="line">		<span class="function"><span class="title">for</span>(<span class="params">int i=<span class="number">0</span>;i&lt;nums.length;++i</span>)</span> &#123;</span><br><span class="line">			<span class="function"><span class="title">if</span>(<span class="params">nums[i]!=<span class="number">0</span></span>)</span> &#123;</span><br><span class="line">				nums[j++] = nums[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//非0元素统计完了，剩下的都是0了</span></span><br><span class="line">		<span class="comment">//所以第二次遍历把末尾的元素都赋为0即可</span></span><br><span class="line">		<span class="function"><span class="title">for</span>(<span class="params">int i=j;i&lt;nums.length;++i</span>)</span> &#123;</span><br><span class="line">			nums[i] = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
 
-<h2 id="一次遍历"><a href="#一次遍历" class="headerlink" title="一次遍历"></a>一次遍历</h2><p>这里参考了快速排序的思想，快速排序首先要确定一个待分割的元素做中间点<code>x</code>，然后把所有小于等于<code>x</code>的元素放到x的左边，大于x的元素放到其右边。<br>这里我们可以用<code>0</code>当做这个中间点，把不等于0(注意题目没说不能有负数)的放到中间点的左边，等于0的放到其右边。<br>这的中间点就是<code>0</code>本身，所以实现起来比快速排序简单很多，我们使用两个指针<code>i</code>和<code>j</code>，只要<code>nums[i]!=0</code>，我们就交换<code>nums[i]</code>和<code>nums[j]</code><br>请对照动态图来理解：</p>
+<p><strong>一次遍历</strong></p>
+<p>这里参考了快速排序的思想，快速排序首先要确定一个待分割的元素做中间点<code>x</code>，然后把所有小于等于<code>x</code>的元素放到x的左边，大于x的元素放到其右边。<br>这里我们可以用<code>0</code>当做这个中间点，把不等于0(注意题目没说不能有负数)的放到中间点的左边，等于0的放到其右边。<br>这的中间点就是<code>0</code>本身，所以实现起来比快速排序简单很多，我们使用两个指针<code>i</code>和<code>j</code>，只要<code>nums[i]!=0</code>，我们就交换<code>nums[i]</code>和<code>nums[j]</code><br>请对照动态图来理解：</p>
 <img src="/leetcode/day-004/36d1ac5d689101cbf9947465e94753c626eab7fcb736ae2175f5d87ebc85fdf0-283_2.gif" class>
 <p>时间复杂度: O(n)<br>空间复杂度: O(1)<br>代码实现:</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> moveZeroes(<span class="built_in">int</span>[] nums) &#123;</span><br><span class="line">		<span class="keyword">if</span>(nums==<span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//两个指针i和j</span></span><br><span class="line">		<span class="built_in">int</span> j = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++) &#123;</span><br><span class="line">			<span class="comment">//当前元素!=0，就把其交换到左边，等于0的交换到右边</span></span><br><span class="line">			<span class="keyword">if</span>(nums[i]!=<span class="number">0</span>) &#123;</span><br><span class="line">				<span class="built_in">int</span> tmp = nums[i];</span><br><span class="line">				nums[i] = nums[j];</span><br><span class="line">				nums[j++] = tmp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
@@ -399,8 +401,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/leetcode/day-003/" rel="prev" title="算法之旅（三），matrix-cells-in-distance-order">
-      <i class="fa fa-chevron-left"></i> 算法之旅（三），matrix-cells-in-distance-order
+    <a href="/leetcode/day-003/" rel="prev" title="算法之旅（三）matrix-cells-in-distance-order">
+      <i class="fa fa-chevron-left"></i> 算法之旅（三）matrix-cells-in-distance-order
     </a></div>
       <div class="post-nav-item">
     <a href="/leetcode/day-005/" rel="next" title="算法之旅（五） insertion-sort-list">
@@ -467,7 +469,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#283-%E7%A7%BB%E5%8A%A8%E9%9B%B6"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">283. 移动零</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E6%AC%A1%E9%81%8D%E5%8E%86"><span class="nav-number">3.1.</span> <span class="nav-text">两次遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%AC%A1%E9%81%8D%E5%8E%86"><span class="nav-number">3.2.</span> <span class="nav-text">一次遍历</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#283-%E7%A7%BB%E5%8A%A8%E9%9B%B6"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">283. 移动零</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
 		
       </div>
 	  <!--/noindex-->

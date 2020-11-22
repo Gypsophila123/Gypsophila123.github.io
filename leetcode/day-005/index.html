@@ -288,7 +288,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="147-对链表进行插入排序"><a href="#147-对链表进行插入排序" class="headerlink" title="147. 对链表进行插入排序"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/insertion-sort-list/">147. 对链表进行插入排序</a></h4><p>难度中等</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/insertion-sort-list/"><strong>147</strong>. 对链表进行插入排序</a></p>
+<p>难度中等</p>
 <p>对链表进行插入排序。</p>
 <img src="/leetcode/day-005/Insertion-sort-example-300px.gif" class title="img">
 <p>插入排序的动画演示如上。从第一个元素开始，该链表可以被认为已经部分排序（用黑色表示）。<br>每次迭代时，从输入数据中移除一个元素（用红色表示），并原地将其插入到已排好序的链表中。</p>
@@ -317,7 +318,8 @@
 <h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
 
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/powcai/">powcai</a>发布于 2019-07-278.3kPython3Java链表</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路:"></a>思路:</h2><p>这个道题就像排队,先找个排头<code>dummy</code>,然后依次从<code>head</code>节点放入<code>dummy</code>,只需要依次<code>dummy</code>现有节点比较,插入其中!</p>
+<p><strong>思路:</strong></p>
+<p>这个道题就像排队,先找个排头<code>dummy</code>,然后依次从<code>head</code>节点放入<code>dummy</code>,只需要依次<code>dummy</code>现有节点比较,插入其中!</p>
 <figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode insertionSortList(ListNode head) &#123;</span><br><span class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode pre = dummy;</span><br><span class="line">        ListNode cur = head;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="literal">null</span>) &#123;</span><br><span class="line">            ListNode tmp = cur.<span class="keyword">next</span>;</span><br><span class="line">            <span class="keyword">while</span> (pre.<span class="keyword">next</span> != <span class="literal">null</span> &amp;&amp; pre.<span class="keyword">next</span>.val &lt; cur.val) pre = pre.<span class="keyword">next</span>;</span><br><span class="line">            cur.<span class="keyword">next</span> = pre.<span class="keyword">next</span>;</span><br><span class="line">            pre.<span class="keyword">next</span> = cur;</span><br><span class="line">            pre = dummy;</span><br><span class="line">            cur = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>一看执行时间<code>2000ms</code>,排名靠后,不应该哎!看了别人代码,原来是因为我们每次都要从头比较,但是测试集很多都是顺序排列的,没必要从头开始,我们直接比较最后一个<code>tail</code>,放在后面!</p>
@@ -381,10 +383,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/leetcode/day-004/" rel="prev" title="算法之旅（4） move-zeroes">
-      <i class="fa fa-chevron-left"></i> 算法之旅（4） move-zeroes
+    <a href="/leetcode/day-004/" rel="prev" title="算法之旅（四） move-zeroes">
+      <i class="fa fa-chevron-left"></i> 算法之旅（四） move-zeroes
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/leetcode/day-006/" rel="next" title="算法之旅（六）nge-tou-zi-de-dian-shu-lcof">
+      算法之旅（六）nge-tou-zi-de-dian-shu-lcof <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -446,7 +451,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#147-%E5%AF%B9%E9%93%BE%E8%A1%A8%E8%BF%9B%E8%A1%8C%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">147. 对链表进行插入排序</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">思路:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
 		
       </div>
 	  <!--/noindex-->

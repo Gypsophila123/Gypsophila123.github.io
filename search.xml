@@ -1037,7 +1037,7 @@
       </tags>
   </entry>
   <entry>
-    <title>算法之旅（7）剑指 Offer 65. 不用加减乘除做加法</title>
+    <title>算法之旅（七）剑指 Offer 65. 不用加减乘除做加法</title>
     <url>//leetcode/day-007/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
 <p><strong>示例:</strong></p>
@@ -1196,9 +1196,10 @@
       </tags>
   </entry>
   <entry>
-    <title>算法之旅（8）上升下降字符串</title>
+    <title>算法之旅（八）上升下降字符串</title>
     <url>//leetcode/day-008/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="1370-上升下降字符串"><a href="#1370-上升下降字符串" class="headerlink" title="1370. 上升下降字符串"></a><a href="https://leetcode-cn.com/problems/increasing-decreasing-string/">1370. 上升下降字符串</a></h4><p>难度简单</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p><a href="https://leetcode-cn.com/problems/increasing-decreasing-string/">1370. 上升下降字符串</a></p>
+<p>难度简单</p>
 <p>给你一个字符串 <code>s</code> ，请你根据下面的算法重新构造字符串：</p>
 <ol>
 <li>从 <code>s</code> 中选出 <strong>最小</strong> 的字符，将它 <strong>接在</strong> 结果字符串的后面。</li>
@@ -1279,6 +1280,130 @@
 
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写代码之前多想，确定好方案再写。不要盲目无脑</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之旅（九）1～n 整数中 1 出现的次数</title>
+    <url>//leetcode/day-009/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p><strong><a href="https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/">剑指 Offer 43. 1～n 整数中 1 出现的次数</a></strong></p>
+<p>难度困难</p>
+<p>输入一个整数 <code>n</code> ，求1～n这n个整数的十进制表示中1出现的次数。</p>
+<p>例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入：n = <span class="number">12</span></span><br><span class="line">输出：<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入：n = <span class="number">13</span></span><br><span class="line">输出：<span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>限制：</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt; 2^31</code></li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><blockquote>
+<p>原本我是不打算写困难题的，但是今天看了下，刷的简单题和中等题也有一些了，那就开始试试困难题吧。</p>
+</blockquote>
+<p>这个题单看题目我觉得挺简单，转成字符串再加以统计，或者用除法来遍历每一位数字，但是感觉效率都比较低下，不过既然有方法了就试试。</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countDigitOne</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i++ &lt; n) &#123;</span><br><span class="line">        <span class="keyword">String</span> s = i + <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">String</span> removeOne = s.replace(<span class="string">&quot;1&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">        count += (s.length() - removeOne.length());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-009/image-20201126224601379.png" class title="image-20201126224601379">
+
+<div class="note danger">
+            <p>我啪的一下就写出来了，很快啊！但是 LeetCode 表示：小伙子你不讲码德，居然用最低级的方法来套我的解。没有办法，我不懂规矩，我是乱写的。</p>
+          </div>
+
+<p>再试试除法：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> static <span class="built_in">int</span> countDigitOne(<span class="built_in">int</span> n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i++ &lt; n) &#123;</span><br><span class="line">        <span class="built_in">int</span> j = i;</span><br><span class="line">        <span class="keyword">while</span> (j &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (j % <span class="number">10</span> == <span class="number">1</span>) &#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">            j /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>emmmm，还是原来那个数字出错了，是被设定了不能暴力破解？</p>
+<p>既然如此，那又是到了熟悉的找规律环节。</p>
+<p>首先，我们来看看 3 位数字以内会有什么规律，再去推导出一个通用公式。</p>
+<ul>
+<li>1 位数字：只有数字 1 符合，共 1 个。</li>
+<li>2 位数字：每 10 个数有一个 <code>个位</code> 1，而在<code>十位</code>是 1 时，每个都有 1。 共 20(1 x 10 + 10) 个。</li>
+<li>3 位数字：每 100 个数会有 20 位 1， 而在<code>百位</code>是 1 时，每个都有 1。 共 300(20 x 10 + 100)个。</li>
+</ul>
+<p>规律相信一眼就能看出来，还挺有意思，这样是叫动态规划吗。根据上面能想到 4 位数字是 4000 个， 5 位数字是 50000 个。但是我们的题目是随机一个数字，并不是求多少位数字中含有多少个 1 。这意味着我们还需要做一些额外的工作，我的做法就是递归。</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> static <span class="built_in">int</span> countDigitOne(<span class="built_in">int</span> n) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最小也有 1</span></span><br><span class="line">        <span class="built_in">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n &lt; <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line">        String s = Integer.valueOf(n).toString();</span><br><span class="line">        <span class="comment">// 先算出比 n 短一位的数字中含有多少个 1</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; s.length() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            count = count * <span class="number">10</span> + (<span class="built_in">int</span>)Math.pow(<span class="number">10</span>, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// n 首位是 1， 直接递归其后面再加去首位这个数</span></span><br><span class="line">        <span class="built_in">int</span> headOff = Integer.parseInt(s.substring(<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">if</span> (s.charAt(<span class="number">0</span>) == <span class="string">&#x27;1&#x27;</span>) &#123;</span><br><span class="line">            <span class="comment">// 从 10 开始，所以headOff + 1</span></span><br><span class="line">            count += countDigitOne(headOff) + (headOff + <span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            count *= (s.charAt(<span class="number">0</span>) - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">            count += (<span class="built_in">int</span>)Math.pow(<span class="number">10</span>, s.length() - <span class="number">1</span>) + countDigitOne(headOff);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-009/image-20201127023214035.png" class title="image-20201127023214035">
+
+<div class="note success">
+            <p>宝贝收到了，效果很好，敏感肌也能用，直接超过百分百，笑，看来困难题也不是什么高山。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
+
+<h2 id="面试题43-1～n-整数中-1-出现的次数（清晰图解）"><a href="#面试题43-1～n-整数中-1-出现的次数（清晰图解）" class="headerlink" title="面试题43. 1～n 整数中 1 出现的次数（清晰图解）"></a>面试题43. 1～n 整数中 1 出现的次数（清晰图解）</h2><p><a href="https://leetcode-cn.com/u/jyd/">Krahets</a>发布于 2020-05-03</p>
+<h4 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h4><p>将 11 ~ n<em>n</em> 的个位、十位、百位、…的 11 出现次数相加，即为 11 出现的总次数。</p>
+<p>设数字 n<em>n</em> 是个 x<em>x</em> 位数，记 n<em>n</em> 的第 i<em>i</em> 位为 n_i<em>n**i</em> ，则可将 n<em>n</em> 写为 n_{x} n_{x-1} \cdots n_{2} n_{1}<em>n<strong>x</strong>n**x</em>−1⋯<em>n</em>2<em>n</em>1 ：</p>
+<ul>
+<li>称 “ n_i<em>n**i</em> “ 为 <strong>当前位</strong> ，记为 cur<em>c<strong>u</strong>r</em> ，</li>
+<li>将 “ n_{i-1} n_{i-2} \cdots n_{2} n_{1}<em>n**i</em>−1<em>n**i</em>−2⋯<em>n</em>2<em>n</em>1 “ 称为 <strong>低位</strong> ，记为 low<em>l<strong>o</strong>w</em> ；</li>
+<li>将 “ n_{x} n_{x-1} \cdots n_{i+2} n_{i+1}<em>n<strong>x</strong>n**x</em>−1⋯<em>n**i</em>+2<em>n**i</em>+1 “ 称为 <strong>高位</strong> ，记为 high<em>h<strong>i</strong>g**h</em> 。</li>
+<li>将 10^i10<em>i</em> 称为 <strong>位因子</strong> ，记为 digit<em>d<strong>i</strong>g<strong>i</strong>t</em> 。</li>
+</ul>
+<h5 id="某位中-11-出现次数的计算方法："><a href="#某位中-11-出现次数的计算方法：" class="headerlink" title="某位中 11 出现次数的计算方法："></a>某位中 11 出现次数的计算方法：</h5><p>根据当前位 cur<em>c<strong>u</strong>r</em> 值的不同，分为以下三种情况：</p>
+<ol>
+<li>当 <strong>cur = 0*c\</strong>u*<em>r\</em>=0 时：** 此位 11 的出现次数只由高位 high<em>h<strong>i</strong>g**h</em> 决定，计算公式为：</li>
+</ol>
+<p>high \times digit<em>h<strong>i</strong>g**h</em>×<em>d<strong>i</strong>g<strong>i</strong>t</em></p>
+<blockquote>
+<p>如下图所示，以 n = 2304<em>n</em>=2304 为例，求 digit = 10<em>d<strong>i</strong>g<strong>i</strong>t</em>=10 （即十位）的 11 出现次数。</p>
+</blockquote>
+<img src="/leetcode/day-009/78e60b6c2ada7434ba69643047758e113fa732815f7c53791271c5e0f123687c-Picture1.png" class title="Picture1.png">
+
+<ol>
+<li>当 <strong>cur = 1*c\</strong>u*<em>r\</em>=1 时：** 此位 11 的出现次数由高位 high<em>h<strong>i</strong>g**h</em> 和低位 low<em>l<strong>o</strong>w</em> 决定，计算公式为：</li>
+</ol>
+<p>high \times digit + low + 1<em>h<strong>i</strong>g**h</em>×<em>d<strong>i</strong>g<strong>i</strong>t</em>+<em>l<strong>o</strong>w</em>+1</p>
+<blockquote>
+<p>如下图所示，以 n = 2314<em>n</em>=2314 为例，求 digit = 10<em>d<strong>i</strong>g<strong>i</strong>t</em>=10 （即十位）的 11 出现次数。</p>
+</blockquote>
+<img src="/leetcode/day-009/58c7e6472155b49923b48daac10bd438b68e9504690cf45d5e739f3a8cb9cee1-Picture2.png" class title="Picture2.png">
+
+<ol>
+<li>当 <strong>cur = 2, 3, \cdots, 9*c\</strong>u*<em>r\</em>=2,3,⋯,9 时：** 此位 11 的出现次数只由高位 high<em>h<strong>i</strong>g**h</em> 决定，计算公式为：</li>
+</ol>
+<p>(high + 1) \times digit(<em>h<strong>i</strong>g**h</em>+1)×<em>d<strong>i</strong>g<strong>i</strong>t</em></p>
+<blockquote>
+<p>如下图所示，以 n = 2324<em>n</em>=2324 为例，求 digit = 10<em>d<strong>i</strong>g<strong>i</strong>t</em>=10 （即十位）的 11 出现次数。</p>
+</blockquote>
+<img src="/leetcode/day-009/0e51d37b434ef0ad93882cdcb832f867e18b872833c0c360ad4580eb9ed4aeda-Picture3.png" class title="Picture3.png">
+
+<h5 id="变量递推公式："><a href="#变量递推公式：" class="headerlink" title="变量递推公式："></a>变量递推公式：</h5><p>设计按照 “个位、十位、…” 的顺序计算，则 high / cur / low / digit<em>h<strong>i</strong>g**h</em>/<em>c<strong>u</strong>r</em>/<em>l<strong>o</strong>w</em>/<em>d<strong>i</strong>g<strong>i</strong>t</em> 应初始化为：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">high</span> = n // <span class="number">10</span></span><br><span class="line"><span class="attr">cur</span> = n % <span class="number">10</span></span><br><span class="line"><span class="attr">low</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">digit</span> = <span class="number">1</span> <span class="comment"># 个位</span></span><br></pre></td></tr></table></figure>
+
+<p>因此，从个位到最高位的变量递推公式为：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">while</span> <span class="string">high</span> <span class="type">!=</span> <span class="number">0</span> <span class="string">or</span> <span class="string">cur</span> <span class="type">!=</span> <span class="attr">0:</span> <span class="comment"># 当 high 和 cur 同时为 0 时，说明已经越过最高位，因此跳出</span></span><br><span class="line">   <span class="string">low</span> <span class="string">+=</span> <span class="string">cur</span> <span class="string">*</span> <span class="string">digit</span> <span class="comment"># 将 cur 加入 low ，组成下轮 low</span></span><br><span class="line">   <span class="string">cur</span> <span class="string">=</span> <span class="string">high</span> <span class="string">%</span> <span class="number">10</span> <span class="comment"># 下轮 cur 是本轮 high 的最低位</span></span><br><span class="line">   <span class="string">high</span> <span class="string">//=</span> <span class="number">10</span> <span class="comment"># 将本轮 high 最低位删除，得到下轮 high</span></span><br><span class="line">   <span class="string">digit</span> <span class="string">*=</span> <span class="number">10</span> <span class="comment"># 位因子每轮 × 10</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析："><a href="#复杂度分析：" class="headerlink" title="复杂度分析："></a>复杂度分析：</h5><ul>
+<li><strong>时间复杂度 O(\log n)*O*(log*n*) ：</strong> 循环内的计算操作使用 O(1)<em>O</em>(1) 时间；循环次数为数字 n<em>n</em> 的位数，即 \log_{10}{n}log10<em>n</em> ，因此循环使用 O(\log n)<em>O</em>(log<em>n</em>) 时间。</li>
+<li><strong>空间复杂度 O(1)*O*(1) ：</strong> 几个变量使用常数大小的额外空间。</li>
+</ul>
+<img src="/leetcode/day-009/bd407e510dd9c865db9746af0bbd6f12dd7084491dd2293e5e97a2b02907f8a6-Picture4.png" class title="img">
+
+<p>1 / 7</p>
+<h5 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h5><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> countDigitOne(<span class="built_in">int</span> n) &#123;</span><br><span class="line">        <span class="built_in">int</span> digit = <span class="number">1</span>, res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> high = n / <span class="number">10</span>, cur = n % <span class="number">10</span>, low = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(high != <span class="number">0</span> || cur != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(cur == <span class="number">0</span>) res += high * digit;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(cur == <span class="number">1</span>) res += high * digit + low + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> res += (high + <span class="number">1</span>) * digit;</span><br><span class="line">            low += cur * digit;</span><br><span class="line">            cur = high % <span class="number">10</span>;</span><br><span class="line">            high /= <span class="number">10</span>;</span><br><span class="line">            digit *= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+<div class="note info">
+            <p>今天有点太晚了，就先把代码复制过来，有时间再看吧！</p>
+          </div>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>不要什么都想着暴力解决，计算机的确能大大提升计算速度，但是计算机也是有极限的。一个好的算法能大幅提升速度，让一切有了更多可能</p>
 <p>感谢您的阅读！</p>
 ]]></content>
       <categories>

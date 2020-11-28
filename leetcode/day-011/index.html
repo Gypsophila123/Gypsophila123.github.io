@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<meta name="google-site-verification" content="pBjx13eHcwPhRI87SSewpPihyv6jEIWZfGwVWCMJ5RU" />
+
+<meta name="baidu-site-verification" content="code-m0RWlY65mp" />
+
+<meta name="msvalidate.01" content="3D33E93948C7C8E4E909115C81A9BF8F" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"gypsophila123.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":150,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#0001","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","Available values":"valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这是我的LeetCode算法之旅第 11 篇文章，坚持下去就一定会有收获，加油!!!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法之旅（十一）两个链表的第一个公共节点">
+<meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-011/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="这是我的LeetCode算法之旅第 11 篇文章，坚持下去就一定会有收获，加油!!!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/image-20201129010336095.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776081-okUomu-image.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776124-mZdvxv-image.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776172-sopScf-image.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776200-FJFAes-image.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776207-NyQrCj-image.png">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-011/1602776258-TrwygQ-image.png">
+<meta property="article:published_time" content="2020-11-28T15:24:22.000Z">
+<meta property="article:modified_time" content="2020-11-28T15:24:22.000Z">
+<meta property="article:author" content="yuanjie">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gypsophila123.github.io/leetcode/day-011/image-20201129010336095.png">
+
+<link rel="canonical" href="https://gypsophila123.github.io/leetcode/day-011/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法之旅（十一）两个链表的第一个公共节点 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  
+
+  <div class="container">
+    <div class="headband"></div>
+	
+	<header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+  
+
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title"></h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+        
+      
+        
+      
+	
+	
+	
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Gypsophila123/Gypsophila123.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/leetcode/day-011/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="yuanjie">
+      <meta itemprop="description" content="劝君惜取少年时">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法之旅（十一）两个链表的第一个公共节点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-28 23:24:22" itemprop="dateCreated datePublished" datetime="2020-11-28T23:24:22+08:00">2020-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/leetcode/day-011/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leetcode/day-011/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">这是我的LeetCode算法之旅第 11 篇文章，坚持下去就一定会有收获，加油!!!</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="剑指-Offer-52-两个链表的第一个公共节点"><a href="#剑指-Offer-52-两个链表的第一个公共节点" class="headerlink" title="剑指 Offer 52. 两个链表的第一个公共节点"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/">剑指 Offer 52. 两个链表的第一个公共节点</a></h4><p>难度简单</p>
+<p>输入两个链表，找出它们的第一个公共节点。</p>
+<p>如下面的两个链表<strong>：</strong></p>
+<p>[175</p>
+<p>在节点 c1 开始相交。</p>
+<p><strong>示例 1：</strong></p>
+<p>[385</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：<span class="built_in">int</span>ersectVal = <span class="number">8</span>, listA = [<span class="number">4</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>], listB = [<span class="number">5</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>], skipA = <span class="number">2</span>, skipB = <span class="number">3</span></span><br><span class="line">输出：Reference of the node with value = <span class="number">8</span></span><br><span class="line">输入解释：相交节点的值为 <span class="number">8</span> （注意，如果两个列表相交则不能为 <span class="number">0</span>）。从各自的表头开始算起，链表 A 为 [<span class="number">4</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>]，链表 B 为 [<span class="number">5</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>]。在 A 中，相交节点前有 <span class="number">2</span> 个节点；在 B 中，相交节点前有 <span class="number">3</span> 个节点。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>示例 2：</strong></p>
+<p>[2054</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：<span class="built_in">int</span>ersectVal = <span class="number">2</span>, listA = [<span class="number">0</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>], listB = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>], skipA = <span class="number">3</span>, skipB = <span class="number">1</span></span><br><span class="line">输出：Reference of the node with value = <span class="number">2</span></span><br><span class="line">输入解释：相交节点的值为 <span class="number">2</span> （注意，如果两个列表相交则不能为 <span class="number">0</span>）。从各自的表头开始算起，链表 A 为 [<span class="number">0</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>]，链表 B 为 [<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>]。在 A 中，相交节点前有 <span class="number">3</span> 个节点；在 B 中，相交节点前有 <span class="number">1</span> 个节点。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>示例 3：</strong></p>
+<p>[3543</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：<span class="built_in">int</span>ersectVal = <span class="number">0</span>, listA = [<span class="number">2</span>,<span class="number">6</span>,<span class="number">4</span>], listB = [<span class="number">1</span>,<span class="number">5</span>], skipA = <span class="number">3</span>, skipB = <span class="number">2</span></span><br><span class="line">输出：<span class="literal">null</span></span><br><span class="line">输入解释：从各自的表头开始算起，链表 A 为 [<span class="number">2</span>,<span class="number">6</span>,<span class="number">4</span>]，链表 B 为 [<span class="number">1</span>,<span class="number">5</span>]。由于这两个链表不相交，所以 <span class="built_in">int</span>ersectVal 必须为 <span class="number">0</span>，而 skipA 和 skipB 可以是任意值。</span><br><span class="line">解释：这两个链表不相交，因此返回 <span class="literal">null</span>。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>注意：</strong></p>
+<ul>
+<li>如果两个链表没有交点，返回 <code>null</code>.</li>
+<li>在返回结果后，两个链表仍须保持原有的结构。</li>
+<li>可假定整个链表结构中没有循环。</li>
+<li>程序尽量满足 O(<em>n</em>) 时间复杂度，且仅用 O(<em>1</em>) 内存。</li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>可以看到，题目一大堆图和文字，我是真的不想看，可是又深知仔细读题目的重要性，还是给它认真看完了。</p>
+<p>实际上就是给两个链表，返回两个链表相交的那个节点，没有就返回 null，还是很简单的。</p>
+<p>但是真的会有这么简单吗？<strong>程序尽量满足 O(<em>n</em>) 时间复杂度，且仅用 O(<em>1</em>) 内存。</strong>按我的理解，这句话意思就是只能遍历一次，并且不能用map。</p>
+<p>思考一番，我原本打算从后面开始找，但是毕竟是单链表，如此操作过于麻烦了。</p>
+<p>我的第二个想法是得出两条链的长度，将较长的链裁剪掉一部分再进行遍历比较，想到这个方案的时候感觉可行，那就试试哦。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode getIntersectionNode(ListNode headA, ListNode headB) &#123;</span><br><span class="line">    <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode nodeA = headA;</span><br><span class="line">    ListNode nodeB = headB;</span><br><span class="line">    <span class="built_in">int</span> lengthA = <span class="number">1</span>, lengthB = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 分别拿到长度</span></span><br><span class="line">    <span class="keyword">while</span> (nodeA.<span class="keyword">next</span> != <span class="literal">null</span>) &#123;</span><br><span class="line">        lengthA++;</span><br><span class="line">        nodeA = nodeA.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (nodeB.<span class="keyword">next</span> != <span class="literal">null</span>) &#123;</span><br><span class="line">        lengthB++;</span><br><span class="line">        nodeB = nodeB.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 根据长度裁剪</span></span><br><span class="line">    <span class="keyword">if</span> (lengthA &gt; lengthB) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; lengthA - lengthB; i++) &#123;</span><br><span class="line">            headA = headA.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; lengthB - lengthA; i++) &#123;</span><br><span class="line">            headB = headB.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 比较</span></span><br><span class="line">    nodeA = headA;</span><br><span class="line">    nodeB = headB;</span><br><span class="line">    <span class="keyword">while</span> (!nodeA.equals(nodeB)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nodeA.<span class="keyword">next</span> == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        nodeA = nodeA.<span class="keyword">next</span>;</span><br><span class="line">        nodeB = nodeB.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nodeA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-011/image-20201129010336095.png" class title="执行结果">
+
+<div class="note success">
+            <p>代码虽然长了点，但是胜在速度快啊！我现在是发现了，我的代码就是比那些题解长，可能改不了了，不想省略。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
+
+<h2 id="集合，双指针等3种解决方式，后两种击败了100-的用户"><a href="#集合，双指针等3种解决方式，后两种击败了100-的用户" class="headerlink" title="集合，双指针等3种解决方式，后两种击败了100%的用户"></a>集合，双指针等3种解决方式，后两种击败了100%的用户</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/sdwwld/">数据结构和算法</a>发布于 2020-10-15</p>
+<h3 id="1，通过集合set解决"><a href="#1，通过集合set解决" class="headerlink" title="1，通过集合set解决"></a>1，通过集合set解决</h3><p>做这题最容易想到的一种解决方式就是先把第一个链表的节点全部存放到集合set中，然后遍历第二个链表的每一个节点，判断在集合set中是否存在，如果存在就直接返回这个存在的结点。如果遍历完了，在集合set中还没找到，说明他们没有相交，直接返回null即可，原理比较简单，直接看下代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span>(<span class="params">ListNode headA, ListNode headB</span>)</span> &#123;</span><br><span class="line">    <span class="comment">//创建集合set</span></span><br><span class="line">    Set&lt;ListNode&gt; <span class="keyword">set</span> = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="comment">//先把链表A的结点全部存放到集合set中</span></span><br><span class="line">    <span class="keyword">while</span> (headA != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">set</span>.<span class="keyword">add</span>(headA);</span><br><span class="line">        headA = headA.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//然后访问链表B的结点，判断集合中是否包含链表B的结点，如果包含就直接返回</span></span><br><span class="line">    <span class="keyword">while</span> (headB != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">set</span>.contains(headB))</span><br><span class="line">            <span class="keyword">return</span> headB;</span><br><span class="line">        headB = headB.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果集合set不包含链表B的任何一个结点，说明他们没有交点，直接返回null</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2，先统计两个链表的长度"><a href="#2，先统计两个链表的长度" class="headerlink" title="2，先统计两个链表的长度"></a>2，先统计两个链表的长度</h3><p>还可以先统计两个链表的长度，如果两个链表的长度不一样，就让链表长的先走，直到两个链表长度一样，这个时候两个链表再同时每次往后移一步，看节点是否一样，如果有相等的，说明这个相等的节点就是两链表的交点，否则如果走完了还没有找到相等的节点，说明他们没有交点，直接返回null即可，来画个图看一下。</p>
+<img src="/leetcode/day-011/1602776081-okUomu-image.png" class title="image.png">
+<p>最后再来看下代码</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode getIntersectionNode(ListNode headA, ListNode headB) &#123;</span><br><span class="line">    <span class="comment">//统计链表A和链表B的长度</span></span><br><span class="line">    <span class="keyword">int</span> lenA = length(headA), lenB = length(headB);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//如果节点长度不一样，节点多的先走，直到他们的长度一样为止</span></span><br><span class="line">    <span class="keyword">while</span> (lenA != lenB) &#123;</span><br><span class="line">        <span class="keyword">if</span> (lenA &gt; lenB) &#123;</span><br><span class="line">            <span class="comment">//如果链表A长，那么链表A先走</span></span><br><span class="line">            headA = headA.<span class="keyword">next</span>;</span><br><span class="line">            lenA--;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//如果链表B长，那么链表B先走</span></span><br><span class="line">            headB = headB.<span class="keyword">next</span>;</span><br><span class="line">            lenB--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//然后开始比较，如果他俩不相等就一直往下走</span></span><br><span class="line">    <span class="keyword">while</span> (headA != headB) &#123;</span><br><span class="line">        headA = headA.<span class="keyword">next</span>;</span><br><span class="line">        headB = headB.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//走到最后，最终会有两种可能，一种是headA为空，</span></span><br><span class="line">    <span class="comment">//也就是说他们俩不相交。还有一种可能就是headA</span></span><br><span class="line">    <span class="comment">//不为空，也就是说headA就是他们的交点</span></span><br><span class="line">    <span class="keyword">return</span> headA;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//统计链表的长度</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> length(ListNode node) &#123;</span><br><span class="line">    <span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">        node = node.<span class="keyword">next</span>;</span><br><span class="line">        length++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看下运行结果</p>
+<img src="/leetcode/day-011/1602776124-mZdvxv-image.png" class title="image.png">
+
+
+
+<h3 id="3，双指针解决"><a href="#3，双指针解决" class="headerlink" title="3，双指针解决"></a>3，双指针解决</h3><p>我们还可以使用两个指针，最开始的时候一个指向链表A，一个指向链表B，然后他们每次都要往后移动一位，顺便查看节点是否相等。如果链表A和链表B不相交，基本上没啥可说的，我们<strong>这里假设链表A和链表B相交</strong>。那么就会有两种情况，</p>
+<p>一种是链表A的长度和链表B的长度相等，他们每次都走一步，最终在相交点肯定会相遇。</p>
+<p>一种是链表A的长度和链表B的长度不相等，如下图所示</p>
+<img src="/leetcode/day-011/1602776172-sopScf-image.png" class title="image.png">
+
+<p>虽然他们有交点，但他们的长度不一样，所以他们完美的错开了，即使把链表都走完了也找不到相交点。</p>
+<p>我们仔细看下上面的图，<strong>如果A指针把链表A走完了，然后再从链表B开始走到相遇点就相当于把这两个链表的所有节点都走了一遍</strong>，同理如果B指针把链表B走完了，然后再从链表A开始一直走到相遇点也相当于把这两个链表的所有节点都走完了</p>
+<p>所以如果A指针走到链表末尾，下一步就让他从链表B开始。同理如果B指针走到链表末尾，下一步就让他从链表A开始。只要这两个链表相交最终肯定会在相交点相遇，如果不相交，最终他们都会同时走到两个链表的末尾，我们来画个图看一下</p>
+<img src="/leetcode/day-011/1602776200-FJFAes-image.png" class title="image.png">
+<img src="/leetcode/day-011/1602776207-NyQrCj-image.png" class title="image.png">
+
+<p>如上图所示，A指针和B指针如果一直走下去，那么他们最终会在相交点相遇，最后再来看下代码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public ListNode getIntersectionNode(ListNode headA, ListNode headB) &#123;</span><br><span class="line">    <span class="regexp">//</span>tempA和tempB我们可以认为是A,B两个指针</span><br><span class="line">    ListNode tempA = headA;</span><br><span class="line">    ListNode tempB = headB;</span><br><span class="line">    <span class="keyword">while</span> (tempA != tempB) &#123;</span><br><span class="line">        <span class="regexp">//</span>如果指针tempA不为空，tempA就往后移一步。</span><br><span class="line">        <span class="regexp">//</span>如果指针tempA为空，就让指针tempA指向headB（注意这里是headB不是tempB）</span><br><span class="line">        tempA = tempA == null ? headB : tempA.<span class="keyword">next</span>;</span><br><span class="line">        <span class="regexp">//</span>指针tempB同上</span><br><span class="line">        tempB = tempB == null ? headA : tempB.<span class="keyword">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="regexp">//</span>tempA要么是空，要么是两链表的交点</span><br><span class="line">    return tempA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看一下运行结果</p>
+<img src="/leetcode/day-011/1602776258-TrwygQ-image.png" class title="image.png">
+
+
+
+<p><strong>如果觉得有用就给个赞吧，你的赞是给我最大的鼓励，也是我写作的最大动力</strong></p>
+<hr>
+
+<div class="note info">
+            <p>双指针法我是真没想到，一是虽然知道这个方法但是不熟练，二是没想到双指针速度也能这么快。</p>
+          </div>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>有时候一些不起眼的方法可能会有奇效。</p>
+<p>感谢您的阅读！</p>
+
+    </div>
+
+    
+    
+    
+	
+	<div>
+	  
+		<div>
+    
+        <div class="end-tag">---下面没有了<i class="fa fa-paw"></i>感谢您的阅读---</div>
+    
+</div>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+	  
+	</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/leetcode/day-010/" rel="prev" title="算法之旅（十）丑数">
+      <i class="fa fa-chevron-left"></i> 算法之旅（十）丑数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+		  
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%91%E6%8C%87-Offer-52-%E4%B8%A4%E4%B8%AA%E9%93%BE%E8%A1%A8%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%85%AC%E5%85%B1%E8%8A%82%E7%82%B9"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">剑指 Offer 52. 两个链表的第一个公共节点</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%EF%BC%8C%E5%8F%8C%E6%8C%87%E9%92%88%E7%AD%893%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F%EF%BC%8C%E5%90%8E%E4%B8%A4%E7%A7%8D%E5%87%BB%E8%B4%A5%E4%BA%86100-%E7%9A%84%E7%94%A8%E6%88%B7"><span class="nav-number">3.1.</span> <span class="nav-text">集合，双指针等3种解决方式，后两种击败了100%的用户</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%8C%E9%80%9A%E8%BF%87%E9%9B%86%E5%90%88set%E8%A7%A3%E5%86%B3"><span class="nav-number">3.1.1.</span> <span class="nav-text">1，通过集合set解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%8C%E5%85%88%E7%BB%9F%E8%AE%A1%E4%B8%A4%E4%B8%AA%E9%93%BE%E8%A1%A8%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="nav-number">3.1.2.</span> <span class="nav-text">2，先统计两个链表的长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%8C%E5%8F%8C%E6%8C%87%E9%92%88%E8%A7%A3%E5%86%B3"><span class="nav-number">3.1.3.</span> <span class="nav-text">3，双指针解决</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+		
+      </div>
+	  <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yuanjie"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name"><a href="https://gypsophila123.github.io">yuanjie</a></p>
+  <div class="site-description" itemprop="description">劝君惜取少年时</div>
+</div>
+
+
+
+
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Gypsophila123" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gypsophila123" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1371055091&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1371055091&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/wechat.png" title="wechat → images&#x2F;wechat.png"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+		
+      </div>
+
+	
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+	</aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+	
+    <i class="fa fa-heart></i>	
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuanjie</span>
+  
+    
+  
+  
+
+</div>
+
+  
+
+
+
+  <p>发动机：hexo&nbsp;&nbsp;外壳：NexT</p>
+
+
+
+
+<script type="text/javascript" src="/js/src/blogruntime.js"></script>
+<div id="days"></div>
+
+<!--网易云插件-->
+<div class ="cloud-music fa fa-music">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 
+	src="//music.163.com/outchain/player?type=0&id=5307165789&auto=0&height=430"></iframe>
+	<div class="cm-mask"></div>
+	<i ">
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="90" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 27904,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'N9bDsiaBsnUM541S5NQXX4Hf-gzGzoHsz',
+      appKey     : 'W4u9iobAojid7MgDiDdb4iPK',
+      placeholder: "说说你的看法...",
+      avatar     : 'fa fa-user',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":2},"log":false});</script></body>
+</html>

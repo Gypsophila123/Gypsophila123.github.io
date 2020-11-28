@@ -297,6 +297,8 @@
 <p><strong>示例</strong></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">输入:</span></span><br><span class="line">[[<span class="number">7</span>,<span class="number">0</span>], [<span class="number">4</span>,<span class="number">4</span>], [<span class="number">7</span>,<span class="number">1</span>], [<span class="number">5</span>,<span class="number">0</span>], [<span class="number">6</span>,<span class="number">1</span>], [<span class="number">5</span>,<span class="number">2</span>]]</span><br><span class="line"></span><br><span class="line"><span class="string">输出:</span></span><br><span class="line">[[<span class="number">5</span>,<span class="number">0</span>], [<span class="number">7</span>,<span class="number">0</span>], [<span class="number">5</span>,<span class="number">2</span>], [<span class="number">6</span>,<span class="number">1</span>], [<span class="number">4</span>,<span class="number">4</span>], [<span class="number">7</span>,<span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
 
+
+
 <h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>读完一遍题目，感觉没有看懂。没事 我们看看示例，一眼就明白了，原来是排序，不过与一般的排序规则不同罢了。</p>
 <p>再回过头来读题目，<u><code>k</code>是排在这个人前面且身高大于或等于<code>h</code>的人数</u>，这句话大概就是题目的核心了。</p>
 <p><strong>由此，我初步得出如下构思：</strong></p>
@@ -324,6 +326,8 @@
           </div>
 
 <img src="/leetcode/day-002/image-20201117155058253.png" class>
+
+
 
 <h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>看看大佬都怎么写的</p>
 <hr>
@@ -362,6 +366,8 @@
 <div class="note success">
             <p>这位一开口就是老 马学家 了，战术后仰</p><p>解法也很多，这个啪的一下就超百分百真的非常 amazing 啊！</p><p>可惜 private int partition(int[][] arr, int l, int r) 这个方法我没看懂，怪我道行太浅了，今天也不早了，下次一定看吧！</p>
           </div>
+
+
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在没有足够能力的时候，可以尝试用别人的轮子，因为你很难很难比别人造的好，用轮子岂不更省心。</p>
 <p>有时候一个问题能有很多种解法，不要局限于一隅</p>

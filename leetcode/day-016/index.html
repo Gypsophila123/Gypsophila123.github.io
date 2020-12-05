@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<meta name="google-site-verification" content="pBjx13eHcwPhRI87SSewpPihyv6jEIWZfGwVWCMJ5RU" />
+
+<meta name="baidu-site-verification" content="code-m0RWlY65mp" />
+
+<meta name="msvalidate.01" content="3D33E93948C7C8E4E909115C81A9BF8F" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"gypsophila123.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":150,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#0001","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","Available values":"valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这是我的LeetCode算法之旅第 16 篇文章，坚持下去就一定会有收获，加油!!!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法之旅（十六）任务调度器">
+<meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-016/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="这是我的LeetCode算法之旅第 16 篇文章，坚持下去就一定会有收获，加油!!!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-016/image-20201205222338621.png">
+<meta property="article:published_time" content="2020-12-05T11:27:34.000Z">
+<meta property="article:modified_time" content="2020-12-05T11:27:34.000Z">
+<meta property="article:author" content="yuanjie">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gypsophila123.github.io/leetcode/day-016/image-20201205222338621.png">
+
+<link rel="canonical" href="https://gypsophila123.github.io/leetcode/day-016/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法之旅（十六）任务调度器 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  
+
+  <div class="container">
+    <div class="headband"></div>
+	
+	<header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+  
+
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title"></h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+        
+      
+        
+      
+	
+	
+	
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Gypsophila123/Gypsophila123.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/leetcode/day-016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="yuanjie">
+      <meta itemprop="description" content="劝君惜取少年时">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法之旅（十六）任务调度器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-05 19:27:34" itemprop="dateCreated datePublished" datetime="2020-12-05T19:27:34+08:00">2020-12-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/leetcode/day-016/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leetcode/day-016/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 分钟</span>
+            </span>
+            <div class="post-description">这是我的LeetCode算法之旅第 16 篇文章，坚持下去就一定会有收获，加油!!!</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="621-任务调度器"><a href="#621-任务调度器" class="headerlink" title="621. 任务调度器"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/task-scheduler/">621. 任务调度器</a></h4><p>难度中等</p>
+<p>给你一个用字符数组 <code>tasks</code> 表示的 CPU 需要执行的任务列表。其中每个字母表示一种不同种类的任务。任务可以以任意顺序执行，并且每个任务都可以在 1 个单位时间内执行完。在任何一个单位时间，CPU 可以完成一个任务，或者处于待命状态。</p>
+<p>然而，两个 <strong>相同种类</strong> 的任务之间必须有长度为整数 <code>n</code> 的冷却时间，因此至少有连续 <code>n</code> 个单位时间内 CPU 在执行不同的任务，或者在待命状态。</p>
+<p>你需要计算完成所有任务所需要的 <strong>最短时间</strong> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：tasks = [<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>], n = <span class="number">2</span></span><br><span class="line">输出：<span class="number">8</span></span><br><span class="line">解释：A<span class="function"> -&gt;</span> B<span class="function"> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> A<span class="function"> -&gt;</span> B<span class="function"> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> A<span class="function"> -&gt;</span> B</span><br><span class="line">     在本示例中，两个相同类型任务之间必须间隔长度为 n = <span class="number">2</span> 的冷却时间，而执行一个任务只需要一个单位时间，所以中间出现了（待命）状态。 </span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：tasks = [<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>], n = <span class="number">0</span></span><br><span class="line">输出：<span class="number">6</span></span><br><span class="line">解释：在这种情况下，任何大小为 <span class="number">6</span> 的排列都可以满足要求，因为 n = <span class="number">0</span></span><br><span class="line">[<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>]</span><br><span class="line">[<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>]</span><br><span class="line">[<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>]</span><br><span class="line">...</span><br><span class="line">诸如此类</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：tasks = [<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;B&quot;</span>,<span class="string">&quot;C&quot;</span>,<span class="string">&quot;D&quot;</span>,<span class="string">&quot;E&quot;</span>,<span class="string">&quot;F&quot;</span>,<span class="string">&quot;G&quot;</span>], n = <span class="number">2</span></span><br><span class="line">输出：<span class="number">16</span></span><br><span class="line">解释：一种可能的解决方案是：</span><br><span class="line">     A<span class="function"> -&gt;</span> B<span class="function"> -&gt;</span> C<span class="function"> -&gt;</span> A<span class="function"> -&gt;</span> D<span class="function"> -&gt;</span> E<span class="function"> -&gt;</span> A<span class="function"> -&gt;</span> F<span class="function"> -&gt;</span> G<span class="function"> -&gt;</span> A<span class="function"> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> A<span class="function"> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> <span class="function"><span class="params">(待命)</span> -&gt;</span> A</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= task.length &lt;= 104</code></li>
+<li><code>tasks[i]</code> 是大写英文字母</li>
+<li><code>n</code> 的取值范围为 <code>[0, 100]</code></li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>看到示例之前我是懵逼的，这啥啊！谢天谢地，根据示例总算看懂。下面我用游戏中放技能的方式说明一下：</p>
+<blockquote>
+<p>某英雄有 3 个技能，每个技能 cd 都为 n 秒，每个技能施法时间都为  1 秒（施法完再计算冷却）。</p>
+<p>那么我可以一股脑的丢出技能 1，2，3，并且 3 放完之后 1 技能又好了。</p>
+</blockquote>
+<p>如果看懂了上面这段，那我们再来看看示例 1</p>
+<blockquote>
+<p>现在我需要释放三次技能 1，三次技能 2，每个技能 2 秒cd，问我最快要多久能丢完？</p>
+<p>相信玩过这类游戏的都会算吧！说实话官方的题目按这样出我能秒懂。</p>
+<p>（1）先丢技能 1，花费 1 秒。此时技能 1 cd 2秒，技能 2 已经冷却<br>（2）丢技能 2，花费 1 秒。此时技能 1 cd 1 秒，技能 2 cd 2秒<br>（3）没技能可用了，等 1 秒 cd<br>重复上面操作两次。最后一次不用走到第 （3）步就已经完了，所以结果是 8</p>
+</blockquote>
+<p>回到正题，从示例 3 中可以看出，解决方案是找到相同字母，再间隔 n 个其他字符，如果没有其他字符可用就待命，实际上就是数组的排列问题。相同的字母数越多就越先排列，说到相同字母，我就想到了桶排序，处理这种题简直是利器，待我来试上一试。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">int</span> least<span class="constructor">Interval(<span class="params">char</span>[] <span class="params">tasks</span>, <span class="params">int</span> <span class="params">n</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 26 个桶用来存每个字母的数量(bucket[][0]存放字母，bucket[][1]存放字母数量)</span></span><br><span class="line">    <span class="built_in">int</span><span class="literal">[]</span><span class="literal">[]</span> bucket = <span class="keyword">new</span> <span class="built_in">int</span><span class="literal">[<span class="number">26</span>]</span><span class="literal">[<span class="number">2</span>]</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">        bucket<span class="literal">[<span class="identifier">i</span>]</span><span class="literal">[<span class="number">0</span>]</span> = i + <span class="character">&#x27;A&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">char</span> c : tasks) &#123;</span><br><span class="line">        bucket<span class="literal">[<span class="identifier">c</span> - &#x27;A&#x27;]</span><span class="literal">[<span class="number">1</span>]</span> ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 重新排列（使用LinkedList存储）</span></span><br><span class="line">    LinkedList&lt;Character&gt; sortTasks = <span class="keyword">new</span> <span class="constructor">LinkedList()</span>;</span><br><span class="line">    <span class="comment">// 根据数量排序</span></span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(bucket, <span class="module-access"><span class="module"><span class="identifier">Comparator</span>.</span></span>comparing<span class="constructor">Int(<span class="params">o</span> -&gt; <span class="params">o</span>[1])</span>);</span><br><span class="line">    <span class="keyword">while</span> (bucket<span class="literal">[<span class="number">25</span>]</span><span class="literal">[<span class="number">1</span>]</span> != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">int</span> index = <span class="number">25</span>;</span><br><span class="line">        <span class="comment">// 一轮添加 n + 1 个</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        	<span class="comment">// 如果已经没有数据可用就添加 null 当做等待时间</span></span><br><span class="line">            <span class="keyword">if</span> (index &lt; <span class="number">0</span><span class="operator"> || </span>bucket<span class="literal">[<span class="identifier">index</span>]</span><span class="literal">[<span class="number">1</span>]</span><span class="operator"> == </span><span class="number">0</span>) &#123;</span><br><span class="line">                sortTasks.add(null);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            sortTasks.add((<span class="built_in">char</span>) bucket<span class="literal">[<span class="identifier">index</span>]</span><span class="literal">[<span class="number">0</span>]</span>);</span><br><span class="line">            bucket<span class="literal">[<span class="identifier">index</span>]</span><span class="literal">[<span class="number">1</span>]</span>--;</span><br><span class="line">            index--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(bucket, <span class="module-access"><span class="module"><span class="identifier">Comparator</span>.</span></span>comparing<span class="constructor">Int(<span class="params">o</span> -&gt; <span class="params">o</span>[1])</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 消除尾部无用 null</span></span><br><span class="line">    <span class="keyword">while</span> (sortTasks.get<span class="constructor">Last()</span><span class="operator"> == </span>null) &#123;</span><br><span class="line">        sortTasks.remove<span class="constructor">Last()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    return sortTasks.size<span class="literal">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-016/image-20201205222338621.png" class title="image-20201205222338621">
+
+<div class="note info">
+            <p>现实是残酷的，我满怀信心的用了桶排序，然后遇到了各种问题，代码离我想象的样子越来越远。。。。。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><hr>
+
+<h2 id="不用排序，思路简单清晰，速度100"><a href="#不用排序，思路简单清晰，速度100" class="headerlink" title="不用排序，思路简单清晰，速度100%"></a>不用排序，思路简单清晰，速度100%</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/imhzy/">编程不要键盘</a>发布于 11 小时前674Java</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>总时间的大小取决于出现任务数量最多的任务。<br>因为假设只有一种任务，他需要的时间应该是 (任务数-1) * (间隔+1) + 1<br>假设有两种任务，第二种任务的数量小于第一种任务的数量，那么第二种任务就可以穿插在间隔之间<br>以此类推，不管有多少任务，只要小于最多的那个任务出现的次数，都总能穿插在间隔之间<br>如果存在任务和最多的任务相同怎么办？<br>举个例子：<br>假设n = 2 输入为AAABBB,结果应该为<br>A-&gt;B-&gt;<code> </code>-&gt;A-&gt;B-&gt;<code> </code>-&gt;A-&gt;B 结果是8</p>
+<p>所以最终公式为：</p>
+<h2 id="最多的那个任务的任务数-1-间隔-1-任务数量等于最大的任务数的数量"><a href="#最多的那个任务的任务数-1-间隔-1-任务数量等于最大的任务数的数量" class="headerlink" title="(最多的那个任务的任务数 - 1) * (间隔 + 1) + 任务数量等于最大的任务数的数量"></a>(最多的那个任务的任务数 - 1) * (间隔 + 1) + 任务数量等于最大的任务数的数量</h2><p>有一个特殊情况比如说</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AAABBBCCCDD` `n=<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>按照公式算出来结果是9，但实际上数组的长度都大于9，所以是特例，这种情况只需要返回数组长度就行了<br>至于为什么会出现这样的情况，我们研究一下：<br>他的一种可能结果是<br>ABCDABCDABC,他不需要任何等待，就可以执行下一个任务，因此这种情况下需要返回数组长度</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">leastInterval</span><span class="params">(<span class="keyword">char</span>[] tasks, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] cnt = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">char</span> c : tasks) &#123;</span><br><span class="line">            cnt[c - <span class="string">&#x27;A&#x27;</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> <span class="built_in">max</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">            <span class="built_in">max</span> = Math.<span class="built_in">max</span>(<span class="built_in">max</span>, cnt[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ret = (<span class="built_in">max</span> - <span class="number">1</span>) * (n + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cnt[i] == <span class="built_in">max</span>) &#123;</span><br><span class="line">                ret++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.<span class="built_in">max</span>(ret, tasks.length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+<div class="note primary">
+            <p>哇哦，这个也太强了，可以看到这位大神也是用了桶，但是结果居然是直接计算出来的，我属实惊呆了，与之相比我那个也只能算是暴力破解了</p>
+          </div>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>有时候方法用对了没找到关键也是没用，走对路的同时还要足够细心，善于去发现规律（我这猪脑袋难搞了）</p>
+<p>感谢您的阅读！</p>
+
+    </div>
+
+    
+    
+    
+	
+	<div>
+	  
+		<div>
+    
+        <div class="end-tag">---下面没有了<i class="fa fa-paw"></i>感谢您的阅读---</div>
+    
+</div>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+	  
+	</div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/leetcode/day-015/" rel="prev" title="算法之旅（十五）计数质数">
+      <i class="fa fa-chevron-left"></i> 算法之旅（十五）计数质数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+		  
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#621-%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">621. 任务调度器</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E7%94%A8%E6%8E%92%E5%BA%8F%EF%BC%8C%E6%80%9D%E8%B7%AF%E7%AE%80%E5%8D%95%E6%B8%85%E6%99%B0%EF%BC%8C%E9%80%9F%E5%BA%A6100"><span class="nav-number">3.1.</span> <span class="nav-text">不用排序，思路简单清晰，速度100%</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.1.</span> <span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%9A%E7%9A%84%E9%82%A3%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E4%BB%BB%E5%8A%A1%E6%95%B0-1-%E9%97%B4%E9%9A%94-1-%E4%BB%BB%E5%8A%A1%E6%95%B0%E9%87%8F%E7%AD%89%E4%BA%8E%E6%9C%80%E5%A4%A7%E7%9A%84%E4%BB%BB%E5%8A%A1%E6%95%B0%E7%9A%84%E6%95%B0%E9%87%8F"><span class="nav-number">3.2.</span> <span class="nav-text">(最多的那个任务的任务数 - 1) * (间隔 + 1) + 任务数量等于最大的任务数的数量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+		
+      </div>
+	  <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yuanjie"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name"><a href="https://gypsophila123.github.io">yuanjie</a></p>
+  <div class="site-description" itemprop="description">劝君惜取少年时</div>
+</div>
+
+
+
+
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Gypsophila123" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Gypsophila123" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1371055091&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1371055091&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/wechat.png" title="wechat → images&#x2F;wechat.png"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+		
+      </div>
+
+	
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+	</aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+	
+    <i class="fa fa-heart></i>	
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuanjie</span>
+  
+    
+  
+  
+
+</div>
+
+  
+
+
+
+  <p>发动机：hexo&nbsp;&nbsp;外壳：NexT</p>
+
+
+
+
+<script type="text/javascript" src="/js/src/blogruntime.js"></script>
+<div id="days"></div>
+
+<!--网易云插件-->
+<div class ="cloud-music fa fa-music">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 
+	src="//music.163.com/outchain/player?type=0&id=5307165789&auto=0&height=430"></iframe>
+	<div class="cm-mask"></div>
+	<i ">
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="90" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 27904,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'N9bDsiaBsnUM541S5NQXX4Hf-gzGzoHsz',
+      appKey     : 'W4u9iobAojid7MgDiDdb4iPK',
+      placeholder: "说说你的看法...",
+      avatar     : 'fa fa-user',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":2},"log":false});</script></body>
+</html>

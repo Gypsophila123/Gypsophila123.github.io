@@ -2309,9 +2309,8 @@
 <li><code>A[i][j]</code> 是 <code>0</code> 或 <code>1</code></li>
 </ol>
 <h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>等我看懂题目不禁有些头大，给出一个矩阵，任意翻转得到最大数，用官方例子做个演示：</p>
-<blockquote>
-<p>0 0 1 1        1 1 0 0        1 1 0 1        1 1 1 1<br>1 0 1 0  -&gt;  1 0 1 0  -&gt;  1 0 1 1  -&gt;  1 0 0 1<br>1 1 0 0        1 1 0 0        1 1 0 1        1 1 1 1</p>
-</blockquote>
+<img src="/leetcode/day-018/image-20201208215030410.png" class title="image-20201208215030410">
+
 <p>一共走了三步，才走到官方给出的答案，得到两个问题：</p>
 <ul>
 <li>怎么翻转利益才能最大化</li>
@@ -2329,8 +2328,9 @@
 <p>关于先看行还是列</p>
 <blockquote>
 <p>根据上面这个演示(先看了行)，我在脑袋中思索了一下，决定干脆试下先看列</p>
-<p>0 0 1 1        0 1 1 1        0 1 1 0        1 0 0 1        1 1 0 1        1 1 1 1<br>1 0 1 0  -&gt;  1 1 1 0  -&gt;  1 1 1 1  -&gt;  1 1 1 1  -&gt;  1 0 1 1  -&gt;  1 0 0 1<br>1 1 0 0        1 0 0 0        1 0 0 1        1 0 0 1        1 1 0 1        1 1 1 1</p>
 </blockquote>
+<img src="/leetcode/day-018/image-20201208215114910.png" class title="image-20201208215114910">
+
 <p>结果看起来很明显，先将每行变为最大会更短，但这只是一个例子，不具有普适性，所以代码验证一下：</p>
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> matrixScore(<span class="built_in">int</span>[][] A) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A.length == <span class="number">0</span> || A[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">int</span> height = A.length;</span><br><span class="line">    <span class="built_in">int</span> width = A[<span class="number">0</span>].length;</span><br><span class="line">    <span class="comment">// 遍历每行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; height; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[i][<span class="number">0</span>] == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 翻转行</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; width; j++) &#123;</span><br><span class="line">                A[i][j] ^= <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历每列</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; width; i++) &#123;</span><br><span class="line">        <span class="comment">// 统计一下这一列是 0 多还是 1 多</span></span><br><span class="line">        <span class="built_in">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span>[] <span class="built_in">int</span>s : A) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">int</span>s[i] == <span class="number">0</span>) &#123;</span><br><span class="line">                count--;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (count &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 翻转列</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span>[] <span class="built_in">int</span>s : A) &#123;</span><br><span class="line">                <span class="built_in">int</span>s[i] ^= <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 计算总和</span></span><br><span class="line">    <span class="built_in">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; height; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; width; j++) &#123;</span><br><span class="line">            result += A[i][j] &lt;&lt; (width - <span class="number">1</span> - j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -2363,12 +2363,132 @@
 <hr>
 
 <div class="note info">
-            <p>真不是我偷懒，大家思路都差不多，但是官方的没有移动数组，算是一个优化，很有意思。</p><p>这几天的题有个关键词是贪心算法，到底是什么意思？整的这么高大上，不过且让我偷懒，不去搜啦！</p>
+            <p>真不是我偷懒直接拿官方，评论区大家思路都差不多，但是官方的没有移动数组，算是一个优化，很有意思。</p><p>这几天的题有个关键词是贪心算法，到底是什么意思？整的这么高大上，不过且让我偷懒，不去搜啦！</p>
           </div>
 
 
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>加油加油！</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之旅（十九）将数组拆分成斐波那契序列</title>
+    <url>//leetcode/day-019/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="将数组拆分成斐波那契序列"><a href="#将数组拆分成斐波那契序列" class="headerlink" title="将数组拆分成斐波那契序列"></a><a href="https://leetcode-cn.com/problems/split-array-into-fibonacci-sequence/">将数组拆分成斐波那契序列</a></h4><p>难度中等</p>
+<p>给定一个数字字符串 <code>S</code>，比如 <code>S = &quot;123456579&quot;</code>，我们可以将它分成斐波那契式的序列 <code>[123, 456, 579]</code>。</p>
+<p>形式上，斐波那契式序列是一个非负整数列表 <code>F</code>，且满足：</p>
+<ul>
+<li><code>0 &lt;= F[i] &lt;= 2^31 - 1</code>，（也就是说，每个整数都符合 32 位有符号整数类型）；</li>
+<li><code>F.length &gt;= 3</code>；</li>
+<li>对于所有的<code>0 &lt;= i &lt; F.length - 2</code>，都有 <code>F[i] + F[i+1] = F[i+2]</code> 成立。</li>
+</ul>
+<p>另外，请注意，将字符串拆分成小块时，每个块的数字一定不要以零开头，除非这个块是数字 0 本身。</p>
+<p>返回从 <code>S</code> 拆分出来的任意一组斐波那契式的序列块，如果不能拆分则返回 <code>[]</code>。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">输入：<span class="string">&quot;123456579&quot;</span></span><br><span class="line">输出：[<span class="number">123</span>,<span class="number">456</span>,<span class="number">579</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入: <span class="string">&quot;11235813&quot;</span></span><br><span class="line">输出: [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">13</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">输入: &quot;112358130&quot;</span></span><br><span class="line"><span class="section">输出: []</span></span><br><span class="line"><span class="section">解释: 这项任务无法完成。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 4：</strong></p>
+<figure class="highlight prolog"><table><tr><td class="code"><pre><span class="line">输入：<span class="string">&quot;0123&quot;</span></span><br><span class="line">输出：[]</span><br><span class="line">解释：每个块的数字不能以零开头，因此 <span class="string">&quot;01&quot;</span>，<span class="string">&quot;2&quot;</span>，<span class="string">&quot;3&quot;</span> 不是有效答案。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 5：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入: <span class="string">&quot;1101111&quot;</span></span><br><span class="line">输出: [<span class="number">110</span>, <span class="number">1</span>, <span class="number">111</span>]</span><br><span class="line">解释: 输出 [<span class="number">11</span>,<span class="number">0</span>,<span class="number">11</span>,<span class="number">11</span>] 也同样被接受。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= S.length &lt;= 200</code></li>
+<li>字符串 <code>S</code> 中只含有数字。</li>
+</ol>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>首先来研究一下斐波那契数列，根据题目可以得知必须满足：</p>
+<blockquote>
+<p>对于所有的<code>0 &lt;= i &lt; F.length - 2</code>，都有 <code>F[i] + F[i+1] = F[i+2]</code> 成立。</p>
+</blockquote>
+<p>才被称之为斐波那契数列，所以这个数列最少也会有三位数，那么我们现在有几个问题：</p>
+<ul>
+<li>怎么分割字符串才能保证可行</li>
+</ul>
+<blockquote>
+<p>可以看到数字的长度不是固定的，我们唯一知道的就是 <code>F[i] + F[i+1] = F[i+2]</code> </p>
+<p>我们只要找到开头三个数，实际上确定了开头后面的都可以通过计算得出。</p>
+</blockquote>
+<ul>
+<li>怎么才能穷举所有情况</li>
+</ul>
+<blockquote>
+<p>根据示例，可以看到情况非常复杂，我们怎么样才能将所有可能都穷举一遍呢？</p>
+<p>我的思路是由短到长，最短长度是 1，而最大长度：<br>    只要第一和第二两数中最长的一个长度不超过剩余长度（第三个数）即可（因为数字开头不能为 0）。</p>
+<p>同时因为“每个整数都符合 32 位有符号整数类型”，所以如果长度过长（某个数超过  2的 31次方 - 1，我们就直接跳过）</p>
+</blockquote>
+<p>如果上面这两个问题能解决，那么<strong>代码结构</strong>就是：先确定头三个数 -&gt; 根据头三个数演算直到结束。<br>如果有一步对不上就重新确定头三个数，一直到穷举完所有可能。</p>
+<p>这样的话代码很不容易写，而且有个问题，如何穷举？因为我们不知道这三个数长度的规律，穷举次数可能会达到恐怖的程度，所以我们研究一下其长度</p>
+<blockquote>
+<p>第一个数和第二个数的长度是完全未知的。只要在规定内都有可能。<br>第三个数长度可能等于前两个数中较长的那个，也可能等于较长那个加 1</p>
+</blockquote>
+<p>准确范围：</p>
+<blockquote>
+<p>从例 5 看出，第一个数长度最大为字符串长度的一半 减 1，此时第二个数长度为 1。反之亦然</p>
+<p><strong>本质是</strong>： 数 3 的 长度或 数 1 和数 2 中较长数或者较长数加 1<br>所以数 3 会占总长度的 1 / 3 ~ 1 / 2</p>
+</blockquote>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数组长度</span></span><br><span class="line"><span class="built_in">int</span> length = <span class="number">0</span>;</span><br><span class="line">public List&lt;Integer&gt; split<span class="constructor">IntoFibonacci(String S)</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; fibonacci = <span class="keyword">new</span> <span class="constructor">ArrayList()</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span> &lt; <span class="number">3</span>) &#123;</span><br><span class="line">        return fibonacci;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 找到前三个数 双指针遍历一次。i 为数 1 的长度，j 为数 2 的长度。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span><span class="operator"> / </span><span class="number">2</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt; <span class="number">0</span><span class="operator"> &amp;&amp; </span><span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span><span class="built_in">char</span><span class="constructor">At(0)</span><span class="operator"> == </span><span class="character">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当数 1 长度 &gt; 1 / 3,数 2 的长度最大为 S.length - 2i(此时数1长等于数3)</span></span><br><span class="line">        <span class="built_in">int</span> jLength = (i &gt; <span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span><span class="operator"> / </span><span class="number">3</span>) ? (<span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span> - <span class="number">2</span><span class="operator"> * </span>i) : (<span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span> - i)<span class="operator"> / </span><span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> j = i + <span class="number">1</span>; j &lt; i + <span class="number">1</span> + jLength; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (is<span class="constructor">Fibonacci(S, 0, <span class="params">i</span> + 1, <span class="params">j</span> + 1)</span>) &#123;</span><br><span class="line">                <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">&quot;是斐波那契数列&quot;</span>);</span><br><span class="line">                <span class="built_in">int</span> seed1 = <span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>parse<span class="constructor">Int(S.<span class="params">substring</span>(0, <span class="params">i</span> + 1)</span>);</span><br><span class="line">                <span class="built_in">int</span> seed2 = <span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>parse<span class="constructor">Int(S.<span class="params">substring</span>(<span class="params">i</span> + 1, <span class="params">j</span> + 1)</span>);</span><br><span class="line">                fibonacci.add(seed1);</span><br><span class="line">                fibonacci.add(seed2);</span><br><span class="line">                <span class="comment">// 根据两个种子数得到数组</span></span><br><span class="line">                fill<span class="constructor">Fibonacci(<span class="params">fibonacci</span>, <span class="params">seed1</span>, <span class="params">seed2</span>)</span>;</span><br><span class="line">                return fibonacci;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 数组长度直接归零</span></span><br><span class="line">                length = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return fibonacci;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean is<span class="constructor">Fibonacci(String S, <span class="params">int</span> <span class="params">start</span>, <span class="params">int</span> <span class="params">middle</span>, <span class="params">int</span> <span class="params">end</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 数字首位不为 0;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">end</span> - middle &lt; <span class="number">1</span><span class="operator"> &amp;&amp; </span><span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span><span class="built_in">char</span><span class="constructor">At(<span class="params">middle</span>)</span><span class="operator"> == </span><span class="character">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">        return <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 到底即成功</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">end</span><span class="operator"> == </span><span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>length<span class="literal">()</span>) &#123;</span><br><span class="line">        return <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">int</span> next = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        next = <span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>parse<span class="constructor">Int(S.<span class="params">substring</span>(<span class="params">start</span>, <span class="params">middle</span>)</span>) + <span class="module-access"><span class="module"><span class="identifier">Integer</span>.</span></span>parse<span class="constructor">Int(S.<span class="params">substring</span>(<span class="params">middle</span>, <span class="params">end</span>)</span>);</span><br><span class="line">    &#125; catch (NumberFormatException e) &#123;</span><br><span class="line">        return <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 算出下一位再去做配对，成功则递归</span></span><br><span class="line">    String value = <span class="module-access"><span class="module"><span class="identifier">String</span>.</span></span>value<span class="constructor">Of(<span class="params">next</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="module-access"><span class="module"><span class="identifier">S</span>.</span></span>starts<span class="constructor">With(<span class="params">value</span>, <span class="params">end</span>)</span>) &#123;</span><br><span class="line">        length++;</span><br><span class="line">        return is<span class="constructor">Fibonacci(S, <span class="params">middle</span>, <span class="params">end</span>, <span class="params">end</span> + <span class="params">value</span>.<span class="params">length</span>()</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        return <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void fill<span class="constructor">Fibonacci(List&lt;Integer&gt; <span class="params">nums</span>, <span class="params">int</span> <span class="params">num1</span>, <span class="params">int</span> <span class="params">num2</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (length<span class="operator"> == </span><span class="number">0</span>) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    length--;</span><br><span class="line">    <span class="built_in">int</span> nextNum = num1 + num2;</span><br><span class="line">    nums.add(nextNum);</span><br><span class="line">    fill<span class="constructor">Fibonacci(<span class="params">nums</span>, <span class="params">num2</span>, <span class="params">nextNum</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<div class="note info">
+            <p>代码一直缝缝补补的，然后就变成这副鬼样子了。。。可以说是非常之烂了，而且成绩更烂。</p>
+          </div>
+
+<img src="/leetcode/day-019/image-20201210235317480.png" class title="image-20201210235317480">
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>我已经迫不及待想看看别人是怎么解决这个我看起来很棘手的问题。</p>
+<hr>
+
+<h1 id="java回溯算法图文详解，击败了100-的用户"><a href="#java回溯算法图文详解，击败了100-的用户" class="headerlink" title="java回溯算法图文详解，击败了100%的用户"></a>java回溯算法图文详解，击败了100%的用户</h1><p><a href="https://leetcode-cn.com/u/sdwwld/">数据结构和算法</a>发布于 3 天前7.4kJava回溯</p>
+<p>这题使用回溯算法是最容易解决的，回溯算法其实就是不断尝试的过程，一旦尝试成功了，就算成功了，如果尝试失败了还会回到上一步，注意回到上一步的时候还要把状态还原到上一步的状态。回溯算法这里就不在过多介绍，关于回溯算法的解题思路可以看下<a href="https://mp.weixin.qq.com/s?__biz=MzU0ODMyNDk0Mw==&mid=2247488558&idx=1&sn=bb600c06c773960b3f4536c4c6c8d948&chksm=fb41870ecc360e18db1ca13783050d1a2efb19579407587baeea9b258a92e4c90c7ad12cbc1a&token=1584592952&lang=zh_CN#rd">450，什么叫回溯算法，一看就会，一写就废</a>。</p>
+<p>回溯算法其实有一个经典的模板</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">private void backtrack(<span class="string">&quot;原始参数&quot;</span>) &#123;</span><br><span class="line">    <span class="regexp">//</span>终止条件(递归必须要有终止条件)</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;终止条件&quot;</span>) &#123;</span><br><span class="line">        <span class="regexp">//</span>一些逻辑操作（可有可无，视情况而定）</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="string">&quot;for循环开始的参数&quot;</span>; i &lt; <span class="string">&quot;for循环结束的参数&quot;</span>; i++) &#123;</span><br><span class="line">        <span class="regexp">//</span>一些逻辑操作（可有可无，视情况而定）</span><br><span class="line"></span><br><span class="line">        <span class="regexp">//</span>做出选择</span><br><span class="line"></span><br><span class="line">        <span class="regexp">//</span>递归</span><br><span class="line">        backtrack(<span class="string">&quot;新的参数&quot;</span>);</span><br><span class="line">        <span class="regexp">//</span>一些逻辑操作（可有可无，视情况而定）</span><br><span class="line"></span><br><span class="line">        <span class="regexp">//</span>撤销选择</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于这道题也一样，我们先把字符串不断的截取，看一下能不能构成斐波那契序列，如果不能就回到上一步，如果能就继续往下走，具体我们看下下面的图，这里是参照示例1为例画的一个图，只不过数字缩短了，只有<code>124557</code>，因为如果数字比较多的话，图太大，画不下。</p>
+<img src="/leetcode/day-019/1607416979-Gqmezs-image.png" class title="image.png">
+
+<p>搞懂了上面的原理，代码就简单多了，我们来看下代码</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">splitIntoFibonacci</span><span class="params">(<span class="keyword">String</span> S)</span> </span>&#123;</span><br><span class="line">    List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    backtrack(S.toCharArray(), res, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">backtrack</span><span class="params">(<span class="keyword">char</span>[] digit, List&lt;Integer&gt; res, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//边界条件判断，如果截取完了，并且res长度大于等于3，表示找到了一个组合。</span></span><br><span class="line">    <span class="keyword">if</span> (index == digit.length &amp;&amp; res.<span class="built_in">size</span>() &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; digit.length; i++) &#123;</span><br><span class="line">        <span class="comment">//两位以上的数字不能以0开头</span></span><br><span class="line">        <span class="keyword">if</span> (digit[index] == <span class="string">&#x27;0&#x27;</span> &amp;&amp; i &gt; index) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//截取字符串转化为数字</span></span><br><span class="line">        <span class="keyword">long</span> num = subDigit(digit, index, i + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//如果截取的数字大于int的最大值，则终止截取</span></span><br><span class="line">        <span class="keyword">if</span> (num &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> <span class="built_in">size</span> = res.<span class="built_in">size</span>();</span><br><span class="line">        <span class="comment">//如果截取的数字大于res中前两个数字的和，说明这次截取的太大，直接终止，因为后面越截取越大</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">size</span> &gt;= <span class="number">2</span> &amp;&amp; num &gt; res.<span class="built_in">get</span>(<span class="built_in">size</span> - <span class="number">1</span>) + res.<span class="built_in">get</span>(<span class="built_in">size</span> - <span class="number">2</span>)) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">size</span> &lt;= <span class="number">1</span> || num == res.<span class="built_in">get</span>(<span class="built_in">size</span> - <span class="number">1</span>) + res.<span class="built_in">get</span>(<span class="built_in">size</span> - <span class="number">2</span>)) &#123;</span><br><span class="line">            <span class="comment">//把数字num添加到集合res中</span></span><br><span class="line">            res.add((<span class="keyword">int</span>) num);</span><br><span class="line">            <span class="comment">//如果找到了就直接返回</span></span><br><span class="line">            <span class="keyword">if</span> (backtrack(digit, res, i + <span class="number">1</span>))</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="comment">//如果没找到，就会走回溯这一步，然后把上一步添加到集合res中的数字给移除掉</span></span><br><span class="line">            res.<span class="built_in">remove</span>(res.<span class="built_in">size</span>() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//相当于截取字符串S中的子串然后转换为十进制数字</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">subDigit</span><span class="params">(<span class="keyword">char</span>[] digit, <span class="keyword">int</span> start, <span class="keyword">int</span> <span class="built_in">end</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; <span class="built_in">end</span>; i++) &#123;</span><br><span class="line">        res = res * <span class="number">10</span> + digit[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看一下运行结果</p>
+<img src="/leetcode/day-019/1607397283-spTHyh-image.png" class title="image.png">
+
+
+
+<p><strong>如果觉得有用就给个赞吧，你的赞是给我最大的鼓励，也是我写作的最大动力</strong></p>
+<hr>
+
+<div class="note primary">
+            <p>很强！</p>
+          </div>
+
+
+
+
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>。。。</p>
 <p>感谢您的阅读！</p>
 ]]></content>
       <categories>

@@ -2500,7 +2500,7 @@
       </tags>
   </entry>
   <entry>
-    <title>算法之旅（二十）day_020</title>
+    <title>算法之旅（二十）存在重复元素</title>
     <url>//leetcode/day-020/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="217-存在重复元素"><a href="#217-存在重复元素" class="headerlink" title="217. 存在重复元素"></a><a href="https://leetcode-cn.com/problems/contains-duplicate/">217. 存在重复元素</a></h4><p>难度简单</p>
 <p>给定一个整数数组，判断是否存在重复元素。</p>
@@ -2691,6 +2691,212 @@
 
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>。。。</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之旅（二十四） 买卖股票的最佳时机含手续费</title>
+    <url>//leetcode/day-024/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="买卖股票的最佳时机含手续费"><a href="#买卖股票的最佳时机含手续费" class="headerlink" title=" 买卖股票的最佳时机含手续费"></a><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/"> 买卖股票的最佳时机含手续费</a></h4><p>难度中等</p>
+<p>给定一个整数数组 <code>prices</code>，其中第 <code>i</code> 个元素代表了第 <code>i</code> 天的股票价格 ；非负整数 <code>fee</code> 代表了交易股票的手续费用。</p>
+<p>你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。</p>
+<p>返回获得利润的最大值。</p>
+<p><strong>注意：</strong>这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输入: prices = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">9</span>], fee = <span class="number">2</span></span><br><span class="line">输出: <span class="number">8</span></span><br><span class="line">解释: 能够达到的最大利润:  </span><br><span class="line">在此处买入 prices[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">在此处卖出 prices[<span class="number">3</span>] = <span class="number">8</span></span><br><span class="line">在此处买入 prices[<span class="number">4</span>] = <span class="number">4</span></span><br><span class="line">在此处卖出 prices[<span class="number">5</span>] = <span class="number">9</span></span><br><span class="line">总利润: ((<span class="number">8</span> - <span class="number">1</span>) - <span class="number">2</span>) + ((<span class="number">9</span> - <span class="number">4</span>) - <span class="number">2</span>) = <span class="number">8.</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong></p>
+<ul>
+<li><code>0 &lt; prices.length &lt;= 50000</code>.</li>
+<li><code>0 &lt; prices[i] &lt; 50000</code>.</li>
+<li><code>0 &lt;= fee &lt; 50000</code>.</li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>惊了，没想到还能碰上这种题目，好在给出的条件还算简单。prices是一个整数数组，相当于一支股票，我们需要求出怎么买卖这支股票获得最大收益。由于手里的股票必须卖掉才能重新买，所以条件已经被简化了。</p>
+<p>根据题目上的示例，我们需要的就是低卖高卖，当某段内最高点减最低点能获取收益，就执行这一段的交易。每一段的收益加起来就是总利润。</p>
+<p>当然实际上没有这么简单，如果按照上面这样来操作下面这个例子：</p>
+<blockquote>
+<p><code>输入: prices = [1, 3, 2, 7, 6, 8], fee = 2</code></p>
+<ol>
+<li>找到 [2, 7]这段收益为 7 - 2 - 2 = 3</li>
+<li>找不到接下来的段，结束</li>
+</ol>
+</blockquote>
+<p>很明显不对劲,实际最大收益应该是 8 - 1 - 2 = 5</p>
+<p>像上例我们直接用最大值减最小值反而能直接得解，其中关键点还是 fee，当一段不能满足获取收益，其最低点还要保存，与下一段最低作比较，留下来最低。而满足获取收益后，也要看看后面这段会不会更高，能否获得收益。</p>
+<p>说到这里，感觉这大概就是贪心算法。</p>
+<blockquote>
+<ol>
+<li>第一段是 [1, 3]，赚不到，保留最小 1</li>
+<li>第二段是[2, 7]， 1 比 2更小，合为[1, 7]</li>
+<li>下一段是[6, 8]，8 比 7 要高，而且这段赚不到，所以合为 [1, 8]</li>
+<li>总收益为 8 - 1 - 2 = 5，正确 </li>
+</ol>
+</blockquote>
+<p>虽然这样是可以了，但是这代码怎么写呢？</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> income = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">min</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">max</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">boolean</span> isDrop = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prices.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="comment">// 找最低</span></span><br><span class="line">        <span class="keyword">if</span>(isDrop) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] &lt; prices[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="built_in">min</span> = (<span class="built_in">min</span> == <span class="number">0</span> ? prices[i] : Math.<span class="built_in">min</span>(<span class="built_in">min</span>, prices[i]));</span><br><span class="line">                isDrop =<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 找最高</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] &gt; prices[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="comment">// 如果可以收益就直接计算，min清 0,保留这次max</span></span><br><span class="line">                <span class="keyword">int</span> earn = prices[i] - <span class="built_in">min</span> - fee;</span><br><span class="line">                <span class="keyword">if</span> (earn &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    income += earn;</span><br><span class="line">                    <span class="built_in">min</span> = <span class="number">0</span>;</span><br><span class="line">                    <span class="built_in">max</span> = prices[i];</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 虽没有收益，但是最高点变高了</span></span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">max</span> != <span class="number">0</span> &amp;&amp; prices[i] &gt; <span class="built_in">max</span>) &#123;</span><br><span class="line">                        income += prices[i] - <span class="built_in">max</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                isDrop = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 循环结束后还在找最高，尾数就是最高</span></span><br><span class="line">    <span class="keyword">if</span> (!isDrop) &#123;</span><br><span class="line">            <span class="keyword">int</span> earn = prices[prices.length - <span class="number">1</span>] - <span class="built_in">min</span> - fee;</span><br><span class="line">            <span class="keyword">if</span> (earn &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                income += earn;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> income;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>花了一番功夫来写这段代码，运行上去却成了这样</p>
+<img src="/leetcode/day-024/image-20201217161841886.png" class title="image-20201217161841886">
+
+<p>观察一番，发现是我想复杂了，有收益并不代表就是最优解，按照我的解法上面这个例应该是：</p>
+<blockquote>
+<p>输入: prices = [1, 3, 7, 5, 10, 3], fee = 3</p>
+<ol>
+<li>找到 [1, 7]，得收益  7 - 1 - 3 = 3</li>
+<li>接着找到 [5 ,10]，得收益 10 - 5 - 3 = 2</li>
+<li>收益总计 5 ，结束</li>
+</ol>
+</blockquote>
+<p>到这里应该可以看出来了，关键点还是fee, 但实际用于判断的应是 —— 最高点 7 后面的最低点 5 之间差小于fee 3，所以不计算。</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> income = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">min</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">max</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">boolean</span> isDrop = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prices.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="comment">// 找下一个低点</span></span><br><span class="line">        <span class="keyword">if</span>(isDrop) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] &lt; prices[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">min</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 第一个低谷</span></span><br><span class="line">                    <span class="built_in">min</span> = prices[i];</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 结算上一轮</span></span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">max</span> - prices[i] &gt; fee) &#123;</span><br><span class="line">                        <span class="keyword">int</span> earn = <span class="built_in">max</span> - <span class="built_in">min</span> - fee;</span><br><span class="line">                        <span class="comment">// 如果能取得收益就交易，并更新低谷</span></span><br><span class="line">                        <span class="keyword">if</span> (earn &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                            income += earn;</span><br><span class="line">                            <span class="built_in">min</span> = prices[i];</span><br><span class="line">                        &#125; </span><br><span class="line">                        <span class="comment">// 没有收益保留最低谷</span></span><br><span class="line">                        <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="built_in">min</span> = Math.<span class="built_in">min</span>(prices[i], <span class="built_in">min</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">// 结算完重置 max</span></span><br><span class="line">                        <span class="built_in">max</span> = <span class="number">0</span>; </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                isDrop =<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 找下一个高点</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] &gt; prices[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="built_in">max</span> = Math.<span class="built_in">max</span>(<span class="built_in">max</span>, prices[i]);</span><br><span class="line">                isDrop = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 循环后的结算</span></span><br><span class="line">    <span class="keyword">if</span> (!isDrop) &#123;</span><br><span class="line">        <span class="built_in">max</span> = Math.<span class="built_in">max</span>(<span class="built_in">max</span>, prices[prices.length - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> earn = <span class="built_in">max</span> - <span class="built_in">min</span> - fee;</span><br><span class="line">    <span class="keyword">if</span> (earn &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        income += earn;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> income;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-024/image-20201217173730781.png" class title="image-20201217173730781">
+
+<div class="note danger">
+            <p>我人傻了，如此多的if , else ，大脑陷入晕眩，最后提交却还是没能通过，我这智商如果去股市就是妥妥的韭菜。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>实在不得解，去题解区看看吧！</p>
+<hr>
+
+<h2 id="买卖股票的最佳时机含手续费-1"><a href="#买卖股票的最佳时机含手续费-1" class="headerlink" title="买卖股票的最佳时机含手续费"></a>买卖股票的最佳时机含手续费</h2><p><a href="https://leetcode-cn.com/u/leetcode-solution/">力扣官方题解</a>发布于 18 小时前14.9k</p>
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>本题和 <a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a> 是非常类似的题，唯一的区别就在于本题有「手续费」而第 122 题没有。</p>
+<h4 id="方法一：动态规划"><a href="#方法一：动态规划" class="headerlink" title="方法一：动态规划"></a>方法一：动态规划</h4><p><strong>思路与算法</strong></p>
+<p>考虑到「不能同时参与多笔交易」，因此每天交易结束后只可能存在手里有一支股票或者没有股票的状态。</p>
+<p>定义状态 \textit{dp}[i][0]<em>dp</em>[<em>i</em>][0] 表示第 i<em>i</em> 天交易完后手里没有股票的最大利润，\textit{dp}[i][1]<em>dp</em>[<em>i</em>][1] 表示第 i<em>i</em> 天交易完后手里持有一支股票的最大利润（i<em>i</em> 从 00 开始）。</p>
+<p>考虑 \textit{dp}[i][0]<em>dp</em>[<em>i</em>][0] 的转移方程，如果这一天交易完后手里没有股票，那么可能的转移状态为前一天已经没有股票，即 \textit{dp}[i-1][0]<em>dp</em>[<em>i</em>−1][0]，或者前一天结束的时候手里持有一支股票，即 \textit{dp}[i-1][1]<em>dp</em>[<em>i</em>−1][1]，这时候我们要将其卖出，并获得 \textit{prices}[i]<em>prices</em>[<em>i</em>] 的收益，但需要支付 \textit{fee}<em>fee</em> 的手续费。因此为了收益最大化，我们列出如下的转移方程：</p>
+<p>\textit{dp}[i][0]=\max{\textit{dp}[i-1][0],\textit{dp}[i-1][1]+\textit{prices}[i]-\textit{fee}}<em>dp</em>[<em>i</em>][0]=max{<em>dp</em>[<em>i</em>−1][0],<em>dp</em>[<em>i</em>−1][1]+<em>prices</em>[<em>i</em>]−<em>fee</em>}</p>
+<p>再来按照同样的方式考虑 \textit{dp}[i][1]<em>dp</em>[<em>i</em>][1] 按状态转移，那么可能的转移状态为前一天已经持有一支股票，即 \textit{dp}[i-1][1]<em>dp</em>[<em>i</em>−1][1]，或者前一天结束时还没有股票，即 \textit{dp}[i-1][0]<em>dp</em>[<em>i</em>−1][0]，这时候我们要将其买入，并减少 \textit{prices}[i]<em>prices</em>[<em>i</em>] 的收益。可以列出如下的转移方程：</p>
+<p>\textit{dp}[i][1]=\max{\textit{dp}[i-1][1],\textit{dp}[i-1][0]-\textit{prices}[i]}<em>dp</em>[<em>i</em>][1]=max{<em>dp</em>[<em>i</em>−1][1],<em>dp</em>[<em>i</em>−1][0]−<em>prices</em>[<em>i</em>]}</p>
+<p>对于初始状态，根据状态定义我们可以知道第 00 天交易结束的时候有 \textit{dp}[0][0]=0<em>dp</em>[0][0]=0 以及 \textit{dp}[0][1]=-\textit{prices}[0]<em>dp</em>[0][1]=−<em>prices</em>[0]。</p>
+<p>因此，我们只要从前往后依次计算状态即可。由于全部交易结束后，持有股票的收益一定低于不持有股票的收益，因此这时候 \textit{dp}[n-1][0]<em>dp</em>[<em>n</em>−1][0] 的收益必然是大于 \textit{dp}[n-1][1]<em>dp</em>[<em>n</em>−1][1] 的，最后的答案即为 \textit{dp}[n-1][0]<em>dp</em>[<em>n</em>−1][0]。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> maxProfit(<span class="built_in">int</span>[] prices, <span class="built_in">int</span> fee) &#123;</span><br><span class="line">        <span class="built_in">int</span> n = prices.length;</span><br><span class="line">        <span class="built_in">int</span>[][] dp = new <span class="built_in">int</span>[n][<span class="number">2</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] + prices[i] - fee);</span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] - prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意到在状态转移方程中，\textit{dp}[i][0]<em>dp</em>[<em>i</em>][0] 和 \textit{dp}[i][1]<em>dp</em>[<em>i</em>][1] 只会从 \textit{dp}[i-1][0]<em>dp</em>[<em>i</em>−1][0] 和 \textit{dp}[i-1][1]<em>dp</em>[<em>i</em>−1][1] 转移而来，因此我们不必使用数组存储所有的状态，而是使用两个变量 \textit{sell}<em>sell</em> 以及 \textit{buy}<em>buy</em> 分别表示 \textit{dp}[..][0]<em>dp</em>[..][0] 和 \textit{dp}[..][1]<em>dp</em>[..][1] 直接进行状态转移即可。</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> sell = <span class="number">0</span>, buy = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            tie(sell, buy) = <span class="built_in">pair</span>(<span class="built_in">max</span>(sell, buy + prices[i] - fee), <span class="built_in">max</span>(buy, sell - prices[i]));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sell;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(n)<em>O</em>(<em>n</em>)，其中 n<em>n</em> 为数组的长度。一共有 2n2<em>n</em> 个状态，每次状态转移的时间复杂度为 O(1)<em>O</em>(1)，因此时间复杂度为 O(2n)=O(n)<em>O</em>(2<em>n</em>)=<em>O</em>(<em>n</em>)。</li>
+<li>空间复杂度：O(n)<em>O</em>(<em>n</em>) 或 O(1)<em>O</em>(1)，取决于是否使用数组存储所有的状态。</li>
+</ul>
+<h4 id="方法二：贪心算法"><a href="#方法二：贪心算法" class="headerlink" title="方法二：贪心算法"></a>方法二：贪心算法</h4><p><strong>思路与算法</strong></p>
+<p>方法一中，我们将手续费放在卖出时进行计算。如果我们换一个角度考虑，将手续费放在买入时进行计算，那么就可以得到一种基于贪心的方法。</p>
+<p>我们用 \textit{buy}<em>buy</em> 表示<strong>在最大化收益的前提下，如果我们手上拥有一支股票，那么它的最低买入价格是多少</strong>。在初始时，\textit{buy}<em>buy</em> 的值为 \textit{prices}[0]<em>prices</em>[0] 加上手续费 \textit{fee}<em>fee</em>。那么当我们遍历到第 i~(i&gt;0)<em>i</em> (<em>i</em>&gt;0) 天时：</p>
+<ul>
+<li>如果当前的股票价格 \textit{prices}[i]<em>prices</em>[<em>i</em>] 加上手续费 \textit{fee}<em>fee</em> 小于 \textit{buy}<em>buy</em>，那么与其使用 \textit{buy}<em>buy</em> 的价格购买股票，我们不如以 \textit{prices}[i] + \textit{fee}<em>prices</em>[<em>i</em>]+<em>fee</em> 的价格购买股票，因此我们将 \textit{buy}<em>buy</em> 更新为 \textit{prices}[i] + \textit{fee}<em>prices</em>[<em>i</em>]+<em>fee</em>；</li>
+<li>如果当前的股票价格 \textit{prices}[i]<em>prices</em>[<em>i</em>] 大于 \textit{buy}<em>buy</em>，那么我们直接卖出股票并且获得 \textit{prices}[i] - \textit{buy}<em>prices</em>[<em>i</em>]−<em>buy</em> 的收益。但实际上，我们此时卖出股票可能并不是全局最优的（例如下一天股票价格继续上升），因此我们可以提供一个反悔操作，看成<strong>当前手上拥有一支买入价格为 \textit{prices}[i]*prices*[*i*] 的股票</strong>，将 \textit{buy}<em>buy</em> 更新为 \textit{prices}[i]<em>prices</em>[<em>i</em>]。这样一来，如果下一天股票价格继续上升，我们会获得 \textit{prices}[i+1] - \textit{prices}[i]<em>prices</em>[<em>i</em>+1]−<em>prices</em>[<em>i</em>] 的收益，加上这一天 \textit{prices}[i] - \textit{buy}<em>prices</em>[<em>i</em>]−<em>buy</em> 的收益，<strong>恰好就等于在这一天不进行任何操作，而在下一天卖出股票的收益</strong>；</li>
+<li>对于其余的情况，\textit{prices}[i]<em>prices</em>[<em>i</em>] 落在区间 [\textit{buy}-\textit{fee}, \textit{buy}][<em>buy</em>−<em>fee</em>,<em>buy</em>] 内，它的价格没有低到我们放弃手上的股票去选择它，也没有高到我们可以通过卖出获得收益，因此我们不进行任何操作。</li>
+</ul>
+<p>上面的贪心思想可以浓缩成一句话，即<strong>当我们卖出一支股票时，我们就立即获得了以相同价格并且免除手续费买入一支股票的权利</strong>。在遍历完整个数组 \textit{prices}<em>prices</em> 之后之后，我们就得到了最大的总收益。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> maxProfit(<span class="built_in">int</span>[] prices, <span class="built_in">int</span> fee) &#123;</span><br><span class="line">        <span class="built_in">int</span> n = prices.length;</span><br><span class="line">        <span class="built_in">int</span> buy = prices[<span class="number">0</span>] + fee;</span><br><span class="line">        <span class="built_in">int</span> profit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] + fee &lt; buy) &#123;</span><br><span class="line">                buy = prices[i] + fee;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (prices[i] &gt; buy) &#123;</span><br><span class="line">                profit += prices[i] - buy;</span><br><span class="line">                buy = prices[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> profit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(n)<em>O</em>(<em>n</em>)，其中 n<em>n</em> 为数组的长度。</li>
+<li>空间复杂度：O(1)<em>O</em>(1)。</li>
+</ul>
+<hr>
+
+<div class="note primary">
+            <p>看完我觉得真的妙，太妙了，官方题解对于完全没思路的小白还是友好的</p>
+          </div>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>。。。</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之旅（二十三）单词规律</title>
+    <url>//leetcode/day-023/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="单词规律"><a href="#单词规律" class="headerlink" title="单词规律"></a><a href="https://leetcode-cn.com/problems/word-pattern/">单词规律</a></h4><p>难度简单</p>
+<p>给定一种规律 <code>pattern</code> 和一个字符串 <code>str</code> ，判断 <code>str</code> 是否遵循相同的规律。</p>
+<p>这里的 <strong>遵循</strong> 指完全匹配，例如， <code>pattern</code> 里的每个字母和字符串 <code>str</code> 中的每个非空单词之间存在着双向连接的对应规律。</p>
+<p><strong>示例1:</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入: <span class="attr">pattern</span> = <span class="string">&quot;abba&quot;</span>, <span class="attr">str</span> = <span class="string">&quot;dog cat cat dog&quot;</span></span><br><span class="line">输出: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入:<span class="attr">pattern</span> = <span class="string">&quot;abba&quot;</span>, <span class="attr">str</span> = <span class="string">&quot;dog cat cat fish&quot;</span></span><br><span class="line">输出: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3:</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入: <span class="attr">pattern</span> = <span class="string">&quot;aaaa&quot;</span>, <span class="attr">str</span> = <span class="string">&quot;dog cat cat dog&quot;</span></span><br><span class="line">输出: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 4:</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入: <span class="attr">pattern</span> = <span class="string">&quot;abba&quot;</span>, <span class="attr">str</span> = <span class="string">&quot;dog dog dog dog&quot;</span></span><br><span class="line">输出: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>说明:</strong><br>你可以假设 <code>pattern</code> 只包含小写字母， <code>str</code> 包含了由单个空格分隔的小写字母。</p>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>这道题虽然是简单题，但是给出的条件比较模糊，如：pattern的长度是否有限制，pattern对应的 str 能否一对多，str 的长度限制。那么我们先自己给自己限制一下，从题目可以看出，pattern 4 个字母对应 str 四个单词，就姑且认为这是一对一的关系，pattern我们则认为是一个正整数。</p>
+<p>pattern中字母相等，单词就会相等，根据经验，可以用到桶。按照示例 1 走一遍：</p>
+<p><code>输入: pattern = &quot;abba&quot;, str = &quot;dog cat cat dog&quot;</code></p>
+<ul>
+<li>先看pattern，pattern第一个是 <code>a</code>，没有这个桶，拿一个空桶丢进去。</li>
+</ul>
+<blockquote>
+<ol>
+<li>第二个是 <code>b</code> ，没桶，拿一个空桶丢进去。</li>
+<li>第三个 <code>b</code>， 有桶，丢进桶</li>
+<li>第四个 <code>a</code>，有桶， 丢进桶</li>
+</ol>
+</blockquote>
+<ul>
+<li>我们现在有两个桶，一个装着 1、4，一个装着2、3</li>
+</ul>
+<blockquote>
+<p>所以单词 1 等于单词 4，单词 2 等于单词 3<br>这样一来遍历一次就知道有没有问题了<br><strong>值得注意的是：</strong>从示例 3 看出，一个字母只对应一个单词。</p>
+</blockquote>
+<ul>
+<li>停停，我在写代码的时候发现</li>
+</ul>
+<blockquote>
+<p>既然一个字母只对应一个单词，可以直接转化单词为字母，一发现不对应就跳出</p>
+</blockquote>
+<figure class="highlight processing"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">boolean</span> wordPattern(<span class="keyword">String</span> pattern, <span class="keyword">String</span> s) &#123;</span><br><span class="line">    <span class="keyword">String</span>[] words = s.<span class="built_in">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (pattern.length() != words.length) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 初始化桶，Key是单词，Character是字母</span></span><br><span class="line">    <span class="keyword">HashMap</span>&lt;<span class="keyword">String</span>, Character&gt; <span class="built_in">map</span> = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; pattern.length(); i++) &#123;</span><br><span class="line">        <span class="comment">// 如果单词在桶中直接判断是否合规</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">map</span>.containsKey(words[i])) &#123;</span><br><span class="line">            <span class="keyword">if</span> (pattern.charAt(i) != <span class="built_in">map</span>.<span class="built_in">get</span>(words[i])) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 否则要确认该字母没有被占用</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">map</span>.containsValue(pattern.charAt(i))) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 加桶</span></span><br><span class="line">            <span class="built_in">map</span>.put(words[i], pattern.charAt(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-023/image-20201216115041421.png" class title="image-20201216115041421">
+
+<div class="note info">
+            <p>其实写的时候我掉坑里了（我一开始打算计数），但是写着写着代码就很长，感觉不对劲，又重新思考了一番。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>在题解区逛了一圈，甚至发现了一个和我几乎一样的代码（仅有判断顺序不同，以及他用的是equal），然后在官方题解发现这个不叫桶，叫映射（我晕）。</p>
+<hr>
+
+<h2 id="100-清晰易懂题解"><a href="#100-清晰易懂题解" class="headerlink" title="100%清晰易懂题解"></a>100%清晰易懂题解</h2><p><a href="https://leetcode-cn.com/u/chen-yu-mu-mu-cl/">陈雨木木cl</a>发布于 1 小时前3Java哈希表</p>
+<img src="/leetcode/day-023/1608084837-uFwLOP-%E6%8D%95%E8%8E%B7.JPG" class title="捕获.JPG">
+
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>使用查找表进行匹配，思路见注释<br>设m为pattern的长度，n为str的长度<br>时间复杂度：O(m+n)<br>空间复杂度：O(n)</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">boolean</span> <span class="function"><span class="title">wordPattern</span>(<span class="params"><span class="built_in">String</span> pattern, <span class="built_in">String</span> str</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">String</span>[] strs = str.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="comment">// 使用map记录pattern中字符到str中字符串的映射关系</span></span><br><span class="line">        <span class="built_in">String</span>[] map = <span class="keyword">new</span> <span class="built_in">String</span>[<span class="number">26</span>];</span><br><span class="line">        int len = pattern.length();</span><br><span class="line">        <span class="comment">// 长度不一致直接false</span></span><br><span class="line">        <span class="keyword">if</span>(strs.length != len) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// 同时遍历pattern和strs，查看是否匹配</span></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params">int i = <span class="number">0</span>;i &lt; len;i++</span>)</span> &#123;</span><br><span class="line">            int index = pattern.charAt(i) - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">map[index] == <span class="literal">null</span></span>)</span> &#123;</span><br><span class="line">                <span class="comment">// 防止类似a=&quot;dog&quot;且b=&quot;dog&quot;的情况</span></span><br><span class="line">                <span class="comment">// 确保不同字符对应不同字符串</span></span><br><span class="line">                <span class="function"><span class="title">for</span>(<span class="params"><span class="built_in">String</span> x: map</span>)</span> &#123;    </span><br><span class="line">                    <span class="function"><span class="title">if</span>(<span class="params">strs[i].equals(x)</span>)</span> &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 记录pattern中当前字符和strs中当前字符串的对应关系</span></span><br><span class="line">                map[index] = strs[i];</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 如果不匹配返回false</span></span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">!map[index].equals(strs[i])</span>)</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 全部遍历后没有问题返回true</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>欢迎访问我的<a href="https://github.com/Caleb411/My-Leetcode">Github题解仓库</a>获取其他解答</p>
+<hr>
+
+<div class="note primary">
+            <p>硬核——map，但是确实快啊！而且我觉得这就是桶。</p>
+          </div>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单问题不要复杂化，多思考。</p>
 <p>感谢您的阅读！</p>
 ]]></content>
       <categories>

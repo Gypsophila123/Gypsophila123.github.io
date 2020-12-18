@@ -2815,7 +2815,7 @@
 
 
 
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>。。。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>眼光不要太过于局限，打开思维，不要太依赖常识来思考</p>
 <p>感谢您的阅读！</p>
 ]]></content>
       <categories>
@@ -2897,6 +2897,111 @@
           </div>
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单问题不要复杂化，多思考。</p>
+<p>感谢您的阅读！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之旅（二十五）找不同</title>
+    <url>//leetcode/day-025/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="找不同"><a href="#找不同" class="headerlink" title="找不同"></a><a href="https://leetcode-cn.com/problems/find-the-difference/">找不同</a></h4><p>难度简单</p>
+<p>给定两个字符串 <strong><em>s</em></strong> 和 <strong><em>t</em></strong>，它们只包含小写字母。</p>
+<p>字符串 <strong><em>t\</em></strong> 由字符串 <strong><em>s\</em></strong> 随机重排，然后在随机位置添加一个字母。</p>
+<p>请找出在 <strong><em>t</em></strong> 中被添加的字母。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入：<span class="attr">s</span> = <span class="string">&quot;abcd&quot;</span>, <span class="attr">t</span> = <span class="string">&quot;abcde&quot;</span></span><br><span class="line">输出：<span class="string">&quot;e&quot;</span></span><br><span class="line">解释：&#x27;e&#x27; 是那个被添加的字母。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入：<span class="attr">s</span> = <span class="string">&quot;&quot;</span>, <span class="attr">t</span> = <span class="string">&quot;y&quot;</span></span><br><span class="line">输出：<span class="string">&quot;y&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入：<span class="attr">s</span> = <span class="string">&quot;a&quot;</span>, <span class="attr">t</span> = <span class="string">&quot;aa&quot;</span></span><br><span class="line">输出：<span class="string">&quot;a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 4：</strong></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">输入：<span class="attr">s</span> = <span class="string">&quot;ae&quot;</span>, <span class="attr">t</span> = <span class="string">&quot;aea&quot;</span></span><br><span class="line">输出：<span class="string">&quot;a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>0 &lt;= s.length &lt;= 1000</code></li>
+<li><code>t.length == s.length + 1</code></li>
+<li><code>s</code> 和 <code>t</code> 只包含小写字母</li>
+</ul>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>看了一下题目，这道题应该是<strong>真·简单题</strong>。</p>
+<ul>
+<li>首先最容易想到的</li>
+</ul>
+<blockquote>
+<p>用桶存储26个字母，将*<strong>s</strong>的内容存进去，然后遍历 <strong><em>t</em></strong>，找到一个就一起消掉，消不掉的就是被添加的字母。<strong>总结一下，有点像上次刚接触到的“映射”</strong>。</p>
+</blockquote>
+<ul>
+<li>第二个方法</li>
+</ul>
+<blockquote>
+<p>就是熟悉的排序，将字符串排序一下，遍历比对，找到不同即为结果。</p>
+</blockquote>
+<p>这两种方法的速度应该都差不多，第一个看插入字母在 t 的哪个位置，最慢为插在尾部。第二个则是看插入字母在26个字母中的位置，最慢是插入字母为’z’。</p>
+<p>既然想出两个办法，干脆都写一下做对比。</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> char <span class="function"><span class="title">findTheDifference</span>(<span class="params"><span class="built_in">String</span> s, <span class="built_in">String</span> t</span>)</span> &#123;</span><br><span class="line">    int[] bucket = <span class="keyword">new</span> int[<span class="number">26</span>];</span><br><span class="line">    <span class="comment">// s 放进桶</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params">int i = <span class="number">0</span>; i &lt; s.length(); i++</span>)</span> &#123;</span><br><span class="line">        bucket[s.charAt(i) - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 根据 t 从桶中拿出数据</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params">int i = <span class="number">0</span>; i &lt; t.length(); i++</span>)</span> &#123;</span><br><span class="line">        int index = t.charAt(i) - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="comment">// 如果桶里没货，说明找到了</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">bucket[index] == <span class="number">0</span></span>)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> t.charAt(i);</span><br><span class="line">        &#125;</span><br><span class="line">        bucket[index]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 代码走不到这，但必须意思一下</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;i&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-025/image-20201218150641285.png" class title="image-20201218150641285">
+
+<div class="note info">
+            <p>数据不太好看，再试试方法二</p>
+          </div>
+
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">public <span class="built_in">char</span> find<span class="constructor">TheDifference(String <span class="params">s</span>, String <span class="params">t</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 转为char[]再排序</span></span><br><span class="line">    <span class="built_in">char</span><span class="literal">[]</span> SArray = s.<span class="keyword">to</span><span class="constructor">CharArray()</span>;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(SArray);</span><br><span class="line">    <span class="built_in">char</span><span class="literal">[]</span> TArray = t.<span class="keyword">to</span><span class="constructor">CharArray()</span>;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(TArray);</span><br><span class="line">    <span class="comment">// 遍历查找</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="module-access"><span class="module"><span class="identifier">SArray</span>.</span></span>length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(SArray<span class="literal">[<span class="identifier">i</span>]</span> != TArray<span class="literal">[<span class="identifier">i</span>]</span>) &#123;</span><br><span class="line">            return TArray<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 没找到说明在最后</span></span><br><span class="line">    return TArray<span class="literal">[TA<span class="identifier">rray</span>.<span class="identifier">length</span> - <span class="number">1</span>]</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-025/image-20201218151735624.png" class title="image-20201218151735624">
+
+<div class="note info">
+            <p>还是一样的结果，不一样的方法结果居然相同。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>我能想到的方法就这两条路，有点好奇别人用了什么方法.</p>
+<hr>
+
+<p><a href="https://leetcode-cn.com/u/leetcode-solution/">力扣官方题解</a>发布于 17 小时前10.2k<strong>官方</strong></p>
+<h4 id="方法一：计数"><a href="#方法一：计数" class="headerlink" title="方法一：计数"></a>方法一：计数</h4><p>首先遍历字符串 s<em>s</em>，对其中的每个字符都将计数值加 11；然后遍历字符串 t<em>t</em>，对其中的每个字符都将计数值减 11。当发现某个字符计数值为负数时，说明该字符在字符串 t<em>t</em> 中出现的次数大于在字符串 s<em>s</em> 中出现的次数，因此该字符为被添加的字符。</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">findTheDifference</span><span class="params">(<span class="keyword">String</span> s, <span class="keyword">String</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] cnt = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); ++i) &#123;</span><br><span class="line">            <span class="keyword">char</span> ch = s.charAt(i);</span><br><span class="line">            cnt[ch - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t.length(); ++i) &#123;</span><br><span class="line">            <span class="keyword">char</span> ch = t.charAt(i);</span><br><span class="line">            cnt[ch - <span class="string">&#x27;a&#x27;</span>]--;</span><br><span class="line">            <span class="keyword">if</span> (cnt[ch - <span class="string">&#x27;a&#x27;</span>] &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> ch;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(N)<em>O</em>(<em>N</em>)，其中 N<em>N</em> 为字符串的长度。</li>
+<li>空间复杂度：O(|\Sigma|)<em>O</em>(∣Σ∣)，其中 \SigmaΣ 是字符集，这道题中字符串只包含小写字母，|\Sigma|=26∣Σ∣=26。需要使用数组对每个字符计数。</li>
+</ul>
+<h4 id="方法二：求和"><a href="#方法二：求和" class="headerlink" title="方法二：求和"></a>方法二：求和</h4><p>将字符串 s<em>s</em> 中每个字符的 ASCII 码的值求和，得到 A_s<em>A**s</em>；对字符串 t<em>t</em> 同样的方法得到 A_t<em>A**t</em>。两者的差值 A_t-A_s<em>A**t</em>−<em>A**s</em> 即代表了被添加的字符。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">char</span> <span class="title">findTheDifference</span>(<span class="params">String s, String t</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">int</span> <span class="keyword">as</span> = <span class="number">0</span>, at = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; s.length(); ++i) &#123;</span><br><span class="line">            <span class="keyword">as</span> += s.charAt(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; t.length(); ++i) &#123;</span><br><span class="line">            at += t.charAt(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">char</span>) (at - <span class="keyword">as</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(N)<em>O</em>(<em>N</em>)。</li>
+<li>空间复杂度：O(1)<em>O</em>(1)。</li>
+</ul>
+<h4 id="方法三：位运算"><a href="#方法三：位运算" class="headerlink" title="方法三：位运算"></a>方法三：位运算</h4><p>如果将两个字符串拼接成一个字符串，则问题转换成求字符串中出现奇数次的字符。类似于「<a href="https://leetcode-cn.com/problems/single-number/">136. 只出现一次的数字</a>」，我们使用位运算的技巧解决本题。</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    public <span class="built_in">char</span> find<span class="constructor">TheDifference(String <span class="params">s</span>, String <span class="params">t</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; s.length<span class="literal">()</span>; ++i) &#123;</span><br><span class="line">            ret ^= s.<span class="built_in">char</span><span class="constructor">At(<span class="params">i</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; t.length<span class="literal">()</span>; ++i) &#123;</span><br><span class="line">            ret ^= t.<span class="built_in">char</span><span class="constructor">At(<span class="params">i</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return (<span class="built_in">char</span>) ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(N)<em>O</em>(<em>N</em>)。</li>
+<li>空间复杂度：O(1)<em>O</em>(1)。</li>
+</ul>
+<hr>
+
+<div class="note primary">
+            <p>这一次题解区真的是群魔乱舞，各种方法看得我精神一震，都是大佬！不过我还是决定放上官方题解，因为确实稳。</p>
+          </div>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>关于我没想到的求和和异或，不得不承认两点，一个是对基本类型的理解还不够，一个是我依在使用常规思维解题。</p>
 <p>感谢您的阅读！</p>
 ]]></content>
       <categories>

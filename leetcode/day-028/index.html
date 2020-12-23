@@ -29,31 +29,36 @@
     var CONFIG = {"hostname":"gypsophila123.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":150,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#0001","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","Available values":"valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="劝君惜取少年时">
-<meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://gypsophila123.github.io/page/4/index.html">
+  <meta name="description" content="这是我的LeetCode算法之旅第 28 篇文章，坚持下去就一定会有收获，加油!!!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法之旅（二十八）字符串中的第一个唯一字符">
+<meta property="og:url" content="https://gypsophila123.github.io/leetcode/day-028/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="劝君惜取少年时">
+<meta property="og:description" content="这是我的LeetCode算法之旅第 28 篇文章，坚持下去就一定会有收获，加油!!!">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gypsophila123.github.io/leetcode/day-028/image-20201223221541404.png">
+<meta property="article:published_time" content="2020-12-23T12:21:04.000Z">
+<meta property="article:modified_time" content="2020-12-23T12:21:04.000Z">
 <meta property="article:author" content="yuanjie">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gypsophila123.github.io/leetcode/day-028/image-20201223221541404.png">
 
-<link rel="canonical" href="https://gypsophila123.github.io/page/4/">
+<link rel="canonical" href="https://gypsophila123.github.io/leetcode/day-028/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title></title>
+  <title>算法之旅（二十八）字符串中的第一个唯一字符 | </title>
   
 
 
@@ -202,13 +207,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/java/2020/file/">
+    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/leetcode/day-028/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -220,10 +226,9 @@
       <meta itemprop="name" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/java/2020/file/" class="post-title-link" itemprop="url">File操作基础</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          算法之旅（二十八）字符串中的第一个唯一字符
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -232,7 +237,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-26 15:41:32" itemprop="dateCreated datePublished" datetime="2020-10-26T15:41:32+08:00">2020-10-26</time>
+              <time title="创建时间：2020-12-23 20:21:04" itemprop="dateCreated datePublished" datetime="2020-12-23T20:21:04+08:00">2020-12-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,7 +245,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
                 </span>
             </span>
 
@@ -253,8 +258,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/java/2020/file/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/java/2020/file/" itemprop="commentCount"></span>
+    <a title="valine" href="/leetcode/day-028/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leetcode/day-028/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -263,7 +268,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.4k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -271,6 +276,7 @@
               </span>
               <span>2 分钟</span>
             </span>
+            <div class="post-description">这是我的LeetCode算法之旅第 28 篇文章，坚持下去就一定会有收获，加油!!!</div>
 
         </div>
       </header>
@@ -281,16 +287,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>java基础知识：介绍了什么是I/O，以及File的操作</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/java/2020/file/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h4 id="字符串中的第一个唯一字符"><a href="#字符串中的第一个唯一字符" class="headerlink" title="字符串中的第一个唯一字符"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/first-unique-character-in-a-string/">字符串中的第一个唯一字符</a></h4><p>难度简单</p>
+<p>给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">s</span> = <span class="string">&quot;leetcode&quot;</span></span><br><span class="line">返回 <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">s</span> = <span class="string">&quot;loveleetcode&quot;</span></span><br><span class="line">返回 <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong>你可以假定该字符串只包含小写字母。</p>
+<h1 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h1><p>前两题的失败让我心灰意冷，今天终于出来一个简单题，且待我轻松破解。</p>
+<p>找到第一个不重复的字母，并返回它的索引，核心问题就在于怎么确定一个字母没有重复。那么最容易想到的就是比较，找到一个字母，然后与其他所有字母比较一下，找不到相同的就说明是唯一字母了。</p>
+<p>当然实际操作不用像上面这么复杂，可以创建一个桶来存放已经比较过的字母，当发现这个字母在桶中存在，我们就知道这个字母已经比较过了，比较过就不用再比较，下面是代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="title">firstUniqChar</span>(<span class="params">String s</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">int</span>[] <span class="keyword">set</span> = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">26</span>];</span><br><span class="line">    <span class="comment">// 遍历字符串 s</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">        <span class="comment">// 如果不在 set 中</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">set</span>[s.charAt(i) - <span class="string">&#x27;a&#x27;</span>] &lt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 看一下后面字母是否有相同</span></span><br><span class="line">            <span class="keyword">if</span> (s.indexOf(s.charAt(i), i + <span class="number">1</span>) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">                <span class="comment">// 有相同这个字母就不用找了</span></span><br><span class="line">                <span class="keyword">set</span>[s.charAt(i) - <span class="string">&#x27;a&#x27;</span>] = <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 没有就说明找到了</span></span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/leetcode/day-028/image-20201223221541404.png" class title="image-20201223221541404">
+
+<div class="note info">
+            <p>一开始使用了HashSet，发现实际速度不如数组（数组快了一倍），所以就用的数组。</p>
+          </div>
+
+
+
+<h1 id="大神解答"><a href="#大神解答" class="headerlink" title="大神解答"></a>大神解答</h1><p>看了官方题解总觉得意犹未尽，去题解区搜寻终于 找到更好的题解</p>
+<hr>
+
+<h2 id="通过字符串长度分成两种情况，效率更高。1ms，超过100"><a href="#通过字符串长度分成两种情况，效率更高。1ms，超过100" class="headerlink" title="通过字符串长度分成两种情况，效率更高。1ms，超过100%"></a>通过字符串长度分成两种情况，效率更高。1ms，超过100%</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/u/ethan-jx/">剑轩</a>发布于 2020-01-071.2kJava</p>
+<p>执行用时 :<strong>1 ms</strong>, 在所有 Java 提交中击败了 <strong>100.00%</strong> 的用户<br>内存消耗 :<strong>37.4 MB</strong>, 在所有 Java 提交中击败了<strong>94.39%</strong> 的用户</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> firstUniqChar(String s) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 分成两种情况：</span></span><br><span class="line">        <span class="comment">// 第一种为字符串长度小于26的，遍历字符串</span></span><br><span class="line">        <span class="keyword">if</span> (s.length() &lt;= <span class="number">26</span>) &#123;</span><br><span class="line">            <span class="built_in">int</span>[] charNum = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">26</span>];<span class="comment">//存储各字符出现次数</span></span><br><span class="line">            <span class="built_in">char</span>[] chars = s.toCharArray();</span><br><span class="line">            <span class="built_in">int</span> length = chars.length;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;<span class="comment">//第一次遍历,记录各个字符出现次数</span></span><br><span class="line">                charNum[chars[i] - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;<span class="comment">//第二次遍历，按顺序，如果次数为1，返回下标</span></span><br><span class="line">                <span class="keyword">if</span> (charNum[chars[i] - <span class="string">&#x27;a&#x27;</span>] == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//无解</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 第二种字符串长度大于26，遍历26个字母</span></span><br><span class="line">        <span class="comment">// 反过来，只有26个字符</span></span><br><span class="line">        <span class="built_in">int</span> <span class="keyword">index</span> = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">char</span> ch = <span class="string">&#x27;a&#x27;</span>; ch &lt;= <span class="string">&#x27;z&#x27;</span>; ch++) &#123;</span><br><span class="line">            <span class="built_in">int</span> beginIndex = s.indexOf(ch);</span><br><span class="line">            <span class="comment">// 从头开始的位置是否等于结束位置，相等说明只有一个，</span></span><br><span class="line">            <span class="keyword">if</span> (beginIndex != <span class="number">-1</span> &amp;&amp; beginIndex == s.lastIndexOf(ch)) &#123;</span><br><span class="line">                <span class="comment">//取小的，越小代表越前。</span></span><br><span class="line">                <span class="keyword">index</span> = (<span class="keyword">index</span> == <span class="number">-1</span> || <span class="keyword">index</span> &gt; beginIndex) ? beginIndex : <span class="keyword">index</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">index</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+<div class="note info">
+            <p>不同的思路，很有意思</p>
+          </div>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>。。。</p>
+<p>感谢您的阅读！</p>
+
     </div>
 
     
@@ -299,445 +332,64 @@
 	
 	<div>
 	  
-	</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/hexo/err-NexT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="yuanjie">
-      <meta itemprop="description" content="劝君惜取少年时">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/hexo/err-NexT/" class="post-title-link" itemprop="url">使用next主题踩到的坑</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-26 13:18:44" itemprop="dateCreated datePublished" datetime="2020-10-26T13:18:44+08:00">2020-10-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
+		<div>
     
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
+        <div class="end-tag">---下面没有了<i class="fa fa-paw"></i>感谢您的阅读---</div>
     
-    <a title="valine" href="/hexo/err-NexT/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/hexo/err-NexT/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>3.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>4 分钟</span>
-            </span>
+</div>
 
-        </div>
-      </header>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>文章内容仅供参考，如有踩坑概不负责，下载next主题的时间：2020-10-23（版本是7.8.0）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/hexo/err-NexT/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-	
-	<div>
 	  
 	</div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/hexo/err_cloudmusic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="yuanjie">
-      <meta itemprop="description" content="劝君惜取少年时">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/hexo/err_cloudmusic/" class="post-title-link" itemprop="url">网易云音乐插件无法显示</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-25 09:15:42" itemprop="dateCreated datePublished" datetime="2020-10-25T09:15:42+08:00">2020-10-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/err/" itemprop="url" rel="index"><span itemprop="name">err</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/hexo/err_cloudmusic/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/hexo/err_cloudmusic/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>832</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>将云音乐外链插件复制到网页但不显示</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/hexo/err_cloudmusic/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
     </div>
+  </div>
 
-    
-    
-    
-	
-	<div>
-	  
-	</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/hexo/hexoedit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="yuanjie">
-      <meta itemprop="description" content="劝君惜取少年时">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/hexo/hexoedit/" class="post-title-link" itemprop="url">记录怎么用hexo写文章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-24 21:52:59" itemprop="dateCreated datePublished" datetime="2020-10-24T21:52:59+08:00">2020-10-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/hexo/hexoedit/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/hexo/hexoedit/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>2.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>描述了怎么新建一篇文章，使用什么样的工具编辑文章，还有关于如何使用hexo或next内置标签来美化你的文章</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/hexo/hexoedit/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/leetcode/day-027/" rel="prev" title="算法之旅（二十七）使用最小花费爬楼梯">
+      <i class="fa fa-chevron-left"></i> 算法之旅（二十七）使用最小花费爬楼梯
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-	
-	<div>
-	  
-	</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/hexo/starthexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="yuanjie">
-      <meta itemprop="description" content="劝君惜取少年时">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/hexo/starthexo/" class="post-title-link" itemprop="url">开始使用hexo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-22 18:53:15" itemprop="dateCreated datePublished" datetime="2020-10-22T18:53:15+08:00">2020-10-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/hexo/starthexo/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/hexo/starthexo/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文介绍了如何下载hexo和使用hexo快速搭建一个博客</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/hexo/starthexo/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-	
-	<div>
-	  
-	</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -786,6 +438,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%94%AF%E4%B8%80%E5%AD%97%E7%AC%A6"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">字符串中的第一个唯一字符</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%A5%9E%E8%A7%A3%E7%AD%94"><span class="nav-number">3.</span> <span class="nav-text">大神解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6%E5%88%86%E6%88%90%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%8C%E6%95%88%E7%8E%87%E6%9B%B4%E9%AB%98%E3%80%821ms%EF%BC%8C%E8%B6%85%E8%BF%87100"><span class="nav-number">3.1.</span> <span class="nav-text">通过字符串长度分成两种情况，效率更高。1ms，超过100%</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
 		
       </div>
 	  <!--/noindex-->

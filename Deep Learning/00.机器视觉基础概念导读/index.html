@@ -39,15 +39,15 @@
 
     <!-- OpenGraph -->
  
-    <meta name="description" content="[TOC] 写在前面本人是一个深度学习初学者，本笔记以书籍内容为基础，通过查阅各方资料，根据自身实际操作而写。内容不严谨，且可能存在较多错漏。 书籍详情： 1234书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习书名原文：Modern Computer Vision with PyTorch  机械工业出版社：ISBN 978-7-111-73339-3源码地址：https:&#x2F;&#x2F;">
+    <meta name="description" content="[TOC] 写在前面本人是一个深度学习初学者，本笔记以书籍内容为基础，通过查阅各方资料，根据自身实际操作而写。内容不严谨，且可能存在较多错漏。 书籍详情： 书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习书名原文：Modern Computer Vision with PyTorch  机械工业出版社：ISBN 978-7-111-73339-3源码地址：https:&#x2F;&#x2F;gith">
 <meta property="og:type" content="article">
 <meta property="og:title" content="00.机器视觉基础概念导读">
 <meta property="og:url" content="http://example.com/Deep%20Learning/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/">
 <meta property="og:site_name" content="My Learning Notes">
-<meta property="og:description" content="[TOC] 写在前面本人是一个深度学习初学者，本笔记以书籍内容为基础，通过查阅各方资料，根据自身实际操作而写。内容不严谨，且可能存在较多错漏。 书籍详情： 1234书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习书名原文：Modern Computer Vision with PyTorch  机械工业出版社：ISBN 978-7-111-73339-3源码地址：https:&#x2F;&#x2F;">
+<meta property="og:description" content="[TOC] 写在前面本人是一个深度学习初学者，本笔记以书籍内容为基础，通过查阅各方资料，根据自身实际操作而写。内容不严谨，且可能存在较多错漏。 书籍详情： 书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习书名原文：Modern Computer Vision with PyTorch  机械工业出版社：ISBN 978-7-111-73339-3源码地址：https:&#x2F;&#x2F;gith">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/pictures/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/220px-GAN_deepfake_white_girl.jpg">
-<meta property="article:published_time" content="2024-04-07T05:06:32.501Z">
+<meta property="article:published_time" content="2024-04-08T07:02:28.699Z">
 <meta property="article:modified_time" content="2024-04-07T03:33:02.745Z">
 <meta property="article:author" content="yuanjie xiang">
 <meta name="twitter:card" content="summary_large_image">
@@ -60,9 +60,23 @@
 
     
     
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/default.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="/css/highlight/dark.css" media="none">
+        
     
 
     
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
 
      
 
@@ -93,6 +107,10 @@
 
         
         
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
 
         
             <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
@@ -116,7 +134,7 @@
         00.机器视觉基础概念导读
     </h1>
     <div class="post-title__meta">
-        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-07</a>
+        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-08</a>
         
  
         
@@ -153,13 +171,13 @@
         <p>[TOC]</p>
 <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本人是一个深度学习初学者，本笔记以书籍内容为基础，通过查阅各方资料，根据自身实际操作而写。内容不严谨，且可能存在较多错漏。</p>
 <p>书籍详情：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习</span><br><span class="line">书名原文：Modern Computer Vision with PyTorch  </span><br><span class="line">机械工业出版社：ISBN 978-7-111-73339-3</span><br><span class="line">源码地址：https://github.com/PacktPublishing/Modern-Computer-Vision-with-PyTorch</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">书名：PyTorch 计算机视觉实战 目标检测、图像处理与深度学习</span><br><span class="line">书名原文：Modern Computer Vision with PyTorch  </span><br><span class="line">机械工业出版社：ISBN 978-7-111-73339-3</span><br><span class="line">源码地址：https://github.com/PacktPublishing/Modern-Computer-Vision-with-PyTorch</span><br></pre></td></tr></table></figure>
 
 <p>资料查阅工具：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chatgpt_3.5：用于名词解释、代码纠错和代码解释等</span><br><span class="line">其他搜索引擎：解决gpt不能解决的问题</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chatgpt_3.5：用于名词解释、代码纠错和代码解释等</span><br><span class="line">其他搜索引擎：解决gpt不能解决的问题</span><br></pre></td></tr></table></figure>
 
 <p>编辑工具：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作系统：windows 11</span><br><span class="line">代码编辑：PyCharm 2023.3.4</span><br><span class="line">笔记编辑：Typora</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">操作系统：windows 11</span><br><span class="line">代码编辑：PyCharm 2023.3.4</span><br><span class="line">笔记编辑：Typora</span><br></pre></td></tr></table></figure>
 
 <h1 id="一、深度学习基础"><a href="#一、深度学习基础" class="headerlink" title="一、深度学习基础"></a>一、深度学习基础</h1><p>神经网络的基本构建模块是什么，以及每个模块的作用是什么。</p>
 <h2 id="1-1-神经网络基础"><a href="#1-1-神经网络基础" class="headerlink" title="1.1 神经网络基础"></a>1.1 神经网络基础</h2><p>人工神经网络（<strong>Artificial Neural Network, ANN</strong>），在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A4%E7%9F%A5%E7%A7%91%E5%AD%A6">认知科学</a>领域，是一种<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BB%BF%E7%94%9F%E5%AD%B8">模仿</a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E7%89%A9%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">生物神经网络</a>（动物的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E6%A8%9E%E7%A5%9E%E7%B6%93%E7%B3%BB%E7%B5%B1">中枢神经系统</a>，特别是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%A7%E8%84%91">大脑</a>）的结构和功能的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B">数学模型</a>或<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B">计算模型</a>，用于对<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>进行估计或近似。神经网络由大量的人工神经元联结进行计算。是一种<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E8%87%AA%E9%80%82%E5%BA%94%E7%B3%BB%E7%BB%9F&action=edit&redlink=1">自适应系统</a>，通俗地讲就是具备学习功能。通过统计学的方法，人工神经网络能够类似人一样具有简单的决定能力和简单的判断能力。</p>
@@ -171,7 +189,7 @@
 <h2 id="2-5-目标检测进阶"><a href="#2-5-目标检测进阶" class="headerlink" title="2.5 目标检测进阶"></a>2.5 目标检测进阶</h2><h2 id="2-6-图像分割"><a href="#2-6-图像分割" class="headerlink" title="2.6 图像分割"></a>2.6 图像分割</h2><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89">计算机视觉</a>领域，<strong>图像分割</strong>（segmentation）指的是将<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F">数字图像</a>细分为多个图像子区域（像素的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9B%86%E5%90%88">集合</a>）（也被称作超像素）的过程。图像分割的目的是简化或改变图像的表示形式，使得图像更容易理解和分析。[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2#cite_note-computervision-1">1]</a>图像分割通常用于定位图像中的物体和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%95%8C">边界</a>（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BA%BF">线</a>，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9B%B2%E7%BA%BF">曲线</a>等）。更精确的，图像分割是对图像中的每个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%83%8F%E7%B4%A0">像素</a>加<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%A0%87%E7%AD%BE">标签</a>的一个过程，这一过程使得具有相同标签的像素具有某种共同视觉特性。</p>
 <p>图像分割的结果是图像上子区域的集合（这些子区域的全体覆盖了整个图像），或是从图像中提取的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E8%BD%AE%E5%BB%93&action=edit&redlink=1">轮廓</a>线的集合（例如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B">边缘检测</a>）。一个子区域中的每个像素在某种特性的度量下或是由计算得出的特性都是相似的，例如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%A2%9C%E8%89%B2">颜色</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%AE%E5%BA%A6">亮度</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%8B%E7%90%86">纹理</a>。<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E9%82%BB%E6%8E%A5&action=edit&redlink=1">邻接</a>区域在某种特性的度量下有很大的不同。[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2#cite_note-computervision-1">1]</a></p>
 <h2 id="2-7-目标检测与图像分割的应用"><a href="#2-7-目标检测与图像分割的应用" class="headerlink" title="2.7 目标检测与图像分割的应用"></a>2.7 目标检测与图像分割的应用</h2><h1 id="三、图像处理"><a href="#三、图像处理" class="headerlink" title="三、图像处理"></a>三、图像处理</h1><h2 id="3-1-自编码器与图像处理"><a href="#3-1-自编码器与图像处理" class="headerlink" title="3.1 自编码器与图像处理"></a>3.1 自编码器与图像处理</h2><h2 id="3-2-基于GAN的图像生成"><a href="#3-2-基于GAN的图像生成" class="headerlink" title="3.2 基于GAN的图像生成"></a>3.2 基于GAN的图像生成</h2><p><strong>生成对抗网络</strong>（英语：Generative Adversarial Network，简称<strong>GAN</strong>）是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%BC%8F%E5%AD%A6%E4%B9%A0">非监督式学习</a>的一种方法，通过两个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">神经网络</a>相互<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8D%9A%E5%BC%88%E8%AE%BA">博弈</a>的方式进行学习。该方法由<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%81%A9%C2%B7%E5%8F%A4%E5%BE%B7%E8%B4%B9%E6%B4%9B">伊恩·古德费洛</a>等人于2014年提出。[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-MyUser_Arxiv.org_April_7_2016c-1">1]</a> 生成对抗网络由一个生成网络与一个判别网络组成。生成网络从潜在空间（latent space）中随机取样作为输入，其输出结果需要尽量模仿训练集中的真实样本。判别网络的输入则为真实样本或生成网络的输出，其目的是将生成网络的输出从真实样本中尽可能分辨出来。而生成网络则要尽可能地欺骗判别网络。两个网络相互对抗、不断调整参数，最终目的是使判别网络无法判断生成网络的输出结果是否真实。[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-2">2]</a>[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-MyUser_Arxiv.org_April_7_2016c-1">1]</a>[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-OpenAI_com-3">3]</a></p>
-<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:GAN_deepfake_white_girl.jpg"><img src="/pictures/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/220px-GAN_deepfake_white_girl.jpg" alt="由GAN deepfake生成的人脸"></a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:GAN_deepfake_white_girl.jpg"><img src="/pictures/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/220px-GAN_deepfake_white_girl.jpg" class="lazy" data-srcset="/pictures/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/220px-GAN_deepfake_white_girl.jpg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="由GAN deepfake生成的人脸"></a></p>
 <p>生成对抗网络常用于生成以假乱真的图片。[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-ITT_GANs-4">4]</a>此外，该方法还被用于生成影片[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-5">5]</a>、三维物体模型[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-6">6]</a>等。</p>
 <p>生成对抗网络虽然最开始提出是为了<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%84%A1%E7%9B%A3%E7%9D%A3%E5%AD%B8%E7%BF%92">无监督学习</a>，但经证明对<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0">半监督学习</a>[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-ITT_GANs-4">4]</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%AE%8C%E5%85%A8%E7%9B%A3%E7%9D%A3%E5%AD%B8%E7%BF%92">完全监督学习</a>[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-7">7]</a> 、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">强化学习</a>[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-8">8]</a>也有效。 在2016年的一个研讨会上，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9D%A8%E7%AB%8B%E6%98%86">杨立昆</a>称生成式对抗网络为“机器学习这二十年来最酷的想法”[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C#cite_note-9">9]</a>。</p>
 <h2 id="3-3-高级GAN图像处理"><a href="#3-3-高级GAN图像处理" class="headerlink" title="3.3 高级GAN图像处理"></a>3.3 高级GAN图像处理</h2><h1 id="四、计算机视觉与其它技术"><a href="#四、计算机视觉与其它技术" class="headerlink" title="四、计算机视觉与其它技术"></a>四、计算机视觉与其它技术</h1><p><strong>计算机视觉</strong>（Computer vision, CV）是一门研究如何使机器“<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%9C%8B">看</a>”的科学，更进一步的说，就是指用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%91%84%E5%BD%B1%E6%9C%BA">摄影机</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%B5%E5%AD%90%E8%AE%A1%E7%AE%97%E6%9C%BA">计算机</a>代替人眼对目标进行识别、跟踪和测量等<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89">机器视觉</a>，并进一步做<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86">图像处理</a>，用计算机处理成为更适合人眼观察或传送给仪器检测的图像[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89#cite_note-1">1]</a>。</p>
@@ -219,7 +237,13 @@
 </main>
 
             <footer class="footer">
-    
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
     
 
 
@@ -239,7 +263,15 @@
 </footer>
 
         </div>
-         
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
 
  
 
@@ -263,6 +295,56 @@
 
  
 
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
  
 
  

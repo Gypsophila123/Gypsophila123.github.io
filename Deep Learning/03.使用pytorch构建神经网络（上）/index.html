@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/github.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/github_small.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/github_medium.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>03.使用pytorch构建神经网络（上） | My Learning Notes</title>
+
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="[TOC] 表示图像 图像文件是由像素组成的，像素是构成图像的最小元素 在灰度图像上，每个像素灰度取值为0-255，0表示黑，255表示白 彩色像素中每个像素是一个三位向量，每个分量分别表示rgb  将图像转化为结构化数组和标量Python中很容易将图像转化为数组，接下来使用cv2从磁盘读取图像，使用matplotlib将图像绘制出，原始图像如下 灰度图像12345678import cv2, m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="03.使用pytorch构建神经网络（上）">
+<meta property="og:url" content="http://example.com/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/">
+<meta property="og:site_name" content="My Learning Notes">
+<meta property="og:description" content="[TOC] 表示图像 图像文件是由像素组成的，像素是构成图像的最小元素 在灰度图像上，每个像素灰度取值为0-255，0表示黑，255表示白 彩色像素中每个像素是一个三位向量，每个分量分别表示rgb  将图像转化为结构化数组和标量Python中很容易将图像转化为数组，接下来使用cv2从磁盘读取图像，使用matplotlib将图像绘制出，原始图像如下 灰度图像12345678import cv2, m">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E6%B5%8B%E8%AF%95%E5%9B%BE%E5%83%8F.jpeg">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/02%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/03%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/04%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/05%E9%9A%8F%E6%9C%BA%E5%B1%95%E7%A4%BA100%E5%BC%A0%E6%A0%B7%E6%9C%AC.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/06%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/07%E5%87%86%E7%A1%AE%E5%BA%A6.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/08%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/09%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E5%87%86%E7%A1%AE%E5%BA%A6.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/10%E6%89%B9%E5%A4%A7%E5%B0%8F32%E7%9A%84%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/11%E6%89%B9%E5%A4%A7%E5%B0%8F32%E7%9A%84%E5%87%86%E7%A1%AE%E5%BA%A6%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/12%E6%89%B9%E5%A4%A7%E5%B0%8F10000%E7%9A%84%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/13%E6%89%B9%E5%A4%A7%E5%B0%8F10000%E7%9A%84%E5%87%86%E7%A1%AE%E5%BA%A6%E6%9B%B2%E7%BA%BF.png">
+<meta property="article:published_time" content="2024-04-07T05:06:32.512Z">
+<meta property="article:modified_time" content="2024-04-06T10:50:39.301Z">
+<meta property="article:author" content="yuanjie xiang">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E6%B5%8B%E8%AF%95%E5%9B%BE%E5%83%8F.jpeg">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+    
+
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">My Learning Notes</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        03.使用pytorch构建神经网络（上）
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-07</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E5%9B%BE%E5%83%8F%E8%BD%AC%E5%8C%96%E4%B8%BA%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E7%BB%84%E5%92%8C%E6%A0%87%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">将图像转化为结构化数组和标量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F"><span class="toc-number">1.1.</span> <span class="toc-text">灰度图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text">彩色图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.3.</span> <span class="toc-text">问题记录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FashionMNIST%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">FashionMNIST数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">使用数据集中的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E5%A4%A7%E5%B0%8F%E6%94%B9%E4%B8%BA10000"><span class="toc-number">4.</span> <span class="toc-text">批大小改为10000</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E5%9B%BE%E5%83%8F%E8%BD%AC%E5%8C%96%E4%B8%BA%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E7%BB%84%E5%92%8C%E6%A0%87%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">将图像转化为结构化数组和标量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F"><span class="toc-number">1.1.</span> <span class="toc-text">灰度图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text">彩色图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.3.</span> <span class="toc-text">问题记录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FashionMNIST%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">FashionMNIST数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">使用数据集中的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E5%A4%A7%E5%B0%8F%E6%94%B9%E4%B8%BA10000"><span class="toc-number">4.</span> <span class="toc-text">批大小改为10000</span></a></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>[TOC]</p>
+<h1 id="表示图像"><a href="#表示图像" class="headerlink" title="表示图像"></a>表示图像</h1><ul>
+<li>图像文件是由像素组成的，像素是构成图像的最小元素</li>
+<li>在灰度图像上，每个像素灰度取值为0-255，0表示黑，255表示白</li>
+<li>彩色像素中每个像素是一个三位向量，每个分量分别表示rgb</li>
+</ul>
+<h2 id="将图像转化为结构化数组和标量"><a href="#将图像转化为结构化数组和标量" class="headerlink" title="将图像转化为结构化数组和标量"></a>将图像转化为结构化数组和标量</h2><p>Python中很容易将图像转化为数组，接下来使用cv2从磁盘读取图像，使用matplotlib将图像绘制出，原始图像如下<img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E6%B5%8B%E8%AF%95%E5%9B%BE%E5%83%8F.jpeg" alt="Hemanvi.jpeg"></p>
+<h3 id="灰度图像"><a href="#灰度图像" class="headerlink" title="灰度图像"></a>灰度图像</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2, matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 使用 cv2.imread 方法，返回像素数组</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;test.jpeg&#x27;</span>)</span><br><span class="line"><span class="comment"># 数组切片，也可以理解为图像裁切</span></span><br><span class="line">img = img[<span class="number">50</span>:<span class="number">250</span>,<span class="number">40</span>:<span class="number">240</span>]</span><br><span class="line"><span class="comment"># 将彩色图像转换为灰度图像（三通道变为单通道）</span></span><br><span class="line">img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line">plt.imshow(img_gray, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/02%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F.png" alt="image-20240406090502891"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将图片压缩至 25 x 25 像素</span></span><br><span class="line">img_gray_small = cv2.resize(img_gray, (<span class="number">25</span>, <span class="number">25</span>))</span><br><span class="line">plt.imshow(img_gray_small, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/03%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9.png" alt="image-20240406090601993"></p>
+<h3 id="彩色图像"><a href="#彩色图像" class="headerlink" title="彩色图像"></a>彩色图像</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将颜色通道从 BGR转为RGB，使图像能正常显示</span></span><br><span class="line">img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">plt.imshow(img)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/04%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F.png" alt="image-20240406093836583"></p>
+<h3 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h3><p>opencv 编码问题不能识别中文路径，可以使用下面两个方法解决</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取图像，解决imread不能读取中文路径的问题</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cv_imread</span>(<span class="params">path</span>):</span><br><span class="line">    <span class="comment"># 通过np将文件读为一维的二进制数组</span></span><br><span class="line">    byte_img = np.fromfile(path, dtype=np.uint8)</span><br><span class="line">    <span class="comment"># 再通过cv解码为二维的图像数组</span></span><br><span class="line">    cv_img = cv2.imdecode(byte_img, -<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> cv_img</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cv_img_rgb</span>(<span class="params">path</span>):</span><br><span class="line">    <span class="comment"># 用matplotlib读取图像数组</span></span><br><span class="line">    img = plt.imread(path)</span><br><span class="line">    <span class="comment"># 转为cv2数组，因为opencv读取是按照BGR的顺序，所以这里需要调换顺序</span></span><br><span class="line">    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">    <span class="keyword">return</span> img_rgb</span><br></pre></td></tr></table></figure>
+
+<h1 id="为什么要用神经网络进行图像分析"><a href="#为什么要用神经网络进行图像分析" class="headerlink" title="为什么要用神经网络进行图像分析"></a>为什么要用神经网络进行图像分析</h1><p>在图像分析中，如果不使用神经网络，也可以利用传统的计算机视觉技术来提取各种特征。这些特征通常是基于图像的局部结构、纹理、颜色等属性而提取出来的。以下是一些常见的特征：</p>
+<ol>
+<li><strong>颜色特征：</strong> 提取图像中的颜色信息，包括颜色直方图、颜色均值、颜色矩等。</li>
+<li><strong>纹理特征：</strong> 描述图像中的纹理信息，包括灰度共生矩阵（GLCM）、局部二值模式（LBP）、方向梯度直方图（HOG）等。</li>
+<li><strong>形状特征：</strong> 描述图像中的形状信息，包括边缘检测、轮廓提取、形状描述符等。</li>
+<li><strong>局部特征：</strong> 描述图像中的局部结构信息，包括尺度不变特征变换（SIFT）、加速稳定特征变换（SURF）、尺度空间极值检测（DoG）等。</li>
+<li><strong>密集特征：</strong> 提取图像中的密集特征点，包括稠密光流、稠密角点等。</li>
+</ol>
+<p>这些传统的特征提取方法通常需要设计特定的算法来实现，并且对图像的预处理、参数选择等方面有一定的依赖。尽管这些特征提取方法在一些场景下仍然具有一定的效果，但是相比于神经网络，它们通常需要更多的人工设计和调优，并且在处理复杂的图像任务时可能会受到限制。因此，随着深度学习和神经网络的发展，越来越多的图像分析任务倾向于使用神经网络来提取特征和解决问题。</p>
+<h1 id="为图像分类准备数据"><a href="#为图像分类准备数据" class="headerlink" title="为图像分类准备数据"></a>为图像分类准备数据</h1><h2 id="FashionMNIST数据集"><a href="#FashionMNIST数据集" class="headerlink" title="FashionMNIST数据集"></a><strong>FashionMNIST数据集</strong></h2><ul>
+<li>数据集：FashionMNIST 数据集是一个包含服装和配件图像的数据集，共有 60000 个训练样本和 10000 个测试样本。图像尺寸为 28x28 像素，灰度图像。</li>
+<li>训练集标签：训练集标签是一个长度为 60000 的一维数组，每个元素表示对应图像的服装或配件类别，取值范围为 0 到 9，对应的类别包括 T-shirt&#x2F;top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag 和 Ankle boot。</li>
+</ul>
+<p>你可以在 TensorFlow、PyTorch 等深度学习框架中直接加载 FashionMNIST 数据集，并使用它来训练和评估模型。下面准备这个数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># This can be any directory you want </span></span><br><span class="line">data_folder = <span class="string">&#x27;dataset&#x27;</span></span><br><span class="line"><span class="comment"># 从文件夹加载训练集对象，download=True表示若文件不存在，则自动从网络下载，指定 train=True 来加载训练集，train=False 来加载测试集</span></span><br><span class="line">fmnist_train = datasets.FashionMNIST(data_folder, download=<span class="literal">True</span>, train=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取训练集和测试集数据</span></span><br><span class="line">train_data = fmnist_train.data  <span class="comment"># 训练集图像数据 shape([60000, 28, 28])</span></span><br><span class="line">train_labels = fmnist_train.targets  <span class="comment"># 训练集标签 shape([60000])</span></span><br></pre></td></tr></table></figure>
+
+<p>FashionMNIST 数据集对象通常还具有其他一些有用的属性和方法，例如：</p>
+<ol>
+<li><strong><code>fmnist_train.transform</code>：</strong> 该属性存储了应用于数据集中图像的转换方法。在训练模型时，通常会对图像数据进行预处理和增强，例如归一化、随机翻转等操作。<code>transform</code> 属性可以指定这些预处理和增强操作。</li>
+<li><strong><code>fmnist_train.classes</code></strong> 是一个包含数据集中所有类别标签的列表，每个元素对应一个类别标签。</li>
+<li><strong><code>fmnist_train.dataset</code>：</strong> 该属性存储了数据集的原始数据。通常情况下，你不需要直接使用这个属性，而是通过 <code>fmnist_train.data</code> 和 <code>fmnist_train.targets</code> 来访问图像数据和标签。</li>
+<li><strong><code>fmnist_train.loader</code>：</strong> 该属性存储了数据集的数据加载器。数据加载器用于在训练模型时批量加载数据，并提供了数据的迭代器接口，方便训练模型。</li>
+</ol>
+<h2 id="使用数据集中的数据"><a href="#使用数据集中的数据" class="headerlink" title="使用数据集中的数据"></a>使用数据集中的数据</h2><p>从所有的10个类别中分别随机拿出10个样本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">R, C = <span class="built_in">len</span>(train_labels.unique()), <span class="number">10</span></span><br><span class="line"><span class="comment"># 创建一个 RxC 的子图网格，返回一个包含所有子图的 Figure 对象和 Axes 对象的数组。</span></span><br><span class="line">fig, ax = plt.subplots(R, C, figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line"><span class="comment"># 使用 Axes 对象来绘制每个子图的内容</span></span><br><span class="line"><span class="keyword">for</span> label_class, plot_row <span class="keyword">in</span> <span class="built_in">enumerate</span>(ax):</span><br><span class="line">    <span class="comment"># 筛选train_labels中标签为指定标签元素的索引位置</span></span><br><span class="line">    label_x_rows = np.where(train_labels == label_class)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> plot_cell <span class="keyword">in</span> plot_row:</span><br><span class="line">        plot_cell.grid(<span class="literal">False</span>); plot_cell.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">        <span class="comment"># 随机选择一个索引</span></span><br><span class="line">        ix = np.random.choice(label_x_rows)</span><br><span class="line">        <span class="comment"># 拿取图片（实际为一个 28 * 28 数组）</span></span><br><span class="line">        x, y = train_data[ix], train_labels[ix]</span><br><span class="line">        plot_cell.imshow(x, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/05%E9%9A%8F%E6%9C%BA%E5%B1%95%E7%A4%BA100%E5%BC%A0%E6%A0%B7%E6%9C%AC.png" alt="image-20240406113435044"></p>
+<h1 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h1><p>前面的章节中我们已经学习过如何构建一个神经网络模型，现在我们又获得了准备好的数据集，接下来我们可以正式开始训练一个神经网络了，训练一个神经网络的步骤为：</p>
+<ul>
+<li><p>准备好环境，并导入相关程序包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset, DataLoader</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">device = <span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>构建一个数据集，要求该数据集能一次获取一个数据点（能用于Dataset类）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data_folder = <span class="string">&#x27;dataset&#x27;</span></span><br><span class="line">fmnist_train = datasets.FashionMNIST(data_folder, download=<span class="literal">True</span>, train=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">train_data = fmnist_train.data</span><br><span class="line">train_labels = fmnist_train.targets</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将DataLoader包装到数据集中以满足分批训练的需求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FMNISTDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        x = x.<span class="built_in">float</span>()</span><br><span class="line">        x = x.view(-<span class="number">1</span>,<span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">        self.x, self.y = x, y </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, ix</span>):</span><br><span class="line">        x, y = self.x[ix], self.y[ix] </span><br><span class="line">        <span class="keyword">return</span> x.to(device), y.to(device)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>): </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.x)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_data</span>(): </span><br><span class="line">    train = FMNISTDataset(train_data, train_labels) </span><br><span class="line">    <span class="comment"># 指定批大小为 32；shuffle=True 表示对数据随机洗牌，用于训练阶段</span></span><br><span class="line">    trn_dl = DataLoader(train, batch_size=<span class="number">32</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> trn_dl</span><br><span class="line"></span><br><span class="line">train_dataloader = get_data()</span><br><span class="line"><span class="comment"># for data in train_dataloader:</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>构建一个训练模型，定义损失函数和优化器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.optim <span class="keyword">import</span> SGD</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    <span class="comment"># 使用Sequential设定模型结构（前向传播过程）</span></span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        <span class="comment"># 一个隐藏层，隐藏层包含1000个神经元</span></span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        <span class="comment"># 输出结果为长度等于10的张量</span></span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    <span class="comment"># 交叉熵损失函数</span></span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    <span class="comment"># 优化器，随机梯度下降算法，学习率为0.01</span></span><br><span class="line">    optimizer = SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br><span class="line"></span><br><span class="line">model, loss_fn, optimizer = get_model()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义两个函数用来训练和验证数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_batch</span>(<span class="params">x, y, model, opt, loss_fn</span>):</span><br><span class="line">    <span class="comment"># 设置模型为训练模式，会启用 Dropout 层</span></span><br><span class="line">    model.train() </span><br><span class="line">    <span class="comment"># 前向传播</span></span><br><span class="line">    prediction = model(x)</span><br><span class="line">    <span class="comment"># 计算损失值</span></span><br><span class="line">    batch_loss = loss_fn(prediction, y)</span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    batch_loss.backward()</span><br><span class="line">    <span class="comment"># 更新权重</span></span><br><span class="line">    optimizer.step()</span><br><span class="line">    <span class="comment"># 梯度值置零以准备下一轮</span></span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    <span class="keyword">return</span> batch_loss.item()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不需要计算梯度</span></span><br><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">accuracy</span>(<span class="params">x, y, model</span>):</span><br><span class="line">    <span class="comment"># 设置模型为评估模式</span></span><br><span class="line">    model.<span class="built_in">eval</span>() </span><br><span class="line">    prediction = model(x)</span><br><span class="line">    <span class="comment"># argmaxes为最大值所在的索引</span></span><br><span class="line">    max_values, argmaxes = prediction.<span class="built_in">max</span>(-<span class="number">1</span>)</span><br><span class="line">	<span class="comment"># 将预测的类别索引与真实标签进行比较，得到一个布尔型张量，表示每个样本的预测结果是否正确。</span></span><br><span class="line">    is_correct = argmaxes == y</span><br><span class="line">    <span class="keyword">return</span> is_correct.cpu().numpy().tolist()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>记录每轮的损失值和精确度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 记录准确度和损失值</span></span><br><span class="line">losses, accuracies = [], []</span><br><span class="line"><span class="comment"># 定义轮数</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="built_in">print</span>(epoch)</span><br><span class="line">    <span class="comment"># 记录本轮损失值和准确度</span></span><br><span class="line">    epoch_losses, epoch_accuracies = [], []</span><br><span class="line">	<span class="comment"># 迭代数据加载器</span></span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(train_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        batch_loss = train_batch(x, y, model, optimizer, loss_fn)</span><br><span class="line">        epoch_losses.append(batch_loss)</span><br><span class="line">    <span class="comment"># 训练完一轮，计算本轮平均损失值</span></span><br><span class="line">    epoch_loss = np.array(epoch_losses).mean()</span><br><span class="line">    <span class="comment"># 再来一轮计算准确度</span></span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(train_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        is_correct = accuracy(x, y, model)</span><br><span class="line">        epoch_accuracies.extend(is_correct)</span><br><span class="line">    <span class="comment"># 计算这一轮平均准确度</span></span><br><span class="line">    epoch_accuracy = np.mean(epoch_accuracies)</span><br><span class="line">    losses.append(epoch_loss)</span><br><span class="line">    accuracies.append(epoch_accuracy)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>随着轮数增加，根据每批数据的训练情况调整权重</p>
+</li>
+</ul>
+<p>使用以下代码显示关于轮数的曲线变化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">epochs = np.arange(<span class="number">5</span>)+<span class="number">1</span></span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>,<span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Loss value over increasing epochs&#x27;</span>)</span><br><span class="line">plt.plot(epochs, losses, label=<span class="string">&#x27;Training Loss&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Accuracy value over increasing epochs&#x27;</span>)</span><br><span class="line">plt.plot(epochs, accuracies, label=<span class="string">&#x27;Training Accuracy&#x27;</span>)</span><br><span class="line">plt.gca().set_yticklabels([<span class="string">&#x27;&#123;:.0f&#125;%&#x27;</span>.<span class="built_in">format</span>(x*<span class="number">100</span>) <span class="keyword">for</span> x <span class="keyword">in</span> plt.gca().get_yticks()]) </span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/06%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png" alt="image-20240406155529253"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/07%E5%87%86%E7%A1%AE%E5%BA%A6.png" alt="image-20240406155542459"></p>
+<p>可以发现，五轮训练后准确度依然维持在一个较低的水平，而损失值的变化早已趋近平滑。换句话说，无论再进行多少轮训练，模型都不太可能达到一个理想的准确度，接下来就需要我们进行对各种超参数的调整来完善该模型。</p>
+<h1 id="归一化处理以提升模型准确度"><a href="#归一化处理以提升模型准确度" class="headerlink" title="归一化处理以提升模型准确度"></a>归一化处理以提升模型准确度</h1><p>归一化处理是确保变量被限制在某个有限范围内的过程，通常是0到1或者-1到1之间。在上面的数据集中，我们可以通过对所有自变量的值除以已知的最大值——255，将自变量的值限制在 0-1 之间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改 FMNISTDataset 类，获取自变量时将所有像素点除以255</span></span><br><span class="line"><span class="keyword">class</span>  <span class="title class_">FMNISTDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        <span class="comment"># x = x.float()</span></span><br><span class="line">        x = x.<span class="built_in">float</span>() / <span class="number">255</span> <span class="comment"># 缩放像素点，保证值在 0-1 之间</span></span><br><span class="line">        x = x.view(-<span class="number">1</span>,<span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">        self.x, self.y = x, y </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, ix</span>):</span><br><span class="line">        x, y = self.x[ix], self.y[ix] </span><br><span class="line">        <span class="keyword">return</span> x.to(device), y.to(device)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>): </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.x)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/08%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png" alt="image-20240406162038810"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/09%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E5%87%86%E7%A1%AE%E5%BA%A6.png" alt="image-20240406162047439"></p>
+<p>在通过对数据集进行缩放后，损失值的减小放缓，同时准确度也达到了一个相对理想的状态。</p>
+<p>归一化处理在深度学习中具有多方面的好处，下面我将详细介绍其主要优点：</p>
+<ol>
+<li><strong>加速模型收敛速度：</strong> 归一化处理使得输入数据的数值范围被缩放到一个较小的区间内，这有助于避免梯度消失或梯度爆炸问题，从而加速模型的收敛速度。当输入数据的尺度较小时，梯度下降的更新步长也会更加合适，模型参数可以更快地收敛到最优解。</li>
+<li><strong>提高模型泛化能力：</strong> 归一化处理有助于减少不同特征之间的尺度差异，使得模型更加关注数据中重要的模式和特征。这有助于提高模型的泛化能力，使其在未见过的数据上表现更好，减少过拟合的风险。</li>
+<li><strong>增加模型的稳定性：</strong> 归一化处理可以减少不同批次数据之间的方差，使得模型在训练过程中更加稳定。这可以降低训练过程中参数更新的波动，防止模型陷入局部最优解。</li>
+<li><strong>提高梯度下降的效率：</strong> 归一化处理可以使得优化算法更加高效，因为它能够更快地找到全局最优解。当输入数据的尺度被缩放到一个合适的范围后，梯度下降算法可以更快地收敛到最优解，从而提高了训练的效率。</li>
+<li><strong>抵抗不同输入分布的影响：</strong> 归一化处理使得模型更加鲁棒，能够适应不同的输入数据分布。无论是标准正态分布还是其他分布，归一化处理都能够使得模型更容易学习到数据的模式，提高了模型的通用性。</li>
+</ol>
+<h1 id="理解不同批大小的影响"><a href="#理解不同批大小的影响" class="headerlink" title="理解不同批大小的影响"></a>理解不同批大小的影响</h1><p>在一批中会更新一个权重，前面的代码中每轮更新了 60000 &#x2F; 32 次权重，下面我们来通过修改批大小来展现不同批大小时对训练效果的影响。</p>
+<p>不过在此之前，我们需要使用验证数据来观察模型对未知数据的准确度，以下对验证模型准确度相关的代码进行修改：</p>
+<ol>
+<li><p>使用验证数据集验证而不是原始训练集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用验证集</span></span><br><span class="line">fmnist_validation = datasets.FashionMNIST(data_folder, download=<span class="literal">True</span>, train=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">validation_data = fmnist_validation.data</span><br><span class="line">validation_labels = fmnist_validation.targets</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取验证数据集时不进行洗牌，并且一次加载完所有数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_data</span>(): </span><br><span class="line">    train = FMNISTDataset(train_data, train_labels)</span><br><span class="line">    <span class="comment"># shuffle=True 表示对数据随机洗牌，用于训练阶段</span></span><br><span class="line">    trn_dl = DataLoader(train, batch_size=<span class="number">32</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    validation = FMNISTDataset(validation_data, validation_labels)</span><br><span class="line">    <span class="comment"># 指定批大小为数据集长度 shuffle=False 表示不进行洗牌，用于验证阶段</span></span><br><span class="line">    val_dl = DataLoader(validation, batch_size=<span class="built_in">len</span>(validation_data), shuffle=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> trn_dl, val_dl</span><br><span class="line"></span><br><span class="line">train_dataloader, validation_dataloader = get_data()</span><br><span class="line"><span class="comment"># for data in train_dataloader:</span></span><br><span class="line"><span class="comment"># for data in validation_dataloader:</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给验证集一个新的损失值计算函数，因为训练集中的损失值由模型自动计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 验证集需要单独的损失值计算</span></span><br><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">val_loss</span>(<span class="params">x, y, model</span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    prediction = model(x)</span><br><span class="line">    val_loss = loss_fn(prediction, y)</span><br><span class="line">    <span class="keyword">return</span> val_loss.item()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将上面的更新应用于循环逻辑中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 记录验证集数据</span></span><br><span class="line">validation_losses, validation_accuracies = [], []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="built_in">print</span>(epoch)</span><br><span class="line">    epoch_losses, epoch_accuracies = [], []</span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(train_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        batch_loss = train_batch(x, y, model, optimizer, loss_fn)</span><br><span class="line">        epoch_losses.append(batch_loss)</span><br><span class="line">    epoch_loss = np.array(epoch_losses).mean()</span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(train_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        is_correct = accuracy(x, y, model)</span><br><span class="line">        epoch_accuracies.extend(is_correct)</span><br><span class="line">    epoch_accuracy = np.mean(epoch_accuracies)</span><br><span class="line">    losses.append(epoch_loss)</span><br><span class="line">    accuracies.append(epoch_accuracy)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 每轮结束再对验证集计算准确度和损失值</span></span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(validation_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        val_is_correct = accuracy(x, y, model)</span><br><span class="line">        validation_loss = val_loss(x, y, model)</span><br><span class="line">        val_epoch_accuracy = np.mean(val_is_correct)</span><br><span class="line">        validation_losses.append(validation_loss)</span><br><span class="line">        validation_accuracies.append(val_epoch_accuracy)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>下面是训练结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">epochs = np.arange(<span class="number">5</span>)+<span class="number">1</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> mticker</span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.subplot(<span class="number">211</span>)</span><br><span class="line">plt.plot(epochs, losses, <span class="string">&#x27;bo&#x27;</span>, label=<span class="string">&#x27;Training loss&#x27;</span>)</span><br><span class="line">plt.plot(epochs, validation_losses, <span class="string">&#x27;r&#x27;</span>, label=<span class="string">&#x27;Validation loss&#x27;</span>)</span><br><span class="line">plt.gca().xaxis.set_major_locator(mticker.MultipleLocator(<span class="number">1</span>))</span><br><span class="line">plt.title(<span class="string">&#x27;Training and validation loss when batch size is 32&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Epochs&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Loss&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.grid(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">plt.show()</span><br><span class="line">plt.subplot(<span class="number">212</span>)</span><br><span class="line">plt.plot(epochs, accuracies, <span class="string">&#x27;bo&#x27;</span>, label=<span class="string">&#x27;Training accuracy&#x27;</span>)</span><br><span class="line">plt.plot(epochs, validation_accuracies, <span class="string">&#x27;r&#x27;</span>, label=<span class="string">&#x27;Validation accuracy&#x27;</span>)</span><br><span class="line">plt.gca().xaxis.set_major_locator(mticker.MultipleLocator(<span class="number">1</span>))</span><br><span class="line">plt.title(<span class="string">&#x27;Training and validation accuracy when batch size is 32&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Epochs&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Accuracy&#x27;</span>)</span><br><span class="line">plt.gca().set_yticklabels([<span class="string">&#x27;&#123;:.0f&#125;%&#x27;</span>.<span class="built_in">format</span>(x*<span class="number">100</span>) <span class="keyword">for</span> x <span class="keyword">in</span> plt.gca().get_yticks()]) </span><br><span class="line">plt.legend()</span><br><span class="line">plt.grid(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/10%E6%89%B9%E5%A4%A7%E5%B0%8F32%E7%9A%84%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png" alt="image-20240406181505934"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/11%E6%89%B9%E5%A4%A7%E5%B0%8F32%E7%9A%84%E5%87%86%E7%A1%AE%E5%BA%A6%E6%9B%B2%E7%BA%BF.png" alt="image-20240406181518383"></p>
+<h2 id="批大小改为10000"><a href="#批大小改为10000" class="headerlink" title="批大小改为10000"></a>批大小改为10000</h2><p>只需修改以下函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_data</span>(): </span><br><span class="line">    train = FMNISTDataset(train_data, train_labels)</span><br><span class="line">    <span class="comment"># 将批大小改为10000</span></span><br><span class="line">    trn_dl = DataLoader(train, batch_size=<span class="number">10000</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    validation = FMNISTDataset(validation_data, validation_labels)</span><br><span class="line">    val_dl = DataLoader(validation, batch_size=<span class="built_in">len</span>(validation_data), shuffle=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> trn_dl, val_dl</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/12%E6%89%B9%E5%A4%A7%E5%B0%8F10000%E7%9A%84%E6%8D%9F%E5%A4%B1%E6%9B%B2%E7%BA%BF.png" alt="image-20240406181918016"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/13%E6%89%B9%E5%A4%A7%E5%B0%8F10000%E7%9A%84%E5%87%86%E7%A1%AE%E5%BA%A6%E6%9B%B2%E7%BA%BF.png" alt="image-20240406181946292"></p>
+<p>可以发现批大小为10000时准确度远远低于批大小为32时的准确度，这是因为批大小32时每轮进行了1875次权重更新，而批大小10000时每轮只能进行6次权重更新。</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2024-04-06</p></div> 
+    <div class="post-entry__tags"></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            03.使用pytorch构建神经网络（下）
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2024 <a href="/">My Learning Notes</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>

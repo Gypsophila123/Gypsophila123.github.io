@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/github.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/github_small.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/github_medium.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>01.神经网络基础 | My Learning Notes</title>
+
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="比较人工智能和传统机器学习 机器学习 需要专业人员花费大量时间进行特征提取 对于模糊情况容易判断失误   神经网络 只需要手动调整策略 由模型自动获取特征 需要大量样本    人工神经网络的构成人工神经网络是一系列张量（权重）和数学运算的组合。可以将人工神经网络看作一个函数，输入一个或多个张量，输出一个或多个张量。 人工神经网络由如下模块构成：  输入层：将自变量作为输入 隐藏（中间）层：该层连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="01.神经网络基础">
+<meta property="og:url" content="http://example.com/Deep%20Learning/01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
+<meta property="og:site_name" content="My Learning Notes">
+<meta property="og:description" content="比较人工智能和传统机器学习 机器学习 需要专业人员花费大量时间进行特征提取 对于模糊情况容易判断失误   神经网络 只需要手动调整策略 由模型自动获取特征 需要大量样本    人工神经网络的构成人工神经网络是一系列张量（权重）和数学运算的组合。可以将人工神经网络看作一个函数，输入一个或多个张量，输出一个或多个张量。 人工神经网络由如下模块构成：  输入层：将自变量作为输入 隐藏（中间）层：该层连接">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pictures%5C01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%5C01.%E7%A5%9E%E7%BB%8F%E5%85%83%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png">
+<meta property="og:image" content="http://example.com/pictures/01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/02.%E5%B8%B8%E8%A7%81%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png">
+<meta property="article:published_time" content="2024-04-07T05:06:32.502Z">
+<meta property="article:modified_time" content="2024-04-06T08:36:36.540Z">
+<meta property="article:author" content="yuanjie xiang">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/pictures%5C01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%5C01.%E7%A5%9E%E7%BB%8F%E5%85%83%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+    
+
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">My Learning Notes</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        01.神经网络基础
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-07</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%92%8C%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">比较人工智能和传统机器学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">人工神经网络的构成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">神经元和激活函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.1.</span> <span class="toc-text">常用激活函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88forward%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">前向传播（forward）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88backward%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">反向传播（backward）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">4.1.</span> <span class="toc-text">使用链式法则实现反向传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">4.2.</span> <span class="toc-text">学习率的影响</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%92%8C%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">比较人工智能和传统机器学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">人工神经网络的构成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">神经元和激活函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.1.</span> <span class="toc-text">常用激活函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88forward%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">前向传播（forward）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88backward%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">反向传播（backward）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">4.1.</span> <span class="toc-text">使用链式法则实现反向传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">4.2.</span> <span class="toc-text">学习率的影响</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="比较人工智能和传统机器学习"><a href="#比较人工智能和传统机器学习" class="headerlink" title="比较人工智能和传统机器学习"></a>比较人工智能和传统机器学习</h2><ul>
+<li>机器学习<ul>
+<li>需要专业人员花费大量时间进行特征提取</li>
+<li>对于模糊情况容易判断失误</li>
+</ul>
+</li>
+<li>神经网络<ul>
+<li>只需要手动调整策略</li>
+<li>由模型自动获取特征</li>
+<li>需要大量样本</li>
+</ul>
+</li>
+</ul>
+<h2 id="人工神经网络的构成"><a href="#人工神经网络的构成" class="headerlink" title="人工神经网络的构成"></a>人工神经网络的构成</h2><p>人工神经网络是一系列张量（权重）和数学运算的组合。可以将人工神经网络看作一个函数，输入一个或多个张量，输出一个或多个张量。</p>
+<p>人工神经网络由如下模块构成：</p>
+<ul>
+<li>输入层：将自变量作为输入</li>
+<li>隐藏（中间）层：该层连接输入层和输出层，并对输入数据进行转换。隐藏层可以有很多层。</li>
+<li>输出层：包含了输入变量期望产生的值</li>
+</ul>
+<h3 id="神经元和激活函数"><a href="#神经元和激活函数" class="headerlink" title="神经元和激活函数"></a>神经元和激活函数</h3><p><img src="/pictures%5C01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%5C01.%E7%A5%9E%E7%BB%8F%E5%85%83%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png" alt="img"></p>
+<p>上图是一个基本的神经元模型：</p>
+<ul>
+<li>x1, x2, x3, 是输入变量</li>
+<li>b是偏置值。从生物学上解释，在脑神经细胞中，一定是**<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E8%BE%93%E5%85%A5%E4%BF%A1%E5%8F%B7&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:2848356271%7D">输入信号</a>的电平&#x2F;电流大于某个临界值时**，神经元细胞才会处于兴奋状态，因此我们也需要使用偏置值来增强神经元的效率</li>
+<li>w1, w2, w3是每个输入变量的权重</li>
+<li>$A &#x3D; f(b + \sum_{i&#x3D;1}^{n}w_ix_i)$，其中函数f是激活函数，激活函数可以使神经网络从线性变化转化为非线性变化，由此实现任意曲面的拟合。</li>
+</ul>
+<h4 id="常用激活函数"><a href="#常用激活函数" class="headerlink" title="常用激活函数"></a>常用激活函数</h4><p>激活函数应该<strong>定义为任意处</strong> ，并且<strong>在实数空间中任意处都是连续的</strong> 。这个函数还要求在整个实数空间上是<strong>可微</strong>的，以下是常用激活函数</p>
+<p><img src="/pictures/01.%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/02.%E5%B8%B8%E8%A7%81%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png" alt="02.常见的激活函数"></p>
+<ul>
+<li><p>sigmoid: $(0, 1)$  在靠近0时输出变化最大</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">x</span>):</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span>+np.exp(-x)</span><br></pre></td></tr></table></figure></li>
+<li><p>Tanh: $(-1,1)$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">tanh</span>(<span class="params">x</span>):</span><br><span class="line">	<span class="keyword">return</span> (np.exp(x) - np.exp(-x)) / (np.exp(x) + np.exp(-x))</span><br></pre></td></tr></table></figure></li>
+<li><p><code>ReLU</code>: $max(0,x)$ 输入只能大于0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">relu</span>(<span class="params">x</span>):</span><br><span class="line">	<span class="keyword">return</span> np.where(x&gt;<span class="number">0</span>, x, <span class="number">0</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>ELU: $a(e^x-1)$</p>
+</li>
+<li><p><code>softmax</code>：用于计算某个类别的概率，通过该操作将结果限制在0-1内：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">x</span>):</span><br><span class="line">	<span class="keyword">return</span> np.exp(x) / np.<span class="built_in">sum</span>(np.exp(x))</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="前向传播（forward）"><a href="#前向传播（forward）" class="headerlink" title="前向传播（forward）"></a>前向传播（forward）</h2><p>简单理解就是将上一层的输出作为下一层的输入，并计算下一层的输出，直到运算到输出层。</p>
+<p>接下来通过以下操作理解前向传播：</p>
+<ol>
+<li><p>计算隐藏层的值：</p>
+<ul>
+<li>分配权重，一般在训练开始前使用随机权重初始化。</li>
+<li>输入与权重相乘，计算隐藏单元的值 $h_i&#x3D;x_1w_1 + x_2w_2…$</li>
+</ul>
+</li>
+<li><p>应用激活函数</p>
+<ul>
+<li>应用激活函数，前一步$h_i$与自变量输入依旧是线性关系，需要使用激活函数改变将其改变为非线性关系，结果 $A_i&#x3D;f(h_i)$可以视为下一层的自变量。</li>
+<li>通过不断进行以上循环直到输出层。</li>
+</ul>
+</li>
+<li><p>计算损失值</p>
+<ol>
+<li><p>损失值表示模型的准确程度，损失值越小，则模型越准确</p>
+</li>
+<li><p>假设$\overline {y_i} &#x3D; f_1(f_2(f_3(…)))$为输出层的结果（预估值），$y_i$为应该输出的值（实际值），m为数据点总数</p>
+</li>
+<li><p>记 p 为预估值数组，y为实际值数组</p>
+</li>
+<li><p>连续变量的损失值计算</p>
+<ul>
+<li><p>一般使用实际值与预估值差的平方作为损失值，即<strong>均方误差</strong> $j&#x3D;\frac{1}{m}\sum_{i&#x3D;1}^{m}(y_i-\overline {y_i})^2$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mse</span>(<span class="params">p, y</span>):</span><br><span class="line">	<span class="keyword">return</span> np.mean(np.square(p-y))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还可以使用<strong>平均值绝对误差</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mae</span>(<span class="params">p, y</span>):</span><br><span class="line">    <span class="keyword">return</span> np.mean(np.<span class="built_in">abs</span>(p-y))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一般在预期输出小于1时，使用均方误差减小损失</p>
+</li>
+</ul>
+</li>
+<li><p>离散变量的损失值计算（变量中只有几个类别）</p>
+<ul>
+<li><p>交叉熵的概念：交叉熵是信息论中的一个概念，用于衡量两个概率分布之间的差异。交叉熵的值越小，表示两个概率分布越接近，也就是模型的预测越准确。</p>
+</li>
+<li><p>当预测变量只有两个不同取值时，使用<strong>二元交叉熵</strong>为损失函数：$-\frac{1}{m}\sum_{i&#x3D;1}^{m}(y_i\log{\overline{y_i}} + (1-y_i)\log(1-\overline{y_i}))$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">binary_cross_entropy</span>(<span class="params">p, y</span>):</span><br><span class="line">	<span class="keyword">return</span> -np.mean(np.<span class="built_in">sum</span>((y*np.log(p)) + (<span class="number">1</span>-y)*(np.log(<span class="number">1</span>-p))))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<strong>分类交叉熵</strong>为损失函数，设C为类别总数，损失值为：$-\frac{1}{m}\sum_{j&#x3D;1}^{C}\sum_{i&#x3D;1}^{m}y_i\log{\overline{y_i}}$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">categorical_cross_entropy</span>(<span class="params">p, y</span>):</span><br><span class="line">	<span class="keyword">return</span> -np.mean(np.<span class="built_in">sum</span>(np.<span class="built_in">sum</span>(y*np.log(p))))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>概率处于0-1之间，因此可能的最小损失为0，最大损失为无穷</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="反向传播（backward）"><a href="#反向传播（backward）" class="headerlink" title="反向传播（backward）"></a>反向传播（backward）</h2><p>在前向传播的介绍中，我们用随机值作为初始化权重，可预见的损失值也会比较大。在反向传播中，我们需要通过得到的损失值，动态的更新权重和偏置值，使损失值尽可能的减小。</p>
+<p>有一种基础的反向传播的步骤如下：</p>
+<ol>
+<li>少量的修改神经网络中的一个权重值</li>
+<li>当权重变化量为$\Delta W$时，计算出损失的变化量为$\Delta L$</li>
+<li>使当前权重更新量为 $-k \frac{\Delta L}{\Delta W}$，其中k是一个正值，是一个称为<strong>学习率</strong>的超参数，$\frac{\Delta L}{\Delta W}$可以视为一个微分</li>
+<li>反复进行上述步骤，直到修改完每一个权重值</li>
+</ol>
+<blockquote>
+<p> 从3可以看出，如果更改某个权重较大的减小了损失值，则对其更新也会较大，反之对其的更新也会较小。</p>
+</blockquote>
+<ul>
+<li>如果对某个数据集执行了n次反向传播，则称为对模型进行了n轮训练。</li>
+<li>通过设置一个学习率，来缓慢的建立信任，而不是直接将权重变化量设为梯度值</li>
+<li>通过更新权重来减小误差的整个过程被称为梯度下降</li>
+</ul>
+<h3 id="使用链式法则实现反向传播"><a href="#使用链式法则实现反向传播" class="headerlink" title="使用链式法则实现反向传播"></a>使用链式法则实现反向传播</h3><p>在上面的步骤中，每次计算新权重值时都要完整的进行一遍前向传播以计算损失值的变化，当节点非常多时这样的效率会非常低，是否有一种方式能便捷的计算某权重变化后对损失值的影响率呢？</p>
+<p>下面以使用均方差做损失函数，sigmoid做激活函数来进行链式求偏导计算权重变化时损失值的变化率。</p>
+<ul>
+<li>损失值 $C &#x3D; (y-\overline{y})^2$</li>
+<li>预测输出值 $\overline{y}&#x3D;a_1w_{21}+a_2w_{22}+a_3w_{23}$</li>
+<li>隐藏层激活函数输出 $a_1&#x3D;\frac{1}{1+e^{-h_{1}}}$</li>
+<li>隐藏层值 $h_1&#x3D;x_1w_{11}+x_2w_{12}$</li>
+<li>故损失值 C对$w_{11}$ 的偏导 $\frac{\partial C}{\partial w_{11}}&#x3D;\frac{\partial C}{\partial {\overline y}}\frac{\partial {\overline y}}{\partial a_{1}}\frac{\partial a_{1}}{\partial h_{1}}\frac{\partial h_{1}}{\partial w_{11}}&#x3D;-2(y-\overline y)w_{21}a_{1}(1-a_{1})x_1$</li>
+<li>由上述公式可以通过公式直接计算权重值变化对损失值的影响率，从而避免了每次重新计算前向传播</li>
+</ul>
+<h3 id="学习率的影响"><a href="#学习率的影响" class="headerlink" title="学习率的影响"></a>学习率的影响</h3><ul>
+<li>学习率影响权重变化的速率，成正相关</li>
+<li>学习率较大时可能导致权重变化过大，导致之后损失值变化非常小，使权重值无法达到最优值</li>
+<li>学习率太小，则权重收敛较慢</li>
+<li>学习率的范围一般在 $10^{-6}$ 到1.0之间</li>
+</ul>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2024-04-06</p></div> 
+    <div class="post-entry__tags"></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/Deep%20Learning/02.pytorch%E5%9F%BA%E7%A1%80/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            上一篇
+                        </div>
+                        <div class="nav__title">
+                            02.pytorch基础
+                        </div>
+                    </div>
+                </a>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/Deep%20Learning/00.%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E5%AF%BC%E8%AF%BB/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            00.机器视觉基础概念导读
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2024 <a href="/">My Learning Notes</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>

@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.1.1">
+    <head>
+    <meta charset="utf-8">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/github_medium.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/github_medium.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/github_small.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+    
 
-<link rel="stylesheet" href="/css/main.css">
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/github.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/github_small.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/github_medium.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>03.使用pytorch构建深度神经网络（下） | 学习笔记</title>
+
+
+    <meta name="keywords" content="Deep Learning">
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.33/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"gypsophila123.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"isso","storage":true,"lazyload":false,"nav":null,"activeClass":"isso"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
-
+    <!-- OpenGraph -->
+ 
     <meta name="description" content="理解不同学习率的影响  到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响   学习率对缩放数据集的影响  在上一节代码的基础上（SGD优化器），仅">
 <meta property="og:type" content="article">
 <meta property="og:title" content="03.使用pytorch构建深度神经网络（下）">
@@ -28,247 +48,162 @@
 <meta property="og:site_name" content="学习笔记">
 <meta property="og:description" content="理解不同学习率的影响  到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响   学习率对缩放数据集的影响  在上一节代码的基础上（SGD优化器），仅">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png">
 <meta property="article:published_time" content="2024-04-11T09:09:49.640Z">
 <meta property="article:modified_time" content="2024-04-11T09:09:49.998Z">
 <meta property="article:author" content="yuanjie">
 <meta property="article:tag" content="Deep Learning">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gypsophila123.github.io/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png">
 
 
-<link rel="canonical" href="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/">
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
 
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/","path":"Deep Learning/03.使用pytorch构建深度神经网络（下）/","title":"03.使用pytorch构建深度神经网络（下）"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>03.使用pytorch构建深度神经网络（下） | 学习笔记</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">学习笔记</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">6</span></a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</header>
+    
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/default.min.css" media="none" >
         
-  
-  <aside class="sidebar">
+            <link rel="stylesheet" id="hl-dark-theme" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/dark.min.css" media="none">
+        
+    
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+    
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.</span> <span class="nav-text">理解不同学习率的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.1.</span> <span class="nav-text">学习率对缩放数据集的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">学习率较大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%80%82%E4%B8%AD"><span class="nav-number">1.1.2.</span> <span class="nav-text">学习率适中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">学习率较小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83"><span class="nav-number">1.1.4.</span> <span class="nav-text">不同学习率的不同参数分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E9%9D%9E%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.2.</span> <span class="nav-text">不同学习率对非缩放数据集的影响</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.</span> <span class="nav-text">理解不同学习率衰减的影响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%9B%B4%E6%B7%B1%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">3.</span> <span class="nav-text">构建更深的神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">隐藏层增加一层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82"><span class="nav-number">3.2.</span> <span class="nav-text">没有隐藏层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">4.</span> <span class="nav-text">理解批归一化的影响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">5.</span> <span class="nav-text">过拟合的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0dropout%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">5.1.</span> <span class="nav-text">添加dropout的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">5.2.</span> <span class="nav-text">正则化的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">5.2.1.</span> <span class="nav-text">L1正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">5.2.2.</span> <span class="nav-text">L2正则化</span></a></li></ol></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">yuanjie</p>
-  <div class="site-description" itemprop="description">劝君惜取少年时</div>
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">学习笔记</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        03.使用pytorch构建深度神经网络（下）
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-11</a>
+        
+    <span class="separate-dot"></span><a href="/categories/deep-learning/" class="button">Deep Learning</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
 </div>
 
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">1.</span> <span class="toc-text">学习率对缩放数据集的影响</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7"><span class="toc-number">1.1.</span> <span class="toc-text">学习率较大</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%80%82%E4%B8%AD"><span class="toc-number">1.2.</span> <span class="toc-text">学习率适中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F"><span class="toc-number">1.3.</span> <span class="toc-text">学习率较小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83"><span class="toc-number">1.4.</span> <span class="toc-text">不同学习率的不同参数分布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E9%9D%9E%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">2.</span> <span class="toc-text">不同学习率对非缩放数据集的影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">隐藏层增加一层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">没有隐藏层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0dropout%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">5.</span> <span class="toc-text">添加dropout的影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">6.</span> <span class="toc-text">正则化的影响</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">6.1.</span> <span class="toc-text">L1正则化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">6.2.</span> <span class="toc-text">L2正则化</span></a></li></ol></li></ol>
         </div>
-      </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">1.</span> <span class="toc-text">学习率对缩放数据集的影响</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7"><span class="toc-number">1.1.</span> <span class="toc-text">学习率较大</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%80%82%E4%B8%AD"><span class="toc-number">1.2.</span> <span class="toc-text">学习率适中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F"><span class="toc-number">1.3.</span> <span class="toc-text">学习率较小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83"><span class="toc-number">1.4.</span> <span class="toc-text">不同学习率的不同参数分布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%AF%B9%E9%9D%9E%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">2.</span> <span class="toc-text">不同学习率对非缩放数据集的影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">隐藏层增加一层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">没有隐藏层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0dropout%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">5.</span> <span class="toc-text">添加dropout的影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">6.</span> <span class="toc-text">正则化的影响</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L1%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">6.1.</span> <span class="toc-text">L1正则化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#L2%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">6.2.</span> <span class="toc-text">L2正则化</span></a></li></ol></li></ol>
     </div>
 
-    
-  </aside>
 
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="yuanjie">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-      <meta itemprop="description" content="劝君惜取少年时">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="03.使用pytorch构建深度神经网络（下） | 学习笔记">
-      <meta itemprop="description" content="
-
- 理解不同学习率的影响
-
-到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响
-
- 学习率对缩放数据集的影响
-
-在上一节代码的基础上（SGD优化器），仅">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          03.使用pytorch构建深度神经网络（下）
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-04-11 17:09:49" itemprop="dateCreated datePublished" datetime="2024-04-11T17:09:49+08:00">2024-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-            <div class="post-description">
-
- 理解不同学习率的影响
-
-到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响
-
- 学习率对缩放数据集的影响
-
-在上一节代码的基础上（SGD优化器），仅</div>
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p>[TOC]</p>
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>[TOC]</p>
 <h1 id="理解不同学习率的影响"><a href="#理解不同学习率的影响" class="headerlink" title="理解不同学习率的影响"></a>理解不同学习率的影响</h1><p>到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响</p>
 <h2 id="学习率对缩放数据集的影响"><a href="#学习率对缩放数据集的影响" class="headerlink" title="学习率对缩放数据集的影响"></a>学习率对缩放数据集的影响</h2><p>在上一节代码的基础上（SGD优化器），仅修改学习率，查看不同学习率对训练的影响</p>
-<h3 id="学习率较大"><a href="#学习率较大" class="headerlink" title="学习率较大"></a>学习率较大</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    <span class="comment"># 修改学习率为0.1</span></span><br><span class="line">    optimizer = SGD(model.parameters(), lr=<span class="number">1e-1</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/03学习率为0.1对缩放数据集的影响.png" alt="image-20240406192037177"></p>
+<h3 id="学习率较大"><a href="#学习率较大" class="headerlink" title="学习率较大"></a>学习率较大</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    <span class="hljs-comment"># 修改学习率为0.1</span><br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-1</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192037177"></p>
 <p>注意到损失函数下降速度和准确度提升速度相较学习度为0.01时虽然有所提升，但曲线波动较大，并且相比之下验证值曲线并没有明显优势</p>
-<h3 id="学习率适中"><a href="#学习率适中" class="headerlink" title="学习率适中"></a>学习率适中</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改学习率为0.001</span></span><br><span class="line">optimizer = SGD(model.parameters(), lr=<span class="number">1e-3</span>)</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/04学习率为0.001对缩放数据集的影响.png.png" alt="image-20240406192632126"></p>
+<h3 id="学习率适中"><a href="#学习率适中" class="headerlink" title="学习率适中"></a>学习率适中</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-3</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192632126"></p>
 <p>注意到损失函数下降速度和准确度提升速度相比学习度为0.01时均有所降低，同时曲线相对更为平滑</p>
 <h3 id="学习率较小"><a href="#学习率较小" class="headerlink" title="学习率较小"></a>学习率较小</h3><p>可以预见，当学习率到达0.00001时，其权重值更新会非常慢。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改学习率为0.00001</span></span><br><span class="line">optimizer = SGD(model.parameters(), lr=<span class="number">1e-5</span>)</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/05学习率为0.00001对缩放数据集的影响.png" alt="image-20240406200627434"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.00001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-5</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406200627434"></p>
 <h3 id="不同学习率的不同参数分布"><a href="#不同学习率的不同参数分布" class="headerlink" title="不同学习率的不同参数分布"></a>不同学习率的不同参数分布</h3><p>不知道你是否注意到，在不同学习率时训练曲线与验证曲线的接近程度不同，学习率越低，两个曲线越接近。</p>
 <p>我们可以对的模型的参数进行分析，以研究其中的规律，我们的模型有以下四种参数：</p>
 <ul>
@@ -278,20 +213,21 @@
 <li>输出层中的偏置项</li>
 </ul>
 <p>通过如下方法绘制参数分布情况柱状图</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> ix, par <span class="keyword">in</span> <span class="built_in">enumerate</span>(model.parameters()):</span><br><span class="line">    <span class="keyword">if</span>(ix==<span class="number">0</span>):</span><br><span class="line">        plt.hist(par.cpu().detach().numpy().flatten())</span><br><span class="line">        plt.title(<span class="string">&#x27;Distribution of weights conencting input to hidden layer&#x27;</span>)</span><br><span class="line">        plt.show()</span><br><span class="line">    <span class="keyword">elif</span>(ix ==<span class="number">1</span>):</span><br><span class="line">        plt.hist(par.cpu().detach().numpy().flatten())</span><br><span class="line">        plt.title(<span class="string">&#x27;Distribution of biases of hidden layer&#x27;</span>)</span><br><span class="line">        plt.show()</span><br><span class="line">    <span class="keyword">elif</span>(ix==<span class="number">2</span>):</span><br><span class="line">        plt.hist(par.cpu().detach().numpy().flatten())</span><br><span class="line">        plt.title(<span class="string">&#x27;Distribution of weights conencting hidden to output layer&#x27;</span>)</span><br><span class="line">        plt.show()</span><br><span class="line">    <span class="keyword">elif</span>(ix ==<span class="number">3</span>):</span><br><span class="line">        plt.hist(par.cpu().detach().numpy().flatten())</span><br><span class="line">        plt.title(<span class="string">&#x27;Distribution of biases of output layer&#x27;</span>)</span><br><span class="line">        plt.show() </span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">for</span> ix, par <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(model.parameters()):<br>    <span class="hljs-keyword">if</span>(ix==<span class="hljs-number">0</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting input to hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">1</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix==<span class="hljs-number">2</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting hidden to output layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">3</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of output layer&#x27;</span>)<br>        plt.show() <br></code></pre></td></tr></table></figure>
+
 <p>以下是按照学习率从大到小三种情况的参数分布情况（注意参数大小）</p>
 <ul>
 <li>学习率0.1时的参数分布</li>
 </ul>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/06学习率较大时的参数分布.png" alt="image-20240406205241463"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205241463"></p>
 <ul>
 <li>学习率0.001时的参数分布</li>
 </ul>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/07学习率中等时的参数分布.png" alt="image-20240406205529494"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205529494"></p>
 <ul>
 <li>学习率0.00001时的参数分布</li>
 </ul>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/08学习率较小时的参数分布.png" alt="image-20240406202843548"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406202843548"></p>
 <p>可以看出：</p>
 <ul>
 <li>学习率越大，参数分布范围也越大</li>
@@ -300,22 +236,26 @@
 </ul>
 <h2 id="不同学习率对非缩放数据集的影响"><a href="#不同学习率对非缩放数据集的影响" class="headerlink" title="不同学习率对非缩放数据集的影响"></a>不同学习率对非缩放数据集的影响</h2><p>在前面的学习中，我们设置学习率为0.01且不缩放变量时，模型无法达到一个理想的准确率，后面通过确保变量被限制在某个较小范围内，提升了模型的准确度。</p>
 <p>这次我们探讨一下，如果不缩小变量范围，能否通过改变学习率使模型达到一个理想的准确度：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FMNISTDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        <span class="comment"># 取消缩放像素点</span></span><br><span class="line">        <span class="comment"># x = x.float() / 255 </span></span><br><span class="line">        x = x.<span class="built_in">float</span>()</span><br><span class="line">        x = x.view(-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">        self.x, self.y = x, y </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, ix</span>):</span><br><span class="line">        x, y = self.x[ix], self.y[ix] </span><br><span class="line">        <span class="keyword">return</span> x.to(device), y.to(device)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>): </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FMNISTDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, x, y</span>):<br>        <span class="hljs-comment"># 取消缩放像素点</span><br>        <span class="hljs-comment"># x = x.float() / 255 </span><br>        x = x.<span class="hljs-built_in">float</span>()<br>        x = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">28</span>*<span class="hljs-number">28</span>)<br>        self.x, self.y = x, y <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, ix</span>):<br>        x, y = self.x[ix], self.y[ix] <br>        <span class="hljs-keyword">return</span> x.to(device), y.to(device)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>): <br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.x)<br></code></pre></td></tr></table></figure>
+
 <ul>
 <li><p>不缩小数据且学习率为0.1：</p>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/09不缩小数据且学习率为0.1.png" alt="image-20240406211916990"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406211916990"></p>
 </li>
 <li><p>不缩小数据且学习率为0.001</p>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/10不缩小数据且学习率为0.001.png" alt="image-20240406212334619"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212334619"></p>
 </li>
 <li><p>不缩小数据且学习率为0.00001</p>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/11不缩小数据且学习率为0.00001.png" alt="image-20240406212610297"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212610297"></p>
 </li>
 <li><p>当学习率为0.1时，第一轮就使损失值达到了零，自然也无法继续增加精确度</p>
 </li>
-<li>而通过减小学习率，就能直接避免参数更新过大的问题</li>
-<li>通过以上观察，猜测缩减数据值的大小和减小学习率有类似的效果</li>
-<li>因此我们在训练模型时，尽量不要使用较大的数据值和学习率，猜测学习率在0.001-0.01间时，数据值在[-1, 1]之间是一个比较合适的区间。</li>
+<li><p>而通过减小学习率，就能直接避免参数更新过大的问题</p>
+</li>
+<li><p>通过以上观察，猜测缩减数据值的大小和减小学习率有类似的效果</p>
+</li>
+<li><p>因此我们在训练模型时，尽量不要使用较大的数据值和学习率，猜测学习率在0.001-0.01间时，数据值在[-1, 1]之间是一个比较合适的区间。</p>
+</li>
 </ul>
 <h1 id="理解不同学习率衰减的影响"><a href="#理解不同学习率衰减的影响" class="headerlink" title="理解不同学习率衰减的影响"></a>理解不同学习率衰减的影响</h1><p>通过对不同学习率下曲线的观察，我们也总结出一些规律：</p>
 <ul>
@@ -324,16 +264,23 @@
 </ul>
 <p>那我们是否能结合学习率的优点，在训练过程中动态修改学习率，<strong>在训练初期学习率大一些，使得网络收敛迅速，在训练后期学习率小一些，使得网络更好的收敛到最优解。</strong></p>
 <p>Pytorch提供了一些相关工具，可以使用这些工具动态降低学习率：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> optim</span><br><span class="line"></span><br><span class="line"><span class="comment"># factor=0.5 表示每次触发该调节器将使学习率变为当前的0.5倍</span></span><br><span class="line"><span class="comment"># patience=0 表示只要有1次当前损失值没有改善，则触发调节器</span></span><br><span class="line"><span class="comment"># threshold=0.001 阈值表示损失率的改善最低值，低于该值则认为没有改善</span></span><br><span class="line"><span class="comment"># verbose=True 表示将打印学习率变化 （已弃用）</span></span><br><span class="line"><span class="comment"># min_lr=1e-5 表示学习率下限为1e-5</span></span><br><span class="line"><span class="comment"># threshold_mode=&#x27;abs&#x27; 表示阈值是绝对值，也可以用&#x27;rel&#x27;表示百分比</span></span><br><span class="line">scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=<span class="number">0.5</span>, patience=<span class="number">0</span>, threshold=<span class="number">0.001</span>, min_lr=<span class="number">1e-5</span>, threshold_mode=<span class="string">&#x27;abs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 30轮</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">    <span class="comment"># 获取当前学习率</span></span><br><span class="line">    current_lr = optimizer.get_last_lr()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>: Learning Rate = <span class="subst">&#123;current_lr&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="comment"># 这里省略</span></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ix, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">iter</span>(validation_dataloader)):</span><br><span class="line">        x, y = batch</span><br><span class="line">        val_is_correct = accuracy(x, y, model)</span><br><span class="line">        validation_loss = val_loss(x, y, model)</span><br><span class="line">        val_epoch_accuracy = np.mean(val_is_correct)</span><br><span class="line">        validation_losses.append(validation_loss)</span><br><span class="line">        validation_accuracies.append(val_epoch_accuracy)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 用于监视每次损失值变化</span></span><br><span class="line">        scheduler.step(validation_loss)</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/12学习率衰减的效果.png" alt="image-20240406221959090"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> optim<br><br><span class="hljs-comment"># factor=0.5 表示每次触发该调节器将使学习率变为当前的0.5倍</span><br><span class="hljs-comment"># patience=0 表示只要有1次当前损失值没有改善，则触发调节器</span><br><span class="hljs-comment"># threshold=0.001 阈值表示损失率的改善最低值，低于该值则认为没有改善</span><br><span class="hljs-comment"># verbose=True 表示将打印学习率变化 （已弃用）</span><br><span class="hljs-comment"># min_lr=1e-5 表示学习率下限为1e-5</span><br><span class="hljs-comment"># threshold_mode=&#x27;abs&#x27; 表示阈值是绝对值，也可以用&#x27;rel&#x27;表示百分比</span><br>scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=<span class="hljs-number">0.5</span>, patience=<span class="hljs-number">0</span>, threshold=<span class="hljs-number">0.001</span>, min_lr=<span class="hljs-number">1e-5</span>, threshold_mode=<span class="hljs-string">&#x27;abs&#x27;</span>)<br><br><span class="hljs-comment"># 30轮</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">30</span>):<br>    <span class="hljs-comment"># 获取当前学习率</span><br>    current_lr = optimizer.get_last_lr()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Epoch <span class="hljs-subst">&#123;epoch&#125;</span>: Learning Rate = <span class="hljs-subst">&#123;current_lr&#125;</span>&quot;</span>)<br>    <span class="hljs-comment"># 这里省略</span><br>    ...<br>    <br>    <span class="hljs-keyword">for</span> ix, batch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">iter</span>(validation_dataloader)):<br>        x, y = batch<br>        val_is_correct = accuracy(x, y, model)<br>        validation_loss = val_loss(x, y, model)<br>        val_epoch_accuracy = np.mean(val_is_correct)<br>        validation_losses.append(validation_loss)<br>        validation_accuracies.append(val_epoch_accuracy)<br>        <br>        <span class="hljs-comment"># 用于监视每次损失值变化</span><br>        scheduler.step(validation_loss)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406221959090"></p>
 <p>可以看出，使用学习率衰减后曲线的波动有所增加，最后取得的成绩也处于一个较好的水平。</p>
 <h1 id="构建更深的神经网络"><a href="#构建更深的神经网络" class="headerlink" title="构建更深的神经网络"></a>构建更深的神经网络</h1><p>在本节，对比具有两个隐藏层和没有隐藏层的模型的性能。注意先将学习率调回0.01。</p>
 <h2 id="隐藏层增加一层"><a href="#隐藏层增加一层" class="headerlink" title="隐藏层增加一层"></a>隐藏层增加一层</h2><p>然后修改模型部分代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        <span class="comment"># 隐藏层增加一层</span></span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    optimizer = SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 隐藏层增加一层</span><br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+
+
 <h2 id="没有隐藏层"><a href="#没有隐藏层" class="headerlink" title="没有隐藏层"></a>没有隐藏层</h2><p>再修改模型部分代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        <span class="comment"># 没有隐藏层</span></span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    optimizer = SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/13隐藏层增加一层的效果.png" alt="image-20240407170711471"></p>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/14没有隐藏层的效果.png" alt="image-20240407171743670"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        <span class="hljs-comment"># 没有隐藏层</span><br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407170711471"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407171743670"></p>
 <p>比较两幅图，不难发现当使用两层隐藏层时，损失值的下降速度更快，准确率提升的速度也更快</p>
 <blockquote>
 <p>发现这里与书中的情况不太一样，在书中使用两层隐藏层时出现了严重的过拟合现象</p>
@@ -347,10 +294,11 @@
 </ol>
 <p>通过上面的操作，输入值将被归一化到一个较小的范围</p>
 <p>接下来，我们对模型进行批归一化操作，与不进行批归一化的操作进行比较。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">1000</span>),</span><br><span class="line">        <span class="comment"># 对隐藏层输入进行归一化操作</span></span><br><span class="line">        nn.BatchNorm1d(<span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    optimizer = Adam(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/15使用批归一化的效果.png" alt="image-20240407181945432"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        <span class="hljs-comment"># 对隐藏层输入进行归一化操作</span><br>        nn.BatchNorm1d(<span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = Adam(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407181945432"></p>
 <p>相比之下，没有进行批归一化的曲线如下：</p>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/16没有使用批归一化的效果.png" alt="image-20240407182414763"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407182414763"></p>
 <p>很显然，批归一化能较好地提升模型训练效果</p>
 <h1 id="过拟合的概念"><a href="#过拟合的概念" class="headerlink" title="过拟合的概念"></a>过拟合的概念</h1><ol>
 <li>过拟合（Overfitting）： 过拟合指的是模型在训练数据上表现得过于优秀，但在未见过的测试数据上表现不佳的情况。具体来说，过拟合通常表现为模型对训练数据中的噪声和随机变化过于敏感，导致模型过度地“记忆”了训练数据的特性，而未能学习到泛化到新数据的规律。过拟合的原因通常是模型过于复杂，参数数量过多，导致模型的学习能力过强，容易过度拟合训练数据。</li>
@@ -365,125 +313,206 @@
 <blockquote>
 <p>注意！在模型训练和模型验证的过程中，我们应该注意通过 model.train() 和 model.eval() 转换模型的模式，当使用model.eval() 将模型转化为评估模式，模型会抑制dropout的使用</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model</span>():</span><br><span class="line">    model = nn.Sequential(</span><br><span class="line">        nn.Linear(<span class="number">28</span> * <span class="number">28</span>, <span class="number">1000</span>),</span><br><span class="line">        nn.ReLU(),</span><br><span class="line">        <span class="comment"># 随机屏蔽一半的节点</span></span><br><span class="line">        nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">        nn.Linear(<span class="number">1000</span>, <span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br><span class="line">    loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">    optimizer = SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line">    <span class="keyword">return</span> model, loss_fn, optimizer</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/17使用dropout的效果.png" alt="image-20240407183903783"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 随机屏蔽一半的节点</span><br>        nn.Dropout(<span class="hljs-number">0.5</span>),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407183903783"></p>
 <p>对比前面<code>没有进行批归一化的曲线</code>，可以发现训练集和验证集曲线更接近了，这证明dropout确实降低了过拟合。不过，理所当然，模型的训练速度也变慢了少许</p>
 <h2 id="正则化的影响"><a href="#正则化的影响" class="headerlink" title="正则化的影响"></a>正则化的影响</h2><p>除了模型的训练准确度远高于验证准确度之外，过拟合的另一个特征是，某些权重值会远远高于其他权重值。而在探讨不同学习率对数据集的影响那一节，我们发现学习效果越好，其权重分布越接近正态分布。</p>
 <p>正则化是一种基于对模型中高权重值进行惩罚的技术。</p>
 <h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>L1正则化项结合交叉熵损失函数的计算公式如下：</p>
 <ul>
-<li>$L1loss = -\frac{1}{n}(\sum<em>{i=1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum</em>{j=1}^{m}|w_j|$</li>
+<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}|w_j|$</li>
 </ul>
 <p>上述公式的前半部分正是二元交叉熵损失函数，后半部分中$\Lambda$表示一个权重。整体意思为：每次计算损失值时将损失值增加一部分，以减少较高权重出现的可能。</p>
 <p>这次需要修改的地方在训练函数中，同时将训练轮次改到30轮：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_batch</span>(<span class="params">x, y, model, optimizer, loss_fn</span>):</span><br><span class="line">    model.train() </span><br><span class="line">    prediction = model(x)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># batch_loss = loss_fn(prediction, y)</span></span><br><span class="line">    <span class="comment"># L1 正则化，计算</span></span><br><span class="line">    l1_regularization = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">        <span class="comment"># norm(parm, 1)表示对parm中所有值1次方（绝对值）再求和再开1次方</span></span><br><span class="line">        <span class="comment"># 结果等同于绝对值之和</span></span><br><span class="line">        l1_regularization += torch.norm(param, <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 权重设为0.0001</span></span><br><span class="line">    batch_loss = loss_fn(prediction, y) + <span class="number">0.0001</span>*l1_regularization</span><br><span class="line">    </span><br><span class="line">    batch_loss.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    <span class="keyword">return</span> batch_loss.item()</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/18使用L1正则化的效果.png" alt="image-20240407193126580"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L1 正则化，计算</span><br>    l1_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 1)表示对parm中所有值1次方（绝对值）再求和再开1次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l1_regularization += torch.norm(param, <span class="hljs-number">1</span>)<br>    <span class="hljs-comment"># 权重设为0.0001</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.0001</span>*l1_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407193126580"></p>
 <blockquote>
 <p>奇怪的是使用L1正则化并没有明显减小过拟合，即使其参数分布已经变成一条竖杠</p>
+</blockquote>
+<blockquote>
 <p>更新，正则化减小过拟合效果不明显可能是迭代次数不够，在后续学习中发现当使用正则化能明显减小过拟合</p>
 </blockquote>
 <h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>L2正则化项结合交叉熵损失函数的计算公式如下：</p>
 <ul>
-<li>$L1loss = -\frac{1}{n}(\sum<em>{i=1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum</em>{j=1}^{m}w_j^2$</li>
+<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}w_j^2$</li>
 </ul>
 <p>与L1的区别为，将元素的绝对值之和改为了平方和，因为使用了平方，所以权重也要相应的增加一些：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_batch</span>(<span class="params">x, y, model, optimizer, loss_fn</span>):</span><br><span class="line">    model.train() </span><br><span class="line">    prediction = model(x)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># batch_loss = loss_fn(prediction, y)</span></span><br><span class="line">    <span class="comment"># L2 正则化，计算</span></span><br><span class="line">    l2_regularization = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">        <span class="comment"># norm(parm, 2)表示对parm中所有值2次方再求和再开2次方</span></span><br><span class="line">        <span class="comment"># 结果等同于绝对值之和</span></span><br><span class="line">        l2_regularization += torch.norm(param, <span class="number">2</span>)</span><br><span class="line">    <span class="comment"># 权重设为0.01</span></span><br><span class="line">    batch_loss = loss_fn(prediction, y) + <span class="number">0.01</span>*l2_regularization</span><br><span class="line">    </span><br><span class="line">    batch_loss.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    <span class="keyword">return</span> batch_loss.item()</span><br></pre></td></tr></table></figure>
-<p><img data-src="pictures/03.使用pytorch构建深度神经网络（下）/20使用L2正则化的效果.png" alt="image-20240407200525539"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L2 正则化，计算</span><br>    l2_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 2)表示对parm中所有值2次方再求和再开2次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l2_regularization += torch.norm(param, <span class="hljs-number">2</span>)<br>    <span class="hljs-comment"># 权重设为0.01</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.01</span>*l2_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407200525539"></p>
 <p>如果仔细观察，可以认为正则化对过拟合有一点点效果，但不明显，也许是我的其他参数选择不正确从而影响了结果。</p>
 
     </div>
+     
+    <div class="post-footer__meta"><p>更新于 2024-04-11</p></div> 
+    <div class="post-entry__tags"></div> 
+</article>
 
-    
-    
-    
 
-    <footer class="post-footer">
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/" rel="prev" title="03.使用pytorch构建深度神经网络（上）">
-                  <i class="fa fa-angle-left"></i> 03.使用pytorch构建深度神经网络（上）
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            上一篇
+                        </div>
+                        <div class="nav__title">
+                            04.卷积神经网络(上)
+                        </div>
+                    </div>
                 </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/" rel="next" title="04.卷积神经网络(上)">
-                  04.卷积神经网络(上) <i class="fa fa-angle-right"></i>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            03.使用pytorch构建深度神经网络（上）
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
                 </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-    <div class="comments" id="isso-thread"></div>
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">yuanjie</span>
-  </div>
-
+            
+        </div>
     </div>
-  </footer>
-
-  
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.33/fancybox/fancybox.umd.js" integrity="sha256-+2+qOqR8CKoHh/AsVR9k2qaDBKWjYNC2nozhYmv5j9k=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 
 
-  <script src="/js/third-party/fancybox.js"></script>
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2024 <a href="/">学习笔记</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
-  
+ 
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
 
 
 
 
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
-
-
-<script class="next-config" data-name="isso" type="application/json">"http://82.157.165.89:6329/"</script>
-<script src="/js/third-party/comments/isso.js"></script>
-
-</body>
+    </body>
 </html>

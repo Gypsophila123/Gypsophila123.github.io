@@ -916,5 +916,8 @@ x, y = x.cpu(), y.cpu()
 </ol>
 <p>到这里，学会了使用神经网络和图像增强技术。下一节：深入理解滤波器的作用，以及通过卷积神经网络进行真实图像分类。</p>
 ]]></content>
+      <categories>
+        <category>Deep Learning</category>
+      </categories>
   </entry>
 </search>

@@ -315,168 +315,6 @@
       </categories>
   </entry>
   <entry>
-    <title>03.使用pytorch构建深度神经网络（下）</title>
-    <url>/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h1 id="理解不同学习率的影响"><a href="#理解不同学习率的影响" class="headerlink" title="理解不同学习率的影响"></a>理解不同学习率的影响</h1><p>到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响</p>
-<h2 id="学习率对缩放数据集的影响"><a href="#学习率对缩放数据集的影响" class="headerlink" title="学习率对缩放数据集的影响"></a>学习率对缩放数据集的影响</h2><p>在上一节代码的基础上（SGD优化器），仅修改学习率，查看不同学习率对训练的影响</p>
-<h3 id="学习率较大"><a href="#学习率较大" class="headerlink" title="学习率较大"></a>学习率较大</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    <span class="hljs-comment"># 修改学习率为0.1</span><br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-1</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192037177"></p>
-<p>注意到损失函数下降速度和准确度提升速度相较学习度为0.01时虽然有所提升，但曲线波动较大，并且相比之下验证值曲线并没有明显优势</p>
-<h3 id="学习率适中"><a href="#学习率适中" class="headerlink" title="学习率适中"></a>学习率适中</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-3</span>)<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192632126"></p>
-<p>注意到损失函数下降速度和准确度提升速度相比学习度为0.01时均有所降低，同时曲线相对更为平滑</p>
-<h3 id="学习率较小"><a href="#学习率较小" class="headerlink" title="学习率较小"></a>学习率较小</h3><p>可以预见，当学习率到达0.00001时，其权重值更新会非常慢。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.00001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-5</span>)<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406200627434"></p>
-<h3 id="不同学习率的不同参数分布"><a href="#不同学习率的不同参数分布" class="headerlink" title="不同学习率的不同参数分布"></a>不同学习率的不同参数分布</h3><p>不知道你是否注意到，在不同学习率时训练曲线与验证曲线的接近程度不同，学习率越低，两个曲线越接近。</p>
-<p>我们可以对的模型的参数进行分析，以研究其中的规律，我们的模型有以下四种参数：</p>
-<ul>
-<li>连接输入层和隐藏层的权重</li>
-<li>隐藏层中的偏置项</li>
-<li>连接隐藏层和输出层的权重</li>
-<li>输出层中的偏置项</li>
-</ul>
-<p>通过如下方法绘制参数分布情况柱状图</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">for</span> ix, par <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(model.parameters()):<br>    <span class="hljs-keyword">if</span>(ix==<span class="hljs-number">0</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting input to hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">1</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix==<span class="hljs-number">2</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting hidden to output layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">3</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of output layer&#x27;</span>)<br>        plt.show() <br></code></pre></td></tr></table></figure>
-
-<p>以下是按照学习率从大到小三种情况的参数分布情况（注意参数大小）</p>
-<ul>
-<li>学习率0.1时的参数分布</li>
-</ul>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205241463"></p>
-<ul>
-<li>学习率0.001时的参数分布</li>
-</ul>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205529494"></p>
-<ul>
-<li>学习率0.00001时的参数分布</li>
-</ul>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406202843548"></p>
-<p>可以看出：</p>
-<ul>
-<li>学习率越大，参数分布范围也越大</li>
-<li>学习率太小可能在局部最优时就收敛了，导致还未到达最优结果</li>
-<li><strong>学习效果越好，其权重分布越接近正态分布</strong></li>
-</ul>
-<h2 id="不同学习率对非缩放数据集的影响"><a href="#不同学习率对非缩放数据集的影响" class="headerlink" title="不同学习率对非缩放数据集的影响"></a>不同学习率对非缩放数据集的影响</h2><p>在前面的学习中，我们设置学习率为0.01且不缩放变量时，模型无法达到一个理想的准确率，后面通过确保变量被限制在某个较小范围内，提升了模型的准确度。</p>
-<p>这次我们探讨一下，如果不缩小变量范围，能否通过改变学习率使模型达到一个理想的准确度：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FMNISTDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, x, y</span>):<br>        <span class="hljs-comment"># 取消缩放像素点</span><br>        <span class="hljs-comment"># x = x.float() / 255 </span><br>        x = x.<span class="hljs-built_in">float</span>()<br>        x = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">28</span>*<span class="hljs-number">28</span>)<br>        self.x, self.y = x, y <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, ix</span>):<br>        x, y = self.x[ix], self.y[ix] <br>        <span class="hljs-keyword">return</span> x.to(device), y.to(device)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>): <br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.x)<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><p>不缩小数据且学习率为0.1：</p>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406211916990"></p>
-</li>
-<li><p>不缩小数据且学习率为0.001</p>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212334619"></p>
-</li>
-<li><p>不缩小数据且学习率为0.00001</p>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212610297"></p>
-</li>
-<li><p>当学习率为0.1时，第一轮就使损失值达到了零，自然也无法继续增加精确度</p>
-</li>
-<li><p>而通过减小学习率，就能直接避免参数更新过大的问题</p>
-</li>
-<li><p>通过以上观察，猜测缩减数据值的大小和减小学习率有类似的效果</p>
-</li>
-<li><p>因此我们在训练模型时，尽量不要使用较大的数据值和学习率，猜测学习率在0.001-0.01间时，数据值在[-1, 1]之间是一个比较合适的区间。</p>
-</li>
-</ul>
-<h1 id="理解不同学习率衰减的影响"><a href="#理解不同学习率衰减的影响" class="headerlink" title="理解不同学习率衰减的影响"></a>理解不同学习率衰减的影响</h1><p>通过对不同学习率下曲线的观察，我们也总结出一些规律：</p>
-<ul>
-<li>学习率较高时，模型收敛速度较快，能在一开始就达到较好效果，但后续波动较大</li>
-<li>学习率较低时，模型收敛速度较慢，但曲线平滑，后期准确率会比较高</li>
-</ul>
-<p>那我们是否能结合学习率的优点，在训练过程中动态修改学习率，<strong>在训练初期学习率大一些，使得网络收敛迅速，在训练后期学习率小一些，使得网络更好的收敛到最优解。</strong></p>
-<p>Pytorch提供了一些相关工具，可以使用这些工具动态降低学习率：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> optim<br><br><span class="hljs-comment"># factor=0.5 表示每次触发该调节器将使学习率变为当前的0.5倍</span><br><span class="hljs-comment"># patience=0 表示只要有1次当前损失值没有改善，则触发调节器</span><br><span class="hljs-comment"># threshold=0.001 阈值表示损失率的改善最低值，低于该值则认为没有改善</span><br><span class="hljs-comment"># verbose=True 表示将打印学习率变化 （已弃用）</span><br><span class="hljs-comment"># min_lr=1e-5 表示学习率下限为1e-5</span><br><span class="hljs-comment"># threshold_mode=&#x27;abs&#x27; 表示阈值是绝对值，也可以用&#x27;rel&#x27;表示百分比</span><br>scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=<span class="hljs-number">0.5</span>, patience=<span class="hljs-number">0</span>, threshold=<span class="hljs-number">0.001</span>, min_lr=<span class="hljs-number">1e-5</span>, threshold_mode=<span class="hljs-string">&#x27;abs&#x27;</span>)<br><br><span class="hljs-comment"># 30轮</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">30</span>):<br>    <span class="hljs-comment"># 获取当前学习率</span><br>    current_lr = optimizer.get_last_lr()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Epoch <span class="hljs-subst">&#123;epoch&#125;</span>: Learning Rate = <span class="hljs-subst">&#123;current_lr&#125;</span>&quot;</span>)<br>    <span class="hljs-comment"># 这里省略</span><br>    ...<br>    <br>    <span class="hljs-keyword">for</span> ix, batch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">iter</span>(validation_dataloader)):<br>        x, y = batch<br>        val_is_correct = accuracy(x, y, model)<br>        validation_loss = val_loss(x, y, model)<br>        val_epoch_accuracy = np.mean(val_is_correct)<br>        validation_losses.append(validation_loss)<br>        validation_accuracies.append(val_epoch_accuracy)<br>        <br>        <span class="hljs-comment"># 用于监视每次损失值变化</span><br>        scheduler.step(validation_loss)<br></code></pre></td></tr></table></figure>
-
-
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406221959090"></p>
-<p>可以看出，使用学习率衰减后曲线的波动有所增加，最后取得的成绩也处于一个较好的水平。</p>
-<h1 id="构建更深的神经网络"><a href="#构建更深的神经网络" class="headerlink" title="构建更深的神经网络"></a>构建更深的神经网络</h1><p>在本节，对比具有两个隐藏层和没有隐藏层的模型的性能。注意先将学习率调回0.01。</p>
-<h2 id="隐藏层增加一层"><a href="#隐藏层增加一层" class="headerlink" title="隐藏层增加一层"></a>隐藏层增加一层</h2><p>然后修改模型部分代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 隐藏层增加一层</span><br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="没有隐藏层"><a href="#没有隐藏层" class="headerlink" title="没有隐藏层"></a>没有隐藏层</h2><p>再修改模型部分代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        <span class="hljs-comment"># 没有隐藏层</span><br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407170711471"></p>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407171743670"></p>
-<p>比较两幅图，不难发现当使用两层隐藏层时，损失值的下降速度更快，准确率提升的速度也更快</p>
-<blockquote>
-<p>发现这里与书中的情况不太一样，在书中使用两层隐藏层时出现了严重的过拟合现象</p>
-</blockquote>
-<h1 id="理解批归一化的影响"><a href="#理解批归一化的影响" class="headerlink" title="理解批归一化的影响"></a>理解批归一化的影响</h1><p>在前面的学习中，我们学习到了通过对输入数据进行归一化之后，能有效地提升模型的训练效果。</p>
-<p>在此基础上，我们还可以对隐藏层的输入值进行归一化操作，这样的操作被称为<strong>批归一化</strong>，一种常见的批归一化操作为：</p>
-<ol>
-<li>计算均值，再计算每个值与均值的差 </li>
-<li>再计算均方差</li>
-<li>将差除以均方差</li>
-</ol>
-<p>通过上面的操作，输入值将被归一化到一个较小的范围</p>
-<p>接下来，我们对模型进行批归一化操作，与不进行批归一化的操作进行比较。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        <span class="hljs-comment"># 对隐藏层输入进行归一化操作</span><br>        nn.BatchNorm1d(<span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = Adam(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407181945432"></p>
-<p>相比之下，没有进行批归一化的曲线如下：</p>
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407182414763"></p>
-<p>很显然，批归一化能较好地提升模型训练效果</p>
-<h1 id="过拟合的概念"><a href="#过拟合的概念" class="headerlink" title="过拟合的概念"></a>过拟合的概念</h1><ol>
-<li>过拟合（Overfitting）： 过拟合指的是模型在训练数据上表现得过于优秀，但在未见过的测试数据上表现不佳的情况。具体来说，过拟合通常表现为模型对训练数据中的噪声和随机变化过于敏感，导致模型过度地“记忆”了训练数据的特性，而未能学习到泛化到新数据的规律。过拟合的原因通常是模型过于复杂，参数数量过多，导致模型的学习能力过强，容易过度拟合训练数据。</li>
-<li>欠拟合（Underfitting）： 欠拟合指的是模型在训练数据和测试数据上的表现都不佳的情况。具体来说，欠拟合通常表现为模型不能很好地拟合训练数据中的真实关系，表现出的拟合程度不足，无法捕捉到数据的一般规律。欠拟合的原因通常是模型过于简单，学习能力不足，或者特征量不足，无法很好地描述数据的复杂性。</li>
-<li>解决过拟合和欠拟合问题的方法包括：<ul>
-<li>过拟合：增加训练数据量、简化模型复杂度（如减少参数数量、增加正则化）、使用更多的特征工程、使用集成学习方法等。</li>
-<li>欠拟合：增加模型复杂度（如增加参数数量、增加模型的层数）、增加更多的特征、改进模型算法等。</li>
-</ul>
-</li>
-</ol>
-<h2 id="添加dropout的影响"><a href="#添加dropout的影响" class="headerlink" title="添加dropout的影响"></a>添加dropout的影响</h2><p>Dropout是一种解决过拟合问题的方法，比如，在每个训练批次中，通过忽略一半的特征检测器（让一半的隐层节点值为0），可以明显地减少过拟合现象。</p>
-<blockquote>
-<p>注意！在模型训练和模型验证的过程中，我们应该注意通过 model.train() 和 model.eval() 转换模型的模式，当使用model.eval() 将模型转化为评估模式，模型会抑制dropout的使用</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 随机屏蔽一半的节点</span><br>        nn.Dropout(<span class="hljs-number">0.5</span>),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407183903783"></p>
-<p>对比前面<code>没有进行批归一化的曲线</code>，可以发现训练集和验证集曲线更接近了，这证明dropout确实降低了过拟合。不过，理所当然，模型的训练速度也变慢了少许</p>
-<h2 id="正则化的影响"><a href="#正则化的影响" class="headerlink" title="正则化的影响"></a>正则化的影响</h2><p>除了模型的训练准确度远高于验证准确度之外，过拟合的另一个特征是，某些权重值会远远高于其他权重值。而在探讨不同学习率对数据集的影响那一节，我们发现学习效果越好，其权重分布越接近正态分布。</p>
-<p>正则化是一种基于对模型中高权重值进行惩罚的技术。</p>
-<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>L1正则化项结合交叉熵损失函数的计算公式如下：</p>
-<ul>
-<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}|w_j|$</li>
-</ul>
-<p>上述公式的前半部分正是二元交叉熵损失函数，后半部分中$\Lambda$表示一个权重。整体意思为：每次计算损失值时将损失值增加一部分，以减少较高权重出现的可能。</p>
-<p>这次需要修改的地方在训练函数中，同时将训练轮次改到30轮：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L1 正则化，计算</span><br>    l1_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 1)表示对parm中所有值1次方（绝对值）再求和再开1次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l1_regularization += torch.norm(param, <span class="hljs-number">1</span>)<br>    <span class="hljs-comment"># 权重设为0.0001</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.0001</span>*l1_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407193126580"></p>
-<blockquote>
-<p>奇怪的是使用L1正则化并没有明显减小过拟合，即使其参数分布已经变成一条竖杠</p>
-</blockquote>
-<blockquote>
-<p>更新，正则化减小过拟合效果不明显可能是迭代次数不够，在后续学习中发现当使用正则化能明显减小过拟合</p>
-</blockquote>
-<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>L2正则化项结合交叉熵损失函数的计算公式如下：</p>
-<ul>
-<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}w_j^2$</li>
-</ul>
-<p>与L1的区别为，将元素的绝对值之和改为了平方和，因为使用了平方，所以权重也要相应的增加一些：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L2 正则化，计算</span><br>    l2_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 2)表示对parm中所有值2次方再求和再开2次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l2_regularization += torch.norm(param, <span class="hljs-number">2</span>)<br>    <span class="hljs-comment"># 权重设为0.01</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.01</span>*l2_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
-
-<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407200525539"></p>
-<p>如果仔细观察，可以认为正则化对过拟合有一点点效果，但不明显，也许是我的其他参数选择不正确从而影响了结果。</p>
-]]></content>
-      <categories>
-        <category>Deep Learning</category>
-      </categories>
-  </entry>
-  <entry>
     <title>02.pytorch基础</title>
     <url>/Deep%20Learning/02.pytorch%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><h2 id="推荐使用Anaconda安装（可选）"><a href="#推荐使用Anaconda安装（可选）" class="headerlink" title="推荐使用Anaconda安装（可选）"></a>推荐使用Anaconda安装（可选）</h2><p>进入Anaconda官网下载安装即可，安装完成后搜索 Anaconda Prompt 以打开命令行。</p>
@@ -661,6 +499,168 @@ x, y = x.cpu(), y.cpu()
 
 
 
+]]></content>
+      <categories>
+        <category>Deep Learning</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>03.使用pytorch构建深度神经网络（下）</title>
+    <url>/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="理解不同学习率的影响"><a href="#理解不同学习率的影响" class="headerlink" title="理解不同学习率的影响"></a>理解不同学习率的影响</h1><p>到目前为止，我们一直使用0.01作为学习率，接下来讨论不同学习率对缩放和非缩放数据集的影响</p>
+<h2 id="学习率对缩放数据集的影响"><a href="#学习率对缩放数据集的影响" class="headerlink" title="学习率对缩放数据集的影响"></a>学习率对缩放数据集的影响</h2><p>在上一节代码的基础上（SGD优化器），仅修改学习率，查看不同学习率对训练的影响</p>
+<h3 id="学习率较大"><a href="#学习率较大" class="headerlink" title="学习率较大"></a>学习率较大</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    <span class="hljs-comment"># 修改学习率为0.1</span><br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-1</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/03%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192037177"></p>
+<p>注意到损失函数下降速度和准确度提升速度相较学习度为0.01时虽然有所提升，但曲线波动较大，并且相比之下验证值曲线并没有明显优势</p>
+<h3 id="学习率适中"><a href="#学习率适中" class="headerlink" title="学习率适中"></a>学习率适中</h3><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-3</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/04%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406192632126"></p>
+<p>注意到损失函数下降速度和准确度提升速度相比学习度为0.01时均有所降低，同时曲线相对更为平滑</p>
+<h3 id="学习率较小"><a href="#学习率较小" class="headerlink" title="学习率较小"></a>学习率较小</h3><p>可以预见，当学习率到达0.00001时，其权重值更新会非常慢。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 修改学习率为0.00001</span><br>optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-5</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001%E5%AF%B9%E7%BC%A9%E6%94%BE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%BD%B1%E5%93%8D.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406200627434"></p>
+<h3 id="不同学习率的不同参数分布"><a href="#不同学习率的不同参数分布" class="headerlink" title="不同学习率的不同参数分布"></a>不同学习率的不同参数分布</h3><p>不知道你是否注意到，在不同学习率时训练曲线与验证曲线的接近程度不同，学习率越低，两个曲线越接近。</p>
+<p>我们可以对的模型的参数进行分析，以研究其中的规律，我们的模型有以下四种参数：</p>
+<ul>
+<li>连接输入层和隐藏层的权重</li>
+<li>隐藏层中的偏置项</li>
+<li>连接隐藏层和输出层的权重</li>
+<li>输出层中的偏置项</li>
+</ul>
+<p>通过如下方法绘制参数分布情况柱状图</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">for</span> ix, par <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(model.parameters()):<br>    <span class="hljs-keyword">if</span>(ix==<span class="hljs-number">0</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting input to hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">1</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of hidden layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix==<span class="hljs-number">2</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of weights conencting hidden to output layer&#x27;</span>)<br>        plt.show()<br>    <span class="hljs-keyword">elif</span>(ix ==<span class="hljs-number">3</span>):<br>        plt.hist(par.cpu().detach().numpy().flatten())<br>        plt.title(<span class="hljs-string">&#x27;Distribution of biases of output layer&#x27;</span>)<br>        plt.show() <br></code></pre></td></tr></table></figure>
+
+<p>以下是按照学习率从大到小三种情况的参数分布情况（注意参数大小）</p>
+<ul>
+<li>学习率0.1时的参数分布</li>
+</ul>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%A4%A7%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205241463"></p>
+<ul>
+<li>学习率0.001时的参数分布</li>
+</ul>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%AD%E7%AD%89%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406205529494"></p>
+<ul>
+<li>学习率0.00001时的参数分布</li>
+</ul>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%86%E5%B8%83.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406202843548"></p>
+<p>可以看出：</p>
+<ul>
+<li>学习率越大，参数分布范围也越大</li>
+<li>学习率太小可能在局部最优时就收敛了，导致还未到达最优结果</li>
+<li><strong>学习效果越好，其权重分布越接近正态分布</strong></li>
+</ul>
+<h2 id="不同学习率对非缩放数据集的影响"><a href="#不同学习率对非缩放数据集的影响" class="headerlink" title="不同学习率对非缩放数据集的影响"></a>不同学习率对非缩放数据集的影响</h2><p>在前面的学习中，我们设置学习率为0.01且不缩放变量时，模型无法达到一个理想的准确率，后面通过确保变量被限制在某个较小范围内，提升了模型的准确度。</p>
+<p>这次我们探讨一下，如果不缩小变量范围，能否通过改变学习率使模型达到一个理想的准确度：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FMNISTDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, x, y</span>):<br>        <span class="hljs-comment"># 取消缩放像素点</span><br>        <span class="hljs-comment"># x = x.float() / 255 </span><br>        x = x.<span class="hljs-built_in">float</span>()<br>        x = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">28</span>*<span class="hljs-number">28</span>)<br>        self.x, self.y = x, y <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, ix</span>):<br>        x, y = self.x[ix], self.y[ix] <br>        <span class="hljs-keyword">return</span> x.to(device), y.to(device)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>): <br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.x)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>不缩小数据且学习率为0.1：</p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.1.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406211916990"></p>
+</li>
+<li><p>不缩小数据且学习率为0.001</p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212334619"></p>
+</li>
+<li><p>不缩小数据且学习率为0.00001</p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E4%B8%8D%E7%BC%A9%E5%B0%8F%E6%95%B0%E6%8D%AE%E4%B8%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%B8%BA0.00001.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406212610297"></p>
+</li>
+<li><p>当学习率为0.1时，第一轮就使损失值达到了零，自然也无法继续增加精确度</p>
+</li>
+<li><p>而通过减小学习率，就能直接避免参数更新过大的问题</p>
+</li>
+<li><p>通过以上观察，猜测缩减数据值的大小和减小学习率有类似的效果</p>
+</li>
+<li><p>因此我们在训练模型时，尽量不要使用较大的数据值和学习率，猜测学习率在0.001-0.01间时，数据值在[-1, 1]之间是一个比较合适的区间。</p>
+</li>
+</ul>
+<h1 id="理解不同学习率衰减的影响"><a href="#理解不同学习率衰减的影响" class="headerlink" title="理解不同学习率衰减的影响"></a>理解不同学习率衰减的影响</h1><p>通过对不同学习率下曲线的观察，我们也总结出一些规律：</p>
+<ul>
+<li>学习率较高时，模型收敛速度较快，能在一开始就达到较好效果，但后续波动较大</li>
+<li>学习率较低时，模型收敛速度较慢，但曲线平滑，后期准确率会比较高</li>
+</ul>
+<p>那我们是否能结合学习率的优点，在训练过程中动态修改学习率，<strong>在训练初期学习率大一些，使得网络收敛迅速，在训练后期学习率小一些，使得网络更好的收敛到最优解。</strong></p>
+<p>Pytorch提供了一些相关工具，可以使用这些工具动态降低学习率：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> optim<br><br><span class="hljs-comment"># factor=0.5 表示每次触发该调节器将使学习率变为当前的0.5倍</span><br><span class="hljs-comment"># patience=0 表示只要有1次当前损失值没有改善，则触发调节器</span><br><span class="hljs-comment"># threshold=0.001 阈值表示损失率的改善最低值，低于该值则认为没有改善</span><br><span class="hljs-comment"># verbose=True 表示将打印学习率变化 （已弃用）</span><br><span class="hljs-comment"># min_lr=1e-5 表示学习率下限为1e-5</span><br><span class="hljs-comment"># threshold_mode=&#x27;abs&#x27; 表示阈值是绝对值，也可以用&#x27;rel&#x27;表示百分比</span><br>scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=<span class="hljs-number">0.5</span>, patience=<span class="hljs-number">0</span>, threshold=<span class="hljs-number">0.001</span>, min_lr=<span class="hljs-number">1e-5</span>, threshold_mode=<span class="hljs-string">&#x27;abs&#x27;</span>)<br><br><span class="hljs-comment"># 30轮</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">30</span>):<br>    <span class="hljs-comment"># 获取当前学习率</span><br>    current_lr = optimizer.get_last_lr()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Epoch <span class="hljs-subst">&#123;epoch&#125;</span>: Learning Rate = <span class="hljs-subst">&#123;current_lr&#125;</span>&quot;</span>)<br>    <span class="hljs-comment"># 这里省略</span><br>    ...<br>    <br>    <span class="hljs-keyword">for</span> ix, batch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">iter</span>(validation_dataloader)):<br>        x, y = batch<br>        val_is_correct = accuracy(x, y, model)<br>        validation_loss = val_loss(x, y, model)<br>        val_epoch_accuracy = np.mean(val_is_correct)<br>        validation_losses.append(validation_loss)<br>        validation_accuracies.append(val_epoch_accuracy)<br>        <br>        <span class="hljs-comment"># 用于监视每次损失值变化</span><br>        scheduler.step(validation_loss)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240406221959090"></p>
+<p>可以看出，使用学习率衰减后曲线的波动有所增加，最后取得的成绩也处于一个较好的水平。</p>
+<h1 id="构建更深的神经网络"><a href="#构建更深的神经网络" class="headerlink" title="构建更深的神经网络"></a>构建更深的神经网络</h1><p>在本节，对比具有两个隐藏层和没有隐藏层的模型的性能。注意先将学习率调回0.01。</p>
+<h2 id="隐藏层增加一层"><a href="#隐藏层增加一层" class="headerlink" title="隐藏层增加一层"></a>隐藏层增加一层</h2><p>然后修改模型部分代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 隐藏层增加一层</span><br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="没有隐藏层"><a href="#没有隐藏层" class="headerlink" title="没有隐藏层"></a>没有隐藏层</h2><p>再修改模型部分代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        <span class="hljs-comment"># 没有隐藏层</span><br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13%E9%9A%90%E8%97%8F%E5%B1%82%E5%A2%9E%E5%8A%A0%E4%B8%80%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407170711471"></p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/14%E6%B2%A1%E6%9C%89%E9%9A%90%E8%97%8F%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407171743670"></p>
+<p>比较两幅图，不难发现当使用两层隐藏层时，损失值的下降速度更快，准确率提升的速度也更快</p>
+<blockquote>
+<p>发现这里与书中的情况不太一样，在书中使用两层隐藏层时出现了严重的过拟合现象</p>
+</blockquote>
+<h1 id="理解批归一化的影响"><a href="#理解批归一化的影响" class="headerlink" title="理解批归一化的影响"></a>理解批归一化的影响</h1><p>在前面的学习中，我们学习到了通过对输入数据进行归一化之后，能有效地提升模型的训练效果。</p>
+<p>在此基础上，我们还可以对隐藏层的输入值进行归一化操作，这样的操作被称为<strong>批归一化</strong>，一种常见的批归一化操作为：</p>
+<ol>
+<li>计算均值，再计算每个值与均值的差 </li>
+<li>再计算均方差</li>
+<li>将差除以均方差</li>
+</ol>
+<p>通过上面的操作，输入值将被归一化到一个较小的范围</p>
+<p>接下来，我们对模型进行批归一化操作，与不进行批归一化的操作进行比较。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        <span class="hljs-comment"># 对隐藏层输入进行归一化操作</span><br>        nn.BatchNorm1d(<span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = Adam(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407181945432"></p>
+<p>相比之下，没有进行批归一化的曲线如下：</p>
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/16%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407182414763"></p>
+<p>很显然，批归一化能较好地提升模型训练效果</p>
+<h1 id="过拟合的概念"><a href="#过拟合的概念" class="headerlink" title="过拟合的概念"></a>过拟合的概念</h1><ol>
+<li>过拟合（Overfitting）： 过拟合指的是模型在训练数据上表现得过于优秀，但在未见过的测试数据上表现不佳的情况。具体来说，过拟合通常表现为模型对训练数据中的噪声和随机变化过于敏感，导致模型过度地“记忆”了训练数据的特性，而未能学习到泛化到新数据的规律。过拟合的原因通常是模型过于复杂，参数数量过多，导致模型的学习能力过强，容易过度拟合训练数据。</li>
+<li>欠拟合（Underfitting）： 欠拟合指的是模型在训练数据和测试数据上的表现都不佳的情况。具体来说，欠拟合通常表现为模型不能很好地拟合训练数据中的真实关系，表现出的拟合程度不足，无法捕捉到数据的一般规律。欠拟合的原因通常是模型过于简单，学习能力不足，或者特征量不足，无法很好地描述数据的复杂性。</li>
+<li>解决过拟合和欠拟合问题的方法包括：<ul>
+<li>过拟合：增加训练数据量、简化模型复杂度（如减少参数数量、增加正则化）、使用更多的特征工程、使用集成学习方法等。</li>
+<li>欠拟合：增加模型复杂度（如增加参数数量、增加模型的层数）、增加更多的特征、改进模型算法等。</li>
+</ul>
+</li>
+</ol>
+<h2 id="添加dropout的影响"><a href="#添加dropout的影响" class="headerlink" title="添加dropout的影响"></a>添加dropout的影响</h2><p>Dropout是一种解决过拟合问题的方法，比如，在每个训练批次中，通过忽略一半的特征检测器（让一半的隐层节点值为0），可以明显地减少过拟合现象。</p>
+<blockquote>
+<p>注意！在模型训练和模型验证的过程中，我们应该注意通过 model.train() 和 model.eval() 转换模型的模式，当使用model.eval() 将模型转化为评估模式，模型会抑制dropout的使用</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    model = nn.Sequential(<br>        nn.Linear(<span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">1000</span>),<br>        nn.ReLU(),<br>        <span class="hljs-comment"># 随机屏蔽一半的节点</span><br>        nn.Dropout(<span class="hljs-number">0.5</span>),<br>        nn.Linear(<span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)<br>    ).to(device)<br>    loss_fn = nn.CrossEntropyLoss()<br>    optimizer = SGD(model.parameters(), lr=<span class="hljs-number">1e-2</span>)<br>    <span class="hljs-keyword">return</span> model, loss_fn, optimizer<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/17%E4%BD%BF%E7%94%A8dropout%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407183903783"></p>
+<p>对比前面<code>没有进行批归一化的曲线</code>，可以发现训练集和验证集曲线更接近了，这证明dropout确实降低了过拟合。不过，理所当然，模型的训练速度也变慢了少许</p>
+<h2 id="正则化的影响"><a href="#正则化的影响" class="headerlink" title="正则化的影响"></a>正则化的影响</h2><p>除了模型的训练准确度远高于验证准确度之外，过拟合的另一个特征是，某些权重值会远远高于其他权重值。而在探讨不同学习率对数据集的影响那一节，我们发现学习效果越好，其权重分布越接近正态分布。</p>
+<p>正则化是一种基于对模型中高权重值进行惩罚的技术。</p>
+<h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>L1正则化项结合交叉熵损失函数的计算公式如下：</p>
+<ul>
+<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}|w_j|$</li>
+</ul>
+<p>上述公式的前半部分正是二元交叉熵损失函数，后半部分中$\Lambda$表示一个权重。整体意思为：每次计算损失值时将损失值增加一部分，以减少较高权重出现的可能。</p>
+<p>这次需要修改的地方在训练函数中，同时将训练轮次改到30轮：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L1 正则化，计算</span><br>    l1_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 1)表示对parm中所有值1次方（绝对值）再求和再开1次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l1_regularization += torch.norm(param, <span class="hljs-number">1</span>)<br>    <span class="hljs-comment"># 权重设为0.0001</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.0001</span>*l1_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/18%E4%BD%BF%E7%94%A8L1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407193126580"></p>
+<blockquote>
+<p>奇怪的是使用L1正则化并没有明显减小过拟合，即使其参数分布已经变成一条竖杠</p>
+</blockquote>
+<blockquote>
+<p>更新，正则化减小过拟合效果不明显可能是迭代次数不够，在后续学习中发现当使用正则化能明显减小过拟合</p>
+</blockquote>
+<h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>L2正则化项结合交叉熵损失函数的计算公式如下：</p>
+<ul>
+<li>$L1loss &#x3D; -\frac{1}{n}(\sum_{i&#x3D;1}^{n}(y_ilog(p_i) + (1-y_i)log(1-p_i))) + \Lambda\sum_{j&#x3D;1}^{m}w_j^2$</li>
+</ul>
+<p>与L1的区别为，将元素的绝对值之和改为了平方和，因为使用了平方，所以权重也要相应的增加一些：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">x, y, model, optimizer, loss_fn</span>):<br>    model.train() <br>    prediction = model(x)<br>    <br>    <span class="hljs-comment"># batch_loss = loss_fn(prediction, y)</span><br>    <span class="hljs-comment"># L2 正则化，计算</span><br>    l2_regularization = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():<br>        <span class="hljs-comment"># norm(parm, 2)表示对parm中所有值2次方再求和再开2次方</span><br>        <span class="hljs-comment"># 结果等同于绝对值之和</span><br>        l2_regularization += torch.norm(param, <span class="hljs-number">2</span>)<br>    <span class="hljs-comment"># 权重设为0.01</span><br>    batch_loss = loss_fn(prediction, y) + <span class="hljs-number">0.01</span>*l2_regularization<br>    <br>    batch_loss.backward()<br>    optimizer.step()<br>    optimizer.zero_grad()<br>    <span class="hljs-keyword">return</span> batch_loss.item()<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/20%E4%BD%BF%E7%94%A8L2%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240407200525539"></p>
+<p>如果仔细观察，可以认为正则化对过拟合有一点点效果，但不明显，也许是我的其他参数选择不正确从而影响了结果。</p>
 ]]></content>
       <categories>
         <category>Deep Learning</category>
@@ -882,7 +882,7 @@ x, y = x.cpu(), y.cpu()
 <p>这个库功能不如imgaug包中的augmenters全面</p>
 </blockquote>
 <h4 id="整合transforms"><a href="#整合transforms" class="headerlink" title="整合transforms"></a>整合transforms</h4><p>transforms没有提供批量增强的方法，因此我们直接在原方法上修改：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FMNISTDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, x, y, transform=<span class="hljs-literal">None</span></span>):<br>        self.x, self.y = x, y <br>        self.transform = transform<br><br>	<span class="hljs-comment"># 在获取数据时再进行图像增强操作</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, ix: <span class="hljs-built_in">int</span></span>):<br>        x, y = self.x[ix], self.y[ix]<br>        <span class="hljs-keyword">if</span> self.transform:<br>            x = self.transform(x)<br>        x = x.<span class="hljs-built_in">float</span>() / <span class="hljs-number">255</span> <br>        x = x.view(<span class="hljs-number">1</span>, <span class="hljs-number">28</span>, <span class="hljs-number">28</span>)<br>        <span class="hljs-keyword">return</span> x.to(device), y.to(device)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.x)<br>    <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_data</span>(): <br>    <span class="hljs-comment"># 增加的参数记得加上</span><br>    train = FMNISTDataset(train_data, train_labels, transform)<br>    trn_dl = DataLoader(train, batch_size=<span class="hljs-number">64</span>, shuffle=<span class="hljs-literal">True</span>)<br><br>    validation = FMNISTDataset(validation_data, validation_labels)<br>    val_dl = DataLoader(validation, batch_size=<span class="hljs-built_in">len</span>(validation_data), shuffle=<span class="hljs-literal">False</span>)<br>    <span class="hljs-keyword">return</span> trn_dl, val_dl<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FMNISTDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, x, y, transform=<span class="hljs-literal">None</span></span>):<br>        self.x, self.y = x, y <br>        self.transform = transform<br><br>	<span class="hljs-comment"># 在获取数据时再进行图像增强操作</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, ix: <span class="hljs-built_in">int</span></span>):<br>        x, y = self.x[ix], self.y[ix]<br>        <span class="hljs-keyword">if</span> self.transform:<br>            <span class="hljs-comment"># 使用transforms.ToTensor()进行数据缩放</span><br>            x = self.transform(x)<br>        x = x.<span class="hljs-built_in">float</span>().view(<span class="hljs-number">1</span>, <span class="hljs-number">28</span>, <span class="hljs-number">28</span>)<br>        <span class="hljs-keyword">return</span> x.to(device), y.to(device)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.x)<br>    <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_data</span>(): <br>    <span class="hljs-comment"># 增加的参数记得加上</span><br>    train = FMNISTDataset(train_data, train_labels, transform)<br>    trn_dl = DataLoader(train, batch_size=<span class="hljs-number">64</span>, shuffle=<span class="hljs-literal">True</span>)<br><br>    validation = FMNISTDataset(validation_data, validation_labels)<br>    val_dl = DataLoader(validation, batch_size=<span class="hljs-built_in">len</span>(validation_data), shuffle=<span class="hljs-literal">False</span>)<br>    <span class="hljs-keyword">return</span> trn_dl, val_dl<br></code></pre></td></tr></table></figure>
 
 <h3 id="两种库图像增强速度的比较"><a href="#两种库图像增强速度的比较" class="headerlink" title="两种库图像增强速度的比较"></a>两种库图像增强速度的比较</h3><p>图像增强是一种非常耗时的操作，因此我希望能比较二者的能力，选择比较快的方式进行图像增强。我的设想是对每张图片进行随机平移和旋转操作，计算每轮时间</p>
 <p>因为设备环境可能不同，所以该测试仅供参考，使用设备：</p>
@@ -893,7 +893,7 @@ x, y = x.cpu(), y.cpu()
 </ul>
 <h4 id="augimg"><a href="#augimg" class="headerlink" title="augimg"></a>augimg</h4><figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">aug = iaa.Sequential([    <br>    <span class="hljs-comment"># rotate 表示旋转角度，translate_percent便是</span><br>    iaa.Affine(rotate=(-<span class="hljs-number">90</span>, <span class="hljs-number">90</span>), translate_percent=&#123;<span class="hljs-string">&quot;x&quot;</span>: (-<span class="hljs-number">10</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;y&quot;</span>: (-<span class="hljs-number">10</span>, <span class="hljs-number">10</span>)&#125;),<br>])<br><span class="hljs-comment"># epochs：10 | time: 5min 29s | epochs average time：32.9s</span><br><span class="hljs-comment"># cpu 占用：90% 左右 | gpu 占用：32% 左右</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="transforms"><a href="#transforms" class="headerlink" title="transforms"></a>transforms</h4><figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">transform = transforms.Compose([<br>    <span class="hljs-comment"># tensor 转为 pil 图像</span><br>    transforms.ToPILImage(),<br>    <span class="hljs-comment"># 仿射变换，degrees表示左右偏转角度，translate表示(x,y)轴的平移百分比，会随机在该区间内做图像变换</span><br>    transforms.RandomAffine(degrees=<span class="hljs-number">90</span>, translate=(<span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>)),<br>    transforms.ToTensor(),<br>])<br><span class="hljs-comment"># epochs：10 | time: 5min 51s | epochs average time：35.1s</span><br><span class="hljs-comment"># cpu 占用：30% 左右 | gpu 占用：96% 左右 </span><br></code></pre></td></tr></table></figure>
+<h4 id="transforms"><a href="#transforms" class="headerlink" title="transforms"></a>transforms</h4><figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">transform = transforms.Compose([<br>    <span class="hljs-comment"># tensor 转为 pil 图像</span><br>    transforms.ToPILImage(),<br>    <span class="hljs-comment"># 仿射变换，degrees表示左右偏转角度，translate表示(x,y)轴的平移百分比，会随机在该区间内做图像变换</span><br>    transforms.RandomAffine(degrees=<span class="hljs-number">90</span>, translate=(<span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>)),<br>    <span class="hljs-comment"># 重要！！！该操作会自动将数据缩放到[0, 1]区间</span><br>    transforms.ToTensor(),<br>])<br><span class="hljs-comment"># epochs：10 | time: 5min 51s | epochs average time：35.1s</span><br><span class="hljs-comment"># cpu 占用：30% 左右 | gpu 占用：96% 左右 </span><br></code></pre></td></tr></table></figure>
 
 <p>实际上速度差不多，<code>augimg</code>略胜一筹，可能就是因为其对批量增强做了优化导致。</p>
 <h3 id="用于图像平移的数据增强"><a href="#用于图像平移的数据增强" class="headerlink" title="用于图像平移的数据增强"></a>用于图像平移的数据增强</h3><p>掌握图像增强后，继续尝试解决前面的图像平移问题，这次训练前</p>
@@ -916,8 +916,5 @@ x, y = x.cpu(), y.cpu()
 </ol>
 <p>到这里，学会了使用神经网络和图像增强技术。下一节：深入理解滤波器的作用，以及通过卷积神经网络进行真实图像分类。</p>
 ]]></content>
-      <categories>
-        <category>Deep Learning</category>
-      </categories>
   </entry>
 </search>

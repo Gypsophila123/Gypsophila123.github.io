@@ -1,5 +1,5 @@
 :root {
-  --main-color: #6200ee;
+  --main-color: #021a96;
   --bg-color: #f4f4f4;
   --bg-content-color: #fff;
   --bg-menu: #eceef2;
@@ -46,11 +46,11 @@ body {
 }
 ::selection {
   color: #fff;
-  background-color: #318efd;
+  background-color: #bb86fc;
 }
 ::-moz-selection {
   color: #fff;
-  background-color: #318efd;
+  background-color: #bb86fc;
 }
 @media screen and (max-width: 650px) {
   body {

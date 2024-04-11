@@ -19,45 +19,46 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.33/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"isso","storage":true,"lazyload":false,"nav":null,"activeClass":"isso"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gypsophila123.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"isso","storage":true,"lazyload":false,"nav":null,"activeClass":"isso"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="传统深度神经网络（DNN）的问题  在此前，我们已经学会了搭建一个传统的深度神经网络。现在，拿出一个训练得比较好（在验证集上90%准确率）的模型，开始做一些测试：  1. 随便从数据集中拿一张图">
 <meta property="og:type" content="article">
 <meta property="og:title" content="04.卷积神经网络(上)">
-<meta property="og:url" content="http://example.com/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
-<meta property="og:site_name" content="My Learning Notes">
+<meta property="og:url" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
+<meta property="og:site_name" content="学习笔记">
 <meta property="og:description" content="传统深度神经网络（DNN）的问题  在此前，我们已经学会了搭建一个传统的深度神经网络。现在，拿出一个训练得比较好（在验证集上90%准确率）的模型，开始做一些测试：  1. 随便从数据集中拿一张图">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E9%9A%8F%E4%BE%BF%E6%8B%BF%E5%BC%A0%E6%A0%B7%E6%9C%AC.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/02%E6%A8%A1%E5%9E%8B%E7%AE%97%E5%87%BA%E7%9A%84%E6%A6%82%E7%8E%87.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/03%E5%90%91%E4%B8%8A%E5%B9%B3%E7%A7%BB5%E5%83%8F%E7%B4%A0.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/04%E5%B9%B3%E7%A7%BB%E5%90%8E%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/05%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E6%BC%94%E7%A4%BA.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/06%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/07%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B%E6%91%98%E8%A6%81.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/08%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%88%E6%9E%9C%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/09%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E5%90%8E%E7%9A%84%E5%B9%B3%E7%A7%BB%E9%A2%84%E6%B5%8B%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/10imgaug%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/11imgaug%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/12transforms%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/13transforms%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/14%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E8%AE%AD%E7%BB%83%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E9%9A%8F%E4%BE%BF%E6%8B%BF%E5%BC%A0%E6%A0%B7%E6%9C%AC.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/02%E6%A8%A1%E5%9E%8B%E7%AE%97%E5%87%BA%E7%9A%84%E6%A6%82%E7%8E%87.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/03%E5%90%91%E4%B8%8A%E5%B9%B3%E7%A7%BB5%E5%83%8F%E7%B4%A0.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/04%E5%B9%B3%E7%A7%BB%E5%90%8E%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/05%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E6%BC%94%E7%A4%BA.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/06%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/07%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B%E6%91%98%E8%A6%81.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/08%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%88%E6%9E%9C%E5%9B%BE.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/09%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E5%90%8E%E7%9A%84%E5%B9%B3%E7%A7%BB%E9%A2%84%E6%B5%8B%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/10imgaug%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/11imgaug%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/12transforms%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/13transforms%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E7%83%AD%E5%8A%9B%E5%9B%BE.png">
+<meta property="og:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/14%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E8%AE%AD%E7%BB%83%E6%9B%B2%E7%BA%BF.png">
 <meta property="article:published_time" content="2024-04-11T09:09:51.767Z">
 <meta property="article:modified_time" content="2024-04-11T09:09:52.114Z">
-<meta property="article:author" content="yuanjie xiang">
+<meta property="article:author" content="yuanjie">
+<meta property="article:tag" content="Deep Learning">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E9%9A%8F%E4%BE%BF%E6%8B%BF%E5%BC%A0%E6%A0%B7%E6%9C%AC.png">
+<meta name="twitter:image" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E9%9A%8F%E4%BE%BF%E6%8B%BF%E5%BC%A0%E6%A0%B7%E6%9C%AC.png">
 
 
-<link rel="canonical" href="http://example.com/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
+<link rel="canonical" href="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/","path":"Deep Learning/04.卷积神经网络(上)/","title":"04.卷积神经网络(上)"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/","path":"Deep Learning/04.卷积神经网络(上)/","title":"04.卷积神经网络(上)"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>04.卷积神经网络(上) | My Learning Notes</title>
+<title>04.卷积神经网络(上) | 学习笔记</title>
   
 
 
@@ -90,7 +91,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">My Learning Notes</p>
+      <p class="site-title">学习笔记</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -162,8 +163,8 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">yuanjie xiang</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">yuanjie</p>
+  <div class="site-description" itemprop="description">劝君惜取少年时</div>
 </div>
 
         </div>
@@ -187,20 +188,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
+    <link itemprop="mainEntityOfPage" href="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(%E4%B8%8A)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="yuanjie xiang">
+      <meta itemprop="name" content="yuanjie">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My Learning Notes">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="学习笔记">
+      <meta itemprop="description" content="劝君惜取少年时">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="04.卷积神经网络(上) | My Learning Notes">
+      <meta itemprop="name" content="04.卷积神经网络(上) | 学习笔记">
       <meta itemprop="description" content=" 传统深度神经网络（DNN）的问题
 
 在此前，我们已经学会了搭建一个传统的深度神经网络。现在，拿出一个训练得比较好（在验证集上90%准确率）的模型，开始做一些测试：
@@ -251,29 +252,27 @@
 <ol>
 <li><p>随便从数据集中拿一张图</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">idx = <span class="number">666</span></span><br><span class="line">plt.imshow(train_data[idx], cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.title(fmnist_train.classes[train_labels[idx]])</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/01%E9%9A%8F%E4%BE%BF%E6%8B%BF%E5%BC%A0%E6%A0%B7%E6%9C%AC.png" alt="image-20240409093438831"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/01随便拿张样本.png" alt="image-20240409093438831"></p>
 </li>
 <li><p>使用模型计算该图像的概率（注意将模型转为评估模式）</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">x</span>):</span><br><span class="line">	<span class="keyword">return</span> np.exp(x) / np.<span class="built_in">sum</span>(np.exp(x))</span><br><span class="line"><span class="comment"># 按照训练时的处理方法处理图像</span></span><br><span class="line">img = train_data[idx] / <span class="number">255</span></span><br><span class="line">img = img.view(-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">img = img.to(device)</span><br><span class="line"><span class="comment"># 计算概率分布</span></span><br><span class="line">p = softmax(model(img).cpu().detach().numpy())</span><br><span class="line"><span class="comment"># 使用表格表示</span></span><br><span class="line">pd.DataFrame(&#123;<span class="string">&quot;class&quot;</span>: fmnist_train.classes, <span class="string">&quot;rate&quot;</span>: p[<span class="number">0</span>]&#125;)</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/02%E6%A8%A1%E5%9E%8B%E7%AE%97%E5%87%BA%E7%9A%84%E6%A6%82%E7%8E%87.png" alt="image-20240409102043095"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/02模型算出的概率.png" alt="image-20240409102043095"></p>
 </li>
 <li><p>对原始图像进行一些细微的修改，再测试其结果</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 记录每次预测结果</span></span><br><span class="line">predicts = &#123;&#125;</span><br><span class="line"><span class="comment"># 将图像转回为 28*28 以便平移</span></span><br><span class="line">img = img.view(<span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line"><span class="comment"># 平移图像，范围为[-5, 5]</span></span><br><span class="line"><span class="keyword">for</span> px <span class="keyword">in</span> <span class="built_in">range</span>(-<span class="number">5</span>,<span class="number">6</span>):</span><br><span class="line">    <span class="comment"># 上下平移图像</span></span><br><span class="line">    img2 = np.roll(img.cpu(), px, axis=<span class="number">0</span>)</span><br><span class="line">    img3 = torch.Tensor(img2).view(-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>).to(device)</span><br><span class="line">    p = softmax(model(img3).cpu().detach().numpy())</span><br><span class="line">    predicts[<span class="string">&quot;pixel&#123;&#125;&quot;</span>.<span class="built_in">format</span>(px)] = p[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/03%E5%90%91%E4%B8%8A%E5%B9%B3%E7%A7%BB5%E5%83%8F%E7%B4%A0.png" alt="平移后的示例"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/03向上平移5像素.png" alt="平移后的示例"></p>
 </li>
 <li><p>上图是向上平移5像素后的效果，接下来绘出热力图以直观的感受平移导致的预测结果偏差</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">plt.title(<span class="string">&#x27;Probability of each class for various translations&#x27;</span>)</span><br><span class="line">sns.heatmap(pd.DataFrame(predicts, index=fmnist_train.classes), fmt=<span class="string">&#x27;.2f&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">plt.title(<span class="string">&#x27;Probability of each class for various translations&#x27;</span>)</span><br><span class="line">sns.heatmap(pd.DataFrame(predicts, index=fmnist_train.classes), fmt=<span class="string">&#x27;.2f&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/04%E5%B9%B3%E7%A7%BB%E5%90%8E%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E7%83%AD%E5%8A%9B%E5%9B%BE.png" alt="image-20240409113246482"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/04平移后预测结果热力图.png" alt="image-20240409113246482"></p>
 <p>通过实践我们发现，即使图像主体没有变化，当像素平移超过两点后，模型便已基本失去作用。这是因为们的模型只学习了特定的样本，导致模型过于依赖于输入的精确特征，而无法对稍微变化的输入进行泛化。</p>
 <h2 id="卷积神经网络（Convolutional-Neural-Network-CNN）的基本构成"><a href="#卷积神经网络（Convolutional-Neural-Network-CNN）的基本构成" class="headerlink" title="卷积神经网络（Convolutional Neural Network, CNN）的基本构成"></a>卷积神经网络（Convolutional Neural Network, CNN）的基本构成</h2><p>卷积神经网络通过卷积操作，能有效的捕捉数据的局部特征，从而增强模型的泛化能力</p>
 <h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>卷积操做本质上是求矩阵乘法的和，以下图为例，左边是一个2x2的卷积核，右边则是3x3的输入数据。</p>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/05%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E6%BC%94%E7%A4%BA.png" alt="img"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/05卷积操作演示.png" alt="img"></p>
 <ol>
-<li>将卷积核视为一个可以滑动的窗口，第一次操作为：$\begin{bmatrix}1 &amp; 0\1 &amp; 0\end{bmatrix}\begin{bmatrix}1 &amp; 2\4 &amp; 5\end{bmatrix}&#x3D;\begin{bmatrix}1 &amp; 2\1 &amp; 2\end{bmatrix}$，将结果矩阵中的值累加得到6，这个结果就是output矩阵的第一行第一列</li>
+<li>将卷积核视为一个可以滑动的窗口，第一次操作为：$\begin{bmatrix}1 &amp; 0\1 &amp; 0\end{bmatrix}\begin{bmatrix}1 &amp; 2\4 &amp; 5\end{bmatrix}=\begin{bmatrix}1 &amp; 2\1 &amp; 2\end{bmatrix}$，将结果矩阵中的值累加得到6，这个结果就是output矩阵的第一行第一列</li>
 <li>通过不断执行以上步骤，output矩阵结果为：$\begin{bmatrix}6 &amp; 10\18 &amp; 22\end{bmatrix}$</li>
 <li>卷积操作的本质就是通过设定的卷积核，获取周围元素的特征，从而获得更好的泛化能力</li>
 </ol>
@@ -308,7 +307,7 @@
 <li><strong>平均池化</strong>：平均池化操作会计算窗口中所有像素值的平均值，并将其作为输出特征。它更多地保留了局部区域的平均特征。与最大池化相比，它更加平滑，但可能会丢失一些细节信息。</li>
 </ol>
 <h4 id="扁平层的概念"><a href="#扁平层的概念" class="headerlink" title="扁平层的概念"></a>扁平层的概念</h4><p>前面我们已经学习了由全连接层构成的深度神经网络，在卷积神经网络中，全连接层也被称为扁平层，通过一些列的卷积和池化操作得到特征数据后，再将数据扁平化传入扁平层（可以理解为输入层）。</p>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/06%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="img"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/06卷积神经网络结构示意图.jpg" alt="img"></p>
 <p>卷积和池化在深度学习中除了起着自动特征提取的作用，还有助于减少扁平层的节点数量。</p>
 <h3 id="卷积和池化的图像平移不变性原理"><a href="#卷积和池化的图像平移不变性原理" class="headerlink" title="卷积和池化的图像平移不变性原理"></a>卷积和池化的图像平移不变性原理</h3><p>还记得开头的测试吗？在传统深度神经网络中，当图像进行了微小的平移后，模型的预测准确度就会急剧下降。</p>
 <p>而卷积和池化在图像处理中具有平移不变性：</p>
@@ -328,16 +327,15 @@
 </li>
 <li><p>可以用torch_summary来查看模型的摘要信息</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torchsummary <span class="keyword">import</span> summary</span><br><span class="line">summary(model, torch.zeros(<span class="number">1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/07%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B%E6%91%98%E8%A6%81.png" alt="image-20240409182901235"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/07卷积神经网络图像分类模型摘要.png" alt="image-20240409182901235"></p>
 </li>
 <li><p>训练结果如下图</p>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/08%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%95%88%E6%9E%9C%E5%9B%BE.png" alt="image-20240409183127350"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/08卷积神经网络效果图.png" alt="image-20240409183127350"></p>
 </li>
 <li><p>测试卷积神经网络对平移的效果：使用卷积后模型相比最初有所提升，但我现在更关注其对图像平移的泛化能力，接下来就让我们试试。</p>
 </li>
 </ol>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/09%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E5%90%8E%E7%9A%84%E5%B9%B3%E7%A7%BB%E9%A2%84%E6%B5%8B%E7%83%AD%E5%8A%9B%E5%9B%BE.png" alt="image-20240409184018308"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/09使用卷积后的平移预测热力图.png" alt="image-20240409184018308"></p>
 <p>上图是最终结果，卷积确实增强了模型对图像平移的预测效果，但并未完全解决这个问题。接下来我们学习图像增强技术以进一步解决这个问题</p>
 <h2 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h2><p>图像增强是一种常用的数据预处理技术，用于扩充训练数据集，以改善模型的泛化能力和抵抗过拟合。它通过对原始数据进行一系列随机变换或变形来生成新的训练样本，从而增加数据的多样性，使模型更好地学习数据的不变性和泛化能力。</p>
 <p>常用的图像增强技术包括：</p>
@@ -354,7 +352,6 @@
 <p>这些技术可以单独应用，也可以组合使用。在训练过程中，每个样本都会经过随机选择的一系列数据增强操作，从而生成多样化的训练样本。这样做可以有效地提高模型的鲁棒性，减少过拟合，并且更好地适应不同的输入变化和噪声。</p>
 <h3 id="使用imgaug库进行图像增强"><a href="#使用imgaug库进行图像增强" class="headerlink" title="使用imgaug库进行图像增强"></a>使用imgaug库进行图像增强</h3><p><code>imgaug</code> 是一个用于图像增强的 Python 库，可以用于生成具有多样性的训练数据。它支持许多图像增强技术，它比较突出的增强技术如下：仿射变换、改变亮度、增加噪声。</p>
 <h4 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> imgaug.augmenters <span class="keyword">as</span> iaa</span><br><span class="line"></span><br><span class="line">iaa.Affine(scale=<span class="literal">None</span>, translate_percent=<span class="literal">None</span>, translate_px=<span class="literal">None</span>,</span><br><span class="line">                 rotate=<span class="literal">None</span>, shear=<span class="literal">None</span>, order=<span class="number">1</span>, cval=<span class="number">0</span>, mode=<span class="string">&quot;constant&quot;</span>,</span><br><span class="line">                 fit_output=<span class="literal">False</span>, backend=<span class="string">&quot;auto&quot;</span>,</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>scale 指定对图像的缩放量</li>
 <li>translate_percent指定平移百分比</li>
@@ -367,8 +364,9 @@
 <li><p>Multiply() ：直接对所有值乘一个值</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.Multiply(mul=(<span class="number">0.8</span>, <span class="number">1.2</span>), per_channel=<span class="literal">False</span>,</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Linearcontrast() ：记像素值为x，输出y。则$y&#x3D;127+a \times (x-127)$</p>
-<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.LinearContrast(alpha=(<span class="number">0.6</span>, <span class="number">1.4</span>), per_channel=<span class="literal">False</span>,</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>Linearcontrast() ：记像素值为x，输出y。则$y=127+a \times (x-127)$</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.LinearContrast(alpha=(<span class="number">0.6</span>, <span class="number">1.4</span>), per_channel=<span class="literal">False</span>,</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <h4 id="添加噪声"><a href="#添加噪声" class="headerlink" title="添加噪声"></a>添加噪声</h4><ol>
 <li><p>Dropout()：随机删除一些像素</p>
@@ -378,7 +376,8 @@
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.SaltAndPepper(p=(<span class="number">0.0</span>, <span class="number">0.03</span>), per_channel=<span class="literal">False</span>,</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>GaussianBlur()：高斯模糊</p>
-<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.GaussianBlur(sigma=(<span class="number">0.0</span>, <span class="number">3.0</span>),</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">iaa.GaussianBlur(sigma=(<span class="number">0.0</span>, <span class="number">3.0</span>),</span><br><span class="line">                 seed=<span class="literal">None</span>, name=<span class="literal">None</span>,</span><br><span class="line">                 random_state=<span class="string">&quot;deprecated&quot;</span>, deterministic=<span class="string">&quot;deprecated&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <blockquote>
 <p> 你是否注意到很多参数的属性是一个元组，实际上这表示一个区间，<strong>函数增强程度会随机在该区间内</strong>。</p>
@@ -386,20 +385,17 @@
 <h4 id="实际演示："><a href="#实际演示：" class="headerlink" title="实际演示："></a>实际演示：</h4><ol>
 <li><p>单个操作：</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> imgaug.augmenters <span class="keyword">as</span> iaa</span><br><span class="line"></span><br><span class="line">trans = iaa.Affine(scale=<span class="number">1.2</span>, translate_percent=<span class="number">0.1</span>, rotate=(-<span class="number">90</span>, <span class="number">90</span>), cval=<span class="number">127</span>)</span><br><span class="line">img = trans.augment_image(to_numpy(train_data[<span class="number">666</span>]))</span><br><span class="line">plt.grid(<span class="literal">False</span>)</span><br><span class="line">plt.imshow(img, cmap=<span class="string">&quot;gray&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/10imgaug%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png" alt="10imgaug单次操作"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/10imgaug单次操作.png" alt="10imgaug单次操作"></p>
 </li>
 <li><p>组合操作：</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">trans = iaa.Sequential([</span><br><span class="line">    iaa.Affine(translate_px=&#123;<span class="string">&#x27;x&#x27;</span>:(-<span class="number">10</span>,<span class="number">10</span>)&#125;),</span><br><span class="line">    iaa.GaussianBlur(),</span><br><span class="line">    iaa.Multiply(),</span><br><span class="line">    iaa.SaltAndPepper(),</span><br><span class="line">])</span><br><span class="line">img = trans.augment_image(to_numpy(train_data[<span class="number">666</span>]))</span><br><span class="line">plt.grid(<span class="literal">False</span>)</span><br><span class="line">plt.imshow(img, cmap=<span class="string">&quot;gray&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/11imgaug%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png" alt="image-20240409213736734"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/11imgaug组合操作.png" alt="image-20240409213736734"></p>
 </li>
 </ol>
 <h4 id="按批次增强图像collate-fn"><a href="#按批次增强图像collate-fn" class="headerlink" title="按批次增强图像collate_fn"></a>按批次增强图像<code>collate_fn</code></h4><p><code>imgaug</code>库提供了<code>trans.augment_images</code>方法用于批量增强图像，该方法的速度比迭代快不少，所以我们希望在训练时能<strong>一次增强一批数据</strong>。</p>
 <p><code>collate_fn</code> 是 DataLoader 类的一个参数，用于处理批次中的样本数据。它可以自定义批次数据的处理方式，比如对样本进行填充、调整大小等操作。通常情况下，<code>collate_fn</code> 接收一个批次的样本列表，并返回一个批次的数据。这个函数需要根据具体情况来定义，以确保输入和输出的格式与你的模型匹配。</p>
 <p>需要修改的代码如下：</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FMNISTDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="comment"># 只传入一个图像增强的方法，并不在这一步处理图像</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x, y, aug=<span class="literal">None</span></span>):</span><br><span class="line">        self.x, self.y = x, y</span><br><span class="line">        self.aug = aug</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, ix: <span class="built_in">int</span></span>) -&gt; <span class="built_in">tuple</span>[torch.Tensor, torch.Tensor]:</span><br><span class="line">        x, y = self.x[ix], self.y[ix]</span><br><span class="line">        <span class="keyword">return</span> x, y</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>): <span class="keyword">return</span> <span class="built_in">len</span>(self.x)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">self, batch</span>) -&gt; <span class="built_in">tuple</span>[torch.Tensor, torch.Tensor]:</span><br><span class="line">        <span class="comment"># 分成两个元组，元组内的元素为张量</span></span><br><span class="line">        ims, classes = <span class="built_in">zip</span>(*batch)</span><br><span class="line">        <span class="comment"># 通过堆叠将元组变为张量，tensor.shape(batch_size, 28, 28)</span></span><br><span class="line">        ims = torch.stack(ims)</span><br><span class="line">        <span class="keyword">if</span> self.aug:</span><br><span class="line">            <span class="comment"># 先将数据转换为 NumPy 数组，再应用数据增强</span></span><br><span class="line">            ims = self.aug.augment_images(images=ims.cpu().numpy())</span><br><span class="line">            <span class="comment"># 将增强后的数据转换为张量并移到设备上</span></span><br><span class="line">            ims = torch.tensor(ims, dtype=torch.float32)</span><br><span class="line">        <span class="comment"># 如果没有数据增强，仅将数据标准化到 [0, 1] 范围</span></span><br><span class="line">        ims = ims.to(device) / <span class="number">255</span></span><br><span class="line">        classes = torch.tensor(classes).to(device)</span><br><span class="line">        <span class="comment"># 保持张量维度一致</span></span><br><span class="line">        <span class="keyword">return</span> ims[:, <span class="literal">None</span>, :, :], classes</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_data</span>(): </span><br><span class="line">    <span class="comment"># 增加的参数记得加上</span></span><br><span class="line">    train = FMNISTDataset(train_data, train_labels, aug)</span><br><span class="line">    <span class="comment"># 告诉加载器使用collate_fn方法</span></span><br><span class="line">    trn_dl = DataLoader(train, batch_size=<span class="number">64</span>, collate_fn=train.collate_fn, shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    validation = FMNISTDataset(validation_data, validation_labels)</span><br><span class="line">    <span class="comment"># 告诉加载器使用collate_fn方法</span></span><br><span class="line">    val_dl = DataLoader(validation, batch_size=<span class="built_in">len</span>(validation_data), collate_fn=train.collate_fn, shuffle=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> trn_dl, val_dl</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>版本问题，以上代码与书中有所不同</p>
 </blockquote>
@@ -414,8 +410,8 @@
 </ul>
 </li>
 <li>翻转和旋转<ul>
-<li>依概率p水平翻转：transforms.RandomHorizontalFlip(p&#x3D;0.5)</li>
-<li>依概率p垂直翻转：transforms.RandomVerticalFlip(p&#x3D;0.5)</li>
+<li>依概率p水平翻转：transforms.RandomHorizontalFlip(p=0.5)</li>
+<li>依概率p垂直翻转：transforms.RandomVerticalFlip(p=0.5)</li>
 <li>随机旋转：transforms.RandomRotation</li>
 </ul>
 </li>
@@ -435,7 +431,7 @@
 </li>
 <li>对transforms操作<ul>
 <li>transforms.RandomChoice(transforms)， 从给定的一系列transforms中选一个进行操作</li>
-<li>transforms.RandomApply(transforms, p&#x3D;0.5)，给一个transform加上概率，依概率进行操作</li>
+<li>transforms.RandomApply(transforms, p=0.5)，给一个transform加上概率，依概率进行操作</li>
 <li>transforms.RandomOrder，将transforms中的操作随机打乱</li>
 </ul>
 </li>
@@ -447,13 +443,11 @@
 <ol>
 <li><p>单个操作</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">img = train_data[idx]</span><br><span class="line"><span class="comment"># 图像中心放大，尺寸为30*20（超出的尺寸自动填充0）</span></span><br><span class="line">img1 = transforms.CenterCrop((<span class="number">30</span>, <span class="number">20</span>))(img)</span><br><span class="line">plt.imshow(img1, cmap=<span class="string">&quot;gray&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/12transforms%E5%8D%95%E6%AC%A1%E6%93%8D%E4%BD%9C.png" alt="image-20240409193033316"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/12transforms单次操作.png" alt="image-20240409193033316"></p>
 </li>
 <li><p>组合操作</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    <span class="comment"># tensor 转为 pil 图像</span></span><br><span class="line">    transforms.ToPILImage(),</span><br><span class="line">    <span class="comment"># 随机旋转，范围为左右80度，默认中心旋转，填充0</span></span><br><span class="line">    transforms.RandomRotation(<span class="number">80</span>),</span><br><span class="line">    <span class="comment"># 先在四周镜像填充20的padding，再随机裁剪图像为30*30</span></span><br><span class="line">    transforms.RandomCrop(<span class="number">30</span>, padding=<span class="number">5</span>, padding_mode=<span class="string">&#x27;reflect&#x27;</span>)</span><br><span class="line">    <span class="comment"># 图像缩放</span></span><br><span class="line">    transforms.Resize((<span class="number">20</span>, <span class="number">28</span>)),</span><br><span class="line">])</span><br><span class="line">plt.imshow(transform(img), cmap=<span class="string">&quot;gray&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/13transforms%E7%BB%84%E5%90%88%E6%93%8D%E4%BD%9C.png" alt="image-20240409200407825"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/13transforms组合操作.png" alt="image-20240409200407825"></p>
 </li>
 </ol>
 <blockquote>
@@ -461,7 +455,6 @@
 </blockquote>
 <h4 id="整合transforms"><a href="#整合transforms" class="headerlink" title="整合transforms"></a>整合transforms</h4><p>transforms没有提供批量增强的方法，因此我们直接在原方法上修改：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FMNISTDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x, y, transform=<span class="literal">None</span></span>):</span><br><span class="line">        self.x, self.y = x, y </span><br><span class="line">        self.transform = transform</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 在获取数据时再进行图像增强操作</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, ix: <span class="built_in">int</span></span>):</span><br><span class="line">        x, y = self.x[ix], self.y[ix]</span><br><span class="line">        <span class="keyword">if</span> self.transform:</span><br><span class="line">            x = self.transform(x)</span><br><span class="line">        x = x.<span class="built_in">float</span>() / <span class="number">255</span> </span><br><span class="line">        x = x.view(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">        <span class="keyword">return</span> x.to(device), y.to(device)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>): <span class="keyword">return</span> <span class="built_in">len</span>(self.x)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_data</span>(): </span><br><span class="line">    <span class="comment"># 增加的参数记得加上</span></span><br><span class="line">    train = FMNISTDataset(train_data, train_labels, transform)</span><br><span class="line">    trn_dl = DataLoader(train, batch_size=<span class="number">64</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    validation = FMNISTDataset(validation_data, validation_labels)</span><br><span class="line">    val_dl = DataLoader(validation, batch_size=<span class="built_in">len</span>(validation_data), shuffle=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> trn_dl, val_dl</span><br></pre></td></tr></table></figure>
-
 <h3 id="两种库图像增强速度的比较"><a href="#两种库图像增强速度的比较" class="headerlink" title="两种库图像增强速度的比较"></a>两种库图像增强速度的比较</h3><p>图像增强是一种非常耗时的操作，因此我希望能比较二者的能力，选择比较快的方式进行图像增强。我的设想是对每张图片进行随机平移和旋转操作，计算每轮时间</p>
 <p>因为设备环境可能不同，所以该测试仅供参考，使用设备：</p>
 <ul>
@@ -470,26 +463,25 @@
 <li>gpu: 3060 12g</li>
 </ul>
 <h4 id="augimg"><a href="#augimg" class="headerlink" title="augimg"></a>augimg</h4><figure class="highlight py"><table><tr><td class="code"><pre><span class="line">aug = iaa.Sequential([    </span><br><span class="line">    <span class="comment"># rotate 表示旋转角度，translate_percent便是</span></span><br><span class="line">    iaa.Affine(rotate=(-<span class="number">90</span>, <span class="number">90</span>), translate_percent=&#123;<span class="string">&quot;x&quot;</span>: (-<span class="number">10</span>, <span class="number">10</span>), <span class="string">&quot;y&quot;</span>: (-<span class="number">10</span>, <span class="number">10</span>)&#125;),</span><br><span class="line">])</span><br><span class="line"><span class="comment"># epochs：10 | time: 5min 29s | epochs average time：32.9s</span></span><br><span class="line"><span class="comment"># cpu 占用：90% 左右 | gpu 占用：32% 左右</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="transforms"><a href="#transforms" class="headerlink" title="transforms"></a>transforms</h4><figure class="highlight py"><table><tr><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    <span class="comment"># tensor 转为 pil 图像</span></span><br><span class="line">    transforms.ToPILImage(),</span><br><span class="line">    <span class="comment"># 仿射变换，degrees表示左右偏转角度，translate表示(x,y)轴的平移百分比，会随机在该区间内做图像变换</span></span><br><span class="line">    transforms.RandomAffine(degrees=<span class="number">90</span>, translate=(<span class="number">0.1</span>, <span class="number">0.1</span>)),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">])</span><br><span class="line"><span class="comment"># epochs：10 | time: 5min 51s | epochs average time：35.1s</span></span><br><span class="line"><span class="comment"># cpu 占用：30% 左右 | gpu 占用：96% 左右 </span></span><br></pre></td></tr></table></figure>
-
 <p>实际上速度差不多，<code>augimg</code>略胜一筹，可能就是因为其对批量增强做了优化导致。</p>
 <h3 id="用于图像平移的数据增强"><a href="#用于图像平移的数据增强" class="headerlink" title="用于图像平移的数据增强"></a>用于图像平移的数据增强</h3><p>掌握图像增强后，继续尝试解决前面的图像平移问题，这次训练前</p>
 <ul>
 <li><p>按照上次的经验，在卷积层后加了一次dropout操作以减少过拟合</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line">model = nn.Sequential(</span><br><span class="line">        nn.Conv2d(<span class="number">1</span>, <span class="number">64</span>, <span class="number">3</span>),</span><br><span class="line">        nn.MaxPool2d(<span class="number">2</span>),</span><br><span class="line">        nn.LeakyReLU(),</span><br><span class="line">        nn.Conv2d(<span class="number">64</span>, <span class="number">128</span>, <span class="number">3</span>),</span><br><span class="line">        nn.MaxPool2d(<span class="number">2</span>),</span><br><span class="line">        nn.LeakyReLU(),</span><br><span class="line">        <span class="comment"># 增加一次dropout以减少过拟合</span></span><br><span class="line">        nn.Dropout(<span class="number">0.3</span>),</span><br><span class="line">        nn.Flatten(),</span><br><span class="line">        nn.Linear(<span class="number">128</span>*<span class="number">5</span>*<span class="number">5</span>, <span class="number">256</span>),</span><br><span class="line">        nn.BatchNorm1d(<span class="number">256</span>),</span><br><span class="line">        nn.LeakyReLU(),</span><br><span class="line">        nn.Dropout(<span class="number">0.3</span>),</span><br><span class="line">        nn.Linear(<span class="number">256</span>, <span class="number">10</span>),</span><br><span class="line">        nn.BatchNorm1d(<span class="number">10</span>)</span><br><span class="line">    ).to(device)</span><br></pre></td></tr></table></figure>
-
-
 </li>
+</ul>
+<ul>
 <li><p>为了方便验证，修改平移量为像素绝对值</p>
-<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">aug = iaa.Sequential([  </span><br><span class="line">    iaa.Affine(rotate=(-<span class="number">90</span>, <span class="number">90</span>), translate_px=&#123;<span class="string">&quot;x&quot;</span>: (-<span class="number">5</span>, <span class="number">5</span>), <span class="string">&quot;y&quot;</span>: (-<span class="number">5</span>, <span class="number">5</span>)&#125;),</span><br><span class="line">])</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">aug = iaa.Sequential([  </span><br><span class="line">    iaa.Affine(rotate=(-<span class="number">90</span>, <span class="number">90</span>), translate_px=&#123;<span class="string">&quot;x&quot;</span>: (-<span class="number">5</span>, <span class="number">5</span>), <span class="string">&quot;y&quot;</span>: (-<span class="number">5</span>, <span class="number">5</span>)&#125;),</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <ol>
 <li><p>训练效果如下，成绩可以说很不好，可能是因为模型的复杂度不够，而有些图片经过增强后会丢失很多特征。按照经验，想要进一步提升需要减小dropout，并增加模型节点数（待办）：</p>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/15%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E7%83%AD%E5%8A%9B%E5%9B%BE.png" alt="image-20240411083001010"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/15使用数据增强后的热力图.png" alt="image-20240411083001010"></p>
 </li>
 <li><p>即使训练成绩不理想，但模型对上下平移的泛化能力也远超之前：</p>
-<p><img data-src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/14%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%8E%E7%9A%84%E8%AE%AD%E7%BB%83%E6%9B%B2%E7%BA%BF.png" alt="image-20240411083214407"></p>
+<p><img data-src="pictures/04.卷积神经网络（上）/14数据增强后的训练曲线.png" alt="image-20240411083214407"></p>
 </li>
 </ol>
 <p>到这里，学会了使用神经网络和图像增强技术。下一节：深入理解滤波器的作用，以及通过卷积神经网络进行真实图像分类。</p>
@@ -535,9 +527,7 @@
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
-    <span class="author" itemprop="copyrightHolder">yuanjie xiang</span>
-  </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+    <span class="author" itemprop="copyrightHolder">yuanjie</span>
   </div>
 
     </div>
@@ -576,6 +566,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <script class="next-config" data-name="isso" type="application/json">"http://82.157.165.89:6329/"</script>

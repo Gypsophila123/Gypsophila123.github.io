@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/github.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/github_small.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/github_medium.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>04.卷积神经网络（下） | 学习笔记</title>
+
+
+    <meta name="keywords" content="Deep Learning">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="进一步理解滤波器  前面提到：**通过多个不同滤波器的组合，卷积层可以提取出输入图像的不同特征，例如边缘、纹理、形状等**。   图像处理时用的滤波器  滤波器为什么能提取出图像的信息呢？这个问题我们可以从传统的图像处理入手。下面介绍一些常用的滤波器以理解这个过程，需要注意的一个细节是图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04.卷积神经网络（下）">
+<meta property="og:url" content="https://gypsophila123.github.io/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/">
+<meta property="og:site_name" content="学习笔记">
+<meta property="og:description" content="进一步理解滤波器  前面提到：**通过多个不同滤波器的组合，卷积层可以提取出输入图像的不同特征，例如边缘、纹理、形状等**。   图像处理时用的滤波器  滤波器为什么能提取出图像的信息呢？这个问题我们可以从传统的图像处理入手。下面介绍一些常用的滤波器以理解这个过程，需要注意的一个细节是图">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/01%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/02Sobel%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E9%9A%8F%E4%BE%BF%E9%80%89%E5%8F%96%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%89%87.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E7%AC%AC%E4%B8%80%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E7%89%B9%E5%AE%9A%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12vgg16%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13vgg16%E6%A8%A1%E5%9E%8B%E5%9C%A8%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E7%9A%84%E6%95%88%E6%9E%9C.png">
+<meta property="article:published_time" content="2024-04-17T14:39:32.066Z">
+<meta property="article:modified_time" content="2024-04-17T14:46:26.103Z">
+<meta property="article:author" content="yuanjie">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gypsophila123.github.io/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/01%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%AF%B9%E6%AF%94.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/default.min.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/dark.min.css" media="none">
+        
+    
+
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">学习笔记</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        04.卷积神经网络（下）
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2024/04/" class="post-meta__date button">2024-04-17</a>
+        
+    <span class="separate-dot"></span><a href="/categories/deep-learning/" class="button">Deep Learning</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%90%86%E8%A7%A3%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">进一步理解滤波器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E6%97%B6%E7%94%A8%E7%9A%84%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">图像处理时用的滤波器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E6%BB%91"><span class="toc-number">1.1.1.</span> <span class="toc-text">平滑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">边缘检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%9C%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">滤波器在卷积神经网络的效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.</span> <span class="toc-text">迁移学习的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VGG16%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">VGG16模型</span></a></li></ol></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%90%86%E8%A7%A3%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">进一步理解滤波器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E6%97%B6%E7%94%A8%E7%9A%84%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">图像处理时用的滤波器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E6%BB%91"><span class="toc-number">1.1.1.</span> <span class="toc-text">平滑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">边缘检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%9C%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">滤波器在卷积神经网络的效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.</span> <span class="toc-text">迁移学习的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VGG16%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">VGG16模型</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h2 id="进一步理解滤波器"><a href="#进一步理解滤波器" class="headerlink" title="进一步理解滤波器"></a>进一步理解滤波器</h2><p>前面提到：<strong>通过多个不同滤波器的组合，卷积层可以提取出输入图像的不同特征，例如边缘、纹理、形状等</strong>。</p>
+<h3 id="图像处理时用的滤波器"><a href="#图像处理时用的滤波器" class="headerlink" title="图像处理时用的滤波器"></a>图像处理时用的滤波器</h3><p>滤波器为什么能提取出图像的信息呢？这个问题我们可以从传统的图像处理入手。下面介绍一些常用的滤波器以理解这个过程，需要注意的一个细节是图像使用滤波器会在图像四周填充一些值（一般为0）以保持卷积后的图像大小不变化。</p>
+<h4 id="平滑"><a href="#平滑" class="headerlink" title="平滑"></a>平滑</h4><ol>
+<li><p><strong>均值滤波</strong>：以核大小3*3为例，$\begin{bmatrix} 1 &amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1 \end{bmatrix}$，使像素获得与其相邻像素的值。在图像的平滑区域、基本不会改变像素值，但在像素差距较大的边缘区域可以使像素之间差距减小。</p>
+</li>
+<li><p><strong>高斯滤波</strong>：一个可能的核为$\begin{bmatrix} 3 &amp; 5 &amp; 3 \ 5 &amp; 10 &amp; 5 \ 3 &amp; 5 &amp; 3 \end{bmatrix}$。高斯滤波采用了正态分布的思想，越靠近中心的像素权重越高。相比均值滤波，高斯滤波在平滑的同时能较好的保存图像细节。</p>
+</li>
+<li><p><strong>双边滤波</strong>：核需要根据灰度值实时计算。双边滤波在高斯滤波考虑距离的同时，还考虑其余像素和中心像素之间的灰度值差，灰度值相差越大，权重越小。这使双边滤波在去除小噪声的同时，还能较好的保留图像的边缘细节，但运算速度较慢。</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">blurred = cv2.blur(image, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>))<br><span class="hljs-comment"># cv2.GaussianBlur(src, ksize, sigmaX[, dst[, sigmaY[, borderType]]])， sigmaX表示水平方向的标准差，0表示自动计算</span><br>blurred = cv2.GaussianBlur(image, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), <span class="hljs-number">0</span>)<br><span class="hljs-comment"># cv2.bilateralFilter(src, d, sigmaColor, sigmaSpace[, dst[, borderType]])，d表示核边长，其余两位分别表示颜色和空间的标准差</span><br>blurred = cv2.bilateralFilter(image, <span class="hljs-number">9</span>, <span class="hljs-number">60</span>, <span class="hljs-number">60</span>)<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>下图按顺序依次为原图、均值滤波、高斯滤波和双边滤波。</p>
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/01%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%AF%B9%E6%AF%94.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/01%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%AF%B9%E6%AF%94.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="平滑滤波对比"></p>
+<h4 id="边缘检测"><a href="#边缘检测" class="headerlink" title="边缘检测"></a>边缘检测</h4><ol>
+<li><p><strong>Sobel</strong>：一种效率很高的检测算法，结合了微分与高斯平滑的思想，由导数的定义可知，导数大小能反映图像变化的剧烈程度，由此实现边缘检测。在水平方向上，当前点的导数取决于前后列的变化量，记x的变化量dx为1，则$ f’(x) &#x3D; f(x+1) - f(x) &#x3D; f(x) - f(x-1) &#x3D; \frac{f(x+1) - f(x-1)}{2}$。这是Sobel算法检测水平方向上的边缘时的示例$\begin{bmatrix} -1 &amp; 0 &amp; +1 \ -2 &amp; 0 &amp; +2 \ -1 &amp; 0 &amp; +1 \end{bmatrix}$。当图像在水平方向有明显的变化时，导数值较大，当前像素便会被高亮，反之图像平坦时导数趋近于0，图像便为黑色，由此实现水平方向上的边缘检测。下图为Sobel边缘检测实例，下图依次为原图、x、y和xy</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># Sobel(src: cv2.typing.MatLike, ddepth: int, dx: int, dy: int)</span><br>image = cv2.imread(file_path)<br>X = cv2.Sobel(image, -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)<br>Y = cv2.Sobel(image, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)<br>XY = cv2.Sobel(image, -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/02Sobel%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/02Sobel%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240416143655504"></p>
+</li>
+<li><p>其他边缘检测算法还包括 <strong>Laplacian</strong>算法、<strong>canny</strong>算法等，限于篇幅这里就不展开了</p>
+</li>
+</ol>
+<h3 id="滤波器在卷积神经网络的效果"><a href="#滤波器在卷积神经网络的效果" class="headerlink" title="滤波器在卷积神经网络的效果"></a>滤波器在卷积神经网络的效果</h3><p>接下来我们通过实践来深入的理解滤波器在神经网络中的效果。</p>
+<ol>
+<li><p>随便选一张图片，看看其原本的样子：</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 按照训练时的处理方法处理图像</span><br>idx = <span class="hljs-number">8</span><br>img = train_data[idx] / <span class="hljs-number">255</span><br><br>plt.imshow(img.cpu().numpy(), cmap=<span class="hljs-string">&#x27;gray&#x27;</span>)<br>plt.title(fmnist_train.classes[train_labels[idx]])<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E9%9A%8F%E4%BE%BF%E9%80%89%E5%8F%96%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%89%87.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/05%E9%9A%8F%E4%BE%BF%E9%80%89%E5%8F%96%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%89%87.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411102717597"></p>
+</li>
+<li><p>绘出得到的中间输出，可以看出，一些滤波器绘制出了图像的边缘，有些滤波器注重于亮度的关系，还有滤波器反转了图像：</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">model.<span class="hljs-built_in">eval</span>()<br><span class="hljs-comment"># 创建了一个新的Sequential层，其中只包含了模型的第一层。</span><br>first_layer = nn.Sequential(*<span class="hljs-built_in">list</span>(model.children())[:<span class="hljs-number">1</span>])<br><span class="hljs-comment"># 将一张图片通过这个第一层，得到中间输出</span><br>intermediate_output = first_layer(img[<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, :, :].to(device))[<span class="hljs-number">0</span>].detach()<br><br>n = <span class="hljs-number">8</span><br><span class="hljs-comment"># 8 * 8</span><br>fig, ax = plt.subplots(n, n, figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))<br><span class="hljs-keyword">for</span> ix, axis <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ax.flat):<br>    axis.set_title(<span class="hljs-string">&#x27;Filter: &#x27;</span>+<span class="hljs-built_in">str</span>(ix))<br>    axis.imshow(intermediate_output[ix].cpu())<br>plt.tight_layout()<br>plt.show()<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E7%AC%AC%E4%B8%80%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/06%E7%AC%AC%E4%B8%80%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411101448289"></p>
+</li>
+<li><p>接下来选择0号滤波器，研究该滤波器对其他图像的效果。可以看出，该滤波器加强了图像的边缘。</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 筛选凉鞋</span><br>ims = train_data[train_labels==<span class="hljs-number">5</span>].to(device)<br>n = <span class="hljs-number">4</span><br>fig, ax = plt.subplots(n, n, figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))<br><span class="hljs-keyword">for</span> ix, axis <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ax.flat):<br>    output = first_layer(ims[ix][<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, :, :] / <span class="hljs-number">255</span>)[<span class="hljs-number">0</span>].detach()<br>    axis.grid(<span class="hljs-literal">False</span>)<br>    axis.set_title(<span class="hljs-string">&quot;image: &quot;</span> + <span class="hljs-built_in">str</span>(ix))<br>    axis.imshow(output[<span class="hljs-number">0</span>].cpu())<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E7%89%B9%E5%AE%9A%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/07%E7%89%B9%E5%AE%9A%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411101448289"></p>
+</li>
+<li><p>接下来再绘制这些图像再第二层滤波器输出的图像，第二层有128个输出，我只绘制出64个以便于与前面做对比。通过这次滤波器，图像变的较为抽象</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 模型的第四层是第二层滤波器</span><br>second_layer = nn.Sequential(*<span class="hljs-built_in">list</span>(model.children())[:<span class="hljs-number">4</span>])<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/08%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E8%BE%93%E5%87%BA.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411120540224"></p>
+</li>
+<li><p>看到第二层的3号滤波器的输出比较有特点，对其再试试上面的图像，结果如下。对于人类来说，基本已经无法判断其身为凉鞋的特征，要解释模型如何提取出特征还得继续向下探索</p>
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/09%E7%AC%AC%E4%BA%8C%E5%B1%82%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411121345591"></p>
+</li>
+<li><p>绘制扁平层的图像。这一次我们就能直观的看到发生了什么，这张图中每个点表示一个大于零的激活值。这些条纹可以视为卷积操作提取出的<strong>特征</strong></p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 筛选所有label为x的样本，共6000个</span><br>ims = train_data[train_labels==<span class="hljs-number">5</span>].to(device) / <span class="hljs-number">255</span><br><span class="hljs-comment"># 为方便展示，这里将样本筛为 1000 个</span><br>ims = ims[:<span class="hljs-number">1000</span>]<br><span class="hljs-comment"># 扁平层的输出</span><br>flatten_layer = nn.Sequential(*<span class="hljs-built_in">list</span>(model.children())[:<span class="hljs-number">8</span>])<br><span class="hljs-comment"># 获取这1000个样本在扁平层的输出，返回结果shape ([1000, 3200])</span><br>flatten_layer_output = flatten_layer(ims[:, <span class="hljs-literal">None</span>, :, :].to(device)).detach()<br><span class="hljs-comment"># 指定绘制大小以便能看清楚</span><br>plt.figure(figsize=(<span class="hljs-number">20</span>,<span class="hljs-number">20</span>))<br>plt.grid(<span class="hljs-literal">False</span>)<br>plt.imshow(flatten_layer_output.cpu())<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/10%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411124139162"></p>
+</li>
+<li><p>为了对比，再随机在取数据集取1000个图像，以展示不同分类样本在扁平层的输出。这次虽然也出现很多条纹，但其混乱程度（熵）明显大于上一张图。</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 训练集中样本已打乱，直接拿训练集的前1000个样本</span><br>ims = train_data[:<span class="hljs-number">1000</span>].to(device) / <span class="hljs-number">255</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/11%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E8%BE%93%E5%87%BA.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240411125400178"></p>
+</li>
+</ol>
+<h3 id="迁移学习的概念"><a href="#迁移学习的概念" class="headerlink" title="迁移学习的概念"></a>迁移学习的概念</h3><p>通过前面这两张图，我相信你已经了解了卷积的真正作用，通过一系列的卷积操作，便能激活图像的各种特征。</p>
+<p>于是，迁移学习的概念也就不难理解了，想象一下，一个训练好的模型是在一个有着上千种分类、数百万张图片的数据集上训练的。这意味着其提取特征的能力已经非常出色了，这时我们就可以直接使用该模型的卷积网络来提取特征，而不用自己去慢慢调整。</p>
+<p>下面我们从迁移学习的角度看看卷积网络的作用。</p>
+<h4 id="VGG16模型"><a href="#VGG16模型" class="headerlink" title="VGG16模型"></a>VGG16模型</h4><p><strong>VGG模型</strong>由牛津大学工程科学系视觉几何组（Visual Geometry Group, Department of Engineering Science, University of Oxford）提出，并在2014年的<strong>ImageNet</strong>竞赛中获得亚军（ImageNet是一个将大约1400万个图像分类为1000个不同类别的竞赛），相关论文<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1409.1556"> 《Very Deep Convolutional Networks for Large-Scale Image Recognition》</a>在2015年发布。VGG16中的16表示模型的层数。</p>
+<ol>
+<li><p>使用torch导入VGG16模型：</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> models<br><br>device = <span class="hljs-string">&#x27;cuda&#x27;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;cpu&#x27;</span><br><span class="hljs-comment"># vgg16 模型已集成在PyTorch中，可以直接使用，其输入为224*224的彩色图像(3, 224, 224)，即shape(batach_size, 3, 224, 224)</span><br>models.vgg16().to(device)<br></code></pre></td></tr></table></figure>
+
+<p>以下是模型的具体信息，可以看到模型中有三个模块，分别为features、avgpool和classifier：</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py">VGG(<br>  (features): Sequential(<br>    (<span class="hljs-number">0</span>): Conv2d(<span class="hljs-number">3</span>, <span class="hljs-number">64</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">1</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">2</span>): Conv2d(<span class="hljs-number">64</span>, <span class="hljs-number">64</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">3</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">4</span>): MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, ceil_mode=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">5</span>): Conv2d(<span class="hljs-number">64</span>, <span class="hljs-number">128</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">6</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">7</span>): Conv2d(<span class="hljs-number">128</span>, <span class="hljs-number">128</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">8</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">9</span>): MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, ceil_mode=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">10</span>): Conv2d(<span class="hljs-number">128</span>, <span class="hljs-number">256</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">11</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">12</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">256</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">13</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">14</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">256</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">15</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">16</span>): MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, ceil_mode=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">17</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">18</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">19</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">20</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">21</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">22</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">23</span>): MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, ceil_mode=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">24</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">25</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">26</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">27</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">28</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>    (<span class="hljs-number">29</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">30</span>): MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, ceil_mode=<span class="hljs-literal">False</span>)<br>  )<br>  (avgpool): AdaptiveAvgPool2d(output_size=(<span class="hljs-number">7</span>, <span class="hljs-number">7</span>)) <span class="hljs-comment"># 自适应池化层，指定输出图像尺寸为7*7</span><br>  (classifier): Sequential(<br>    (<span class="hljs-number">0</span>): Linear(in_features=<span class="hljs-number">25088</span>, out_features=<span class="hljs-number">4096</span>, bias=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">1</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">2</span>): Dropout(p=<span class="hljs-number">0.5</span>, inplace=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">3</span>): Linear(in_features=<span class="hljs-number">4096</span>, out_features=<span class="hljs-number">4096</span>, bias=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">4</span>): ReLU(inplace=<span class="hljs-literal">True</span>)<br>    (<span class="hljs-number">5</span>): Dropout(p=<span class="hljs-number">0.5</span>, inplace=<span class="hljs-literal">False</span>)<br>    (<span class="hljs-number">6</span>): Linear(in_features=<span class="hljs-number">4096</span>, out_features=<span class="hljs-number">1000</span>, bias=<span class="hljs-literal">True</span>)<br>  )<br>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>数据预处理，VGG16模型有特定的的数据预处理方式，我们需要将尺寸重置为244*244、将图像设置为三通道、再将其归一化为vgg16需要的格式</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 将图像调整为三通道</span><br><span class="hljs-comment"># train_images_rgb = np.repeat(train_data[:, :, :, np.newaxis], 3, axis=-1)</span><br><br>vgg16_preprocess = transforms.Compose([<br>    transforms.ToPILImage(),<br>    transforms.Resize(<span class="hljs-number">224</span>),  <span class="hljs-comment"># 调整图像大小到 224x224</span><br>    transforms.ToTensor(),  <span class="hljs-comment"># 转换为张量</span><br>    <span class="hljs-comment"># transforms.Lambda(lambda x: x.flip(0)),  # 交换颜色通道 (RGB to BGR)</span><br>    transforms.Normalize(mean=[<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], std=[<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>]),  <span class="hljs-comment"># 归一化</span><br>]) <br></code></pre></td></tr></table></figure>
+</li>
+<li><p>下载VGG16模型的参数（参数文件约为550M），并指定使用其features模块</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 指定 weights=models.VGG16_Weights.DEFAULT，torch会自动寻找预训练好的权重</span><br>model = models.vgg16(weights=models.VGG16_Weights.DEFAULT, progress=<span class="hljs-literal">True</span>).to(device)<br>conv_layer = nn.Sequential(<br>    *<span class="hljs-built_in">list</span>(model.children())[:<span class="hljs-number">2</span>],<br>    nn.Flatten(), <span class="hljs-comment"># 展平数据，25088</span><br>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>进行测试，为了更好的图像比例，这次我使用了6000条数据，并截取了扁平层的前20000个参数</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 指定train_labels=5的6000个样本</span><br>ims = train_data[train_labels==<span class="hljs-number">5</span>][:<span class="hljs-number">6000</span>] / <span class="hljs-number">255</span><br>rgb_ims = np.repeat(ims[:, :, :, np.newaxis], <span class="hljs-number">3</span>, axis=-<span class="hljs-number">1</span>)<br>conv_layer.to(device)<br><br><span class="hljs-comment"># 因为数据有点多，我们一个一个计算</span><br>result = []<br><span class="hljs-keyword">for</span> image <span class="hljs-keyword">in</span> rgb_ims:<br>    processed_img = vgg16_preprocess(image.numpy())<br>    res = conv_layer(processed_img[<span class="hljs-literal">None</span>, :, :, :].to(device))<br>    result.append(torch.squeeze(res).detach().cpu()[:<span class="hljs-number">20000</span>])<br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12vgg16%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/12vgg16%E6%8C%87%E5%AE%9A%E5%88%86%E7%B1%BB%E5%9C%A8%E6%89%81%E5%B9%B3%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240417220956432"></p>
+<figure class="highlight py"><table><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 拿前6000条</span><br>ims = train_data[:<span class="hljs-number">6000</span>] / <span class="hljs-number">255</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13vgg16%E6%A8%A1%E5%9E%8B%E5%9C%A8%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E7%9A%84%E6%95%88%E6%9E%9C.png" class="lazy" data-srcset="/pictures/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/13vgg16%E6%A8%A1%E5%9E%8B%E5%9C%A8%E9%9A%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E7%9A%84%E6%95%88%E6%9E%9C.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" alt="image-20240417221238719"></p>
+</li>
+<li><p>结论</p>
+<ul>
+<li><p>上面这两张图乍一看很相似，但仔细观察，就会得到与之前相同的结论，多种类的图像混乱程度更高</p>
+</li>
+<li><p>两张图相似的原因是该数据库中的所有图像比较简单，通过vgg16模型的features模块处理后找出了这些图像的很多相同特征</p>
+</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2024-04-17</p></div> 
+    <div class="post-entry__tags"></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/Deep%20Learning/04.%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8A%EF%BC%89/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            上一篇
+                        </div>
+                        <div class="nav__title">
+                            04.卷积神经网络（上）
+                        </div>
+                    </div>
+                </a>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/Deep%20Learning/03.%E4%BD%BF%E7%94%A8pytorch%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%8B%EF%BC%89/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            03.使用pytorch构建深度神经网络（下）
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2024 <a href="/">学习笔记</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
